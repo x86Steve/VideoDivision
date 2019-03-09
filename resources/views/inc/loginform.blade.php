@@ -1,7 +1,7 @@
 <div class="container register">
     <div class="row">
         <div class="col-md-3 register-left">
-            <img src="https://cdn.discordapp.com/attachments/539508113997430796/551111470474199060/logo2.png" alt=""/>
+            <img src="http://why.soserio.us/Media/2019-03-07_20-41-58.png" alt=""/>
             <h3>Welcome!</h3>
             <p>You are 10 seconds away from saving money by ditching Netflix&copy;, Hulu&copy;, and CrunchyRoll&copy; !</p>
             <input type="submit" name="" value="Or Login Here!"/><br/>
