@@ -27,3 +27,7 @@ Route::get('/login', function () {
     return view('login');
 });
 
+Route::get('/upload', function () {
+    return view('upload');
+});
+
