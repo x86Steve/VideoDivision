@@ -12,7 +12,7 @@ echo('
 </div>
 ');
 
-/*
+
 $movies = DB::table('Video')->orderBy('Title','asc')->get();
 
 echo("Our Current Titles: <p>");
@@ -21,6 +21,6 @@ foreach ($movies as $title)
 {
 	echo ("<p>" . $title->Title );
 }
-*/
+
 
 
