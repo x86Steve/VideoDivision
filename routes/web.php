@@ -27,7 +27,6 @@ Route::get('/login', function () {
     return view('login');
 });
 
-Route::get('/upload', function () {
-    return view('upload');
-});
+Route::get('/upload', 'Upload\UploadController@index');
 
+Route::post('/upload', 'Upload\UploadController@uploadFile');

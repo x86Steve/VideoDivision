@@ -9,14 +9,21 @@
         @extends('layouts.app')
 
         @section('content')
-        <h1>This is the upload page.</h1>
         
-        <input type="file" name="Upload" width="200" />
+        <h1>Upload video</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="text" name="title" id="title" />
+            <input type="file" name="video" id="video" />
+            <input type="submit" name="submit" value="Upload" />
+        </form>
+        
         
         @endsection
 
-        <?php
-        // put your code here
-        ?>
+            <?php
+            // put your code here
+            ?>
     </body>
 </html>
