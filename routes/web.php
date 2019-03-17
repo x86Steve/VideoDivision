@@ -24,8 +24,12 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
+Route::get('/loggedin', function () {
+    return view('auth.loggedin');
+});
+
 Route::get('/search', 'Search\SearchController@basicSearch');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/loggedin', 'HomeController@index')->name('loggedin');
