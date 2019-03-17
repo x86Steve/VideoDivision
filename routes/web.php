@@ -28,6 +28,10 @@ Route::get('/loggedin', function () {
     return view('auth.loggedin');
 });
 
+Route::get('/registered', function () {
+    return view('auth.registered');
+});
+
 Route::get('/search', 'Search\SearchController@basicSearch');
 
 Auth::routes();

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
     <script>
         function goHome()
@@ -20,7 +21,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    Thanks for logging in, {{ Auth::user()->name }} !
+                    {{ Auth::guest() ? "Please log in... <p> You will be directed to Login in a moment..." : "Thanks for logging in, " . Auth::user()->name }}
                     <p>
                         You will be redirected to HOME in a moment...
                     </p>
