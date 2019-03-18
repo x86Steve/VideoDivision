@@ -14,6 +14,9 @@
             <li class="nav-item {{ Request::segment(1) === 'about' ? 'active' : null }}">
                 <a class="nav-link" href="/about">About</a>
             </li>
+            <li class="nav-item {{ Request::segment(1) === 'videoexample' ? 'active' : null }}">
+                <a class="nav-link" href="/videoexample">Video Example</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrator-Login</a>
             </li>

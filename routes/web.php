@@ -44,4 +44,30 @@ Route::post('/upload', 'Upload\UploadController@uploadFile');
 
 Auth::routes();
 
+/* Syndey's adds */
+
+Route::get('/videoexample', function () {
+    $video = "http://videodivision.net";
+    $movie = DB::table('Movie')->first()->File_Path;
+    $video .= $movie;
+    $title = DB::table('Video')->first()->Title;
+
+    return view('videoexample')->with(compact('video','title'));
+});
+
+Route::get('/video/{filename}', function ($filename) {
+
+    $videosDir = base_path('resources/assets/videos');
+
+    if (file_exists($filePath = $videosDir."/".$filename)) {
+        $stream = new \App\Http\VideoStream($filePath);
+
+        return response()->stream(function() use ($stream) {
+            $stream->start();
+        });
+    }
+
+    return response("File doesn't exists", 404);
+});
+
 //Route::get('/loggedin', 'HomeController@index')->name('loggedin');
