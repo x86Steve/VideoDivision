@@ -33,6 +33,8 @@ Route::get('/registered', function () {
 });
 
 Route::get('/search', 'Search\SearchController@basicSearch');
+Route::get('/contact', "ContactController@view");
+Route::post('/contact', "ContactController@mail");
 
 Auth::routes();
 
