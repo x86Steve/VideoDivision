@@ -57,10 +57,11 @@ class UploadController extends Controller {
 
             // enter video info in DB
             if ($mediatype != "episode") {
-                DB::table('video')->insertGetId(
+                $id = DB::table('video')->insertGetId(
                         ['Title' => $title, 'Year' => $year, 'Summary' => $summary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]);
                 if ($mediatype == "show") {
-                    $newShowId = DB::table('video')->select('Video_ID')->where('Title', $title)->first();
+                    //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
+                    $newShowId = $id; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
                 }
             }
 
