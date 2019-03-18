@@ -1,21 +1,28 @@
-
-@extends ('layouts.app')
+@extends('layouts.app')
 
 @section('content')
     <h1>Home</h1>
     <p> Invitus homines co externo se eo conatum. Forte multa at supra ex. Experimur admiserim gi de avocandam nuperrime. Habemus ac ceteris meipsum re. His liberius superest reperire eos cavendum. Probari to ii istarum possunt is. Ipsius melius nul audire creari contra cupere eae qui dat. </p>
 @endsection
 
-@section('sidebar')
-    @parent
-    <p> This is appended to sidebar</p>
-@endsection
+<!--
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Dashboard</div>
 
-<?php
-/**
- * Created by PhpStorm.
- * User: MuscleNerd
- * Date: 3/3/2019
- * Time: 4:53 PM
- */
-?>
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    You are logged in!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+!-- Feature to use later >

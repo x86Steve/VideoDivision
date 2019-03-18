@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('home');
 });
@@ -23,7 +24,20 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/login', function () {
-    return view('login');
+Route::get('/loggedin', function () {
+    return view('auth.loggedin');
 });
 
+Route::get('/registered', function () {
+    return view('auth.registered');
+});
+
+Route::get('/contact', "ContactController@view");
+
+Route::post('/contact', "ContactController@mail");
+
+Route::get('/search', 'Search\SearchController@basicSearch');
+
+Auth::routes();
+
+//Route::get('/loggedin', 'HomeController@index')->name('loggedin');

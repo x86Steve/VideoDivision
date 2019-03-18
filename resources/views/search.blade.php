@@ -1,10 +1,11 @@
-<h1>This is Login</h1>
-
-@extends ('layouts.app')
+@extends('layouts.app')
 
 @section('content')
-    <h1>Login</h1>
+
+<?php echo $results ?>
+
 @endsection
+
 
 <?php
 /**
