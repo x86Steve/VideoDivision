@@ -32,6 +32,9 @@
                             @yield('content')
                         </main>
                     </div>
+                    <div class="col-mid-4 col-lg-4">
+                        @include('inc.sidebar')
+                    </div>
                 </div>
             </div>
         </div>

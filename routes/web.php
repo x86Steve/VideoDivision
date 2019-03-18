@@ -32,10 +32,12 @@ Route::get('/registered', function () {
     return view('auth.registered');
 });
 
-Route::get('/search', 'Search\SearchController@basicSearch');
 Route::get('/contact', "ContactController@view");
+
 Route::post('/contact', "ContactController@mail");
 
+Route::get('/search', 'Search\SearchController@basicSearch');
+                  
 Route::get('/upload', 'Upload\UploadController@index');
 
 Route::post('/upload', 'Upload\UploadController@uploadFile');
