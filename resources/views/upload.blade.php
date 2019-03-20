@@ -13,10 +13,7 @@
         <script>
             function updateForm()
             {
-                //var type = document.getElement("mediatype").value;
                 var type = document.querySelector('input[name="mediatype"]:checked').value;
-                //window.alert("type: " + type);
-                //window.alert();
                 //var show = type === "show";
                 //var episode = type === "episode";
 
@@ -69,36 +66,84 @@
                 document.getElementById("nonShowFields").hidden = (type === "show") ? true : false;
                 document.getElementById("nonEpisodeFields").hidden = (type === "episode") ? true : false;
             }
-            //function toggle_
         </script>
 
         <h1>Upload video</h1>
 
+        <br>
+
         <form id="form" method="POST" enctype="multipart/form-data">
             @csrf
-            <input type="radio" name="mediatype" id="moviechoice" onclick="updateForm()" checked="true" value="movie" required> Movie
-            <input type="radio" name="mediatype" id="episodechoice" onclick="updateForm()" value="episode" > Episode 
-            <input type="radio" name="mediatype" id="showchoice" onclick="updateForm()" value="show" > Show <br>
-            <input type="text" name="title" id="title" placeholder="Title" required> <br>
-            <input type="text" name="year" id="year" minlength="4" maxlength="4" placeholder="Year" required> <br>
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="mediatype" id="moviechoice" onclick="updateForm()" checked="true" value="movie" required>
+                    <label class="form-check-label" for="moviechoice">Movie</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="mediatype" id="showchoice" onclick="updateForm()" value="show" >
+                    <label class="form-check-label" for="showchoice">Show</label>
+                </div>
+            </div>
+
+<!--<input type="radio" name="mediatype" id="episodechoice" onclick="updateForm()" value="episode" > Episode--> 
+
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" name="title" id="title" placeholder="Video Title" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="text" class="form-control" name="year" id="year" minlength="4" maxlength="4" placeholder="XXXX" required>
+            </div>
+
             <div id="episodeFields" hidden>
-                <input type="number" name="showId" id="showId" placeholder="Show ID" required disabled="true" > <br>
-                <input type="number" name="seasonNumber" id="seasonNumber" placeholder="Season number" required disabled="true"> <br>
-                <input type="number" name="episodeNumber" id="episodeNumber" placeholder="Episode number" required disabled="true"> <br>
+                <!--Show ID shouldn't be required-->
+                <!--<input type="number" class="form-control" name="showId" id="showId" placeholder="Show ID" required disabled="true" > -->
+                <div class="form-group">
+                    <label for="seasonNumber">Season Number</label>
+                    <input type="number" class="form-control" name="seasonNumber" id="seasonNumber" placeholder="#" required disabled="true">
+                </div>
+                <div class="form-group">
+                    <label for="episodeNumber">Episode Number</label>
+                    <input type="number" class="form-control" name="episodeNumber" id="episodeNumber" placeholder="#" required disabled="true">
+                </div>
             </div>
-            <input type="text" name="summary" id="summary" placeholder="Summary" required> <br/>
-            <div id="nonEpisodeFields">
-                <input type="text" name="subscription" id="subscription" placeholder="Subscription" required> <br>
+
+            <div class="form-group">
+                <label for="summary">Summary</label>
+                <input type="text" class="form-control" name="summary" id="summary" placeholder="Summary text..." required>
             </div>
-            <div id="nonShowFields">
-                <br> <label>Runtime: 
-                    <input type="number" name="hours" id="hours" min="0" max="10" placeholder="h" required> :
-                    <input type="number" name="minutes" id="minutes" min="0" max="59" placeholder="m" required> :
-                    <input type="number" name="seconds" id="seconds" min="0" max="59" placeholder="s" required>
-                </label> <br> <br>
-                <input type="file" name="video" id="video" required>
+
+            <!--Maybe make this read only if adding episode to existing show?-->
+            <!--<div id="movieFields">-->
+            <!--</div>-->
+            <div class="form-group">
+                <label for="subscription">Subscription</label>
+                <input type="text" class="form-control" name="subscription" id="subscription" placeholder="Subscription" required>
             </div>
-            <br> <input type="submit" name="submit" >
+
+            <!--All submissions contain a movie or episode-->
+            <!--<div id="nonShowFields">-->
+            <!--</div>-->
+
+            <div class="form-group">
+                <label for="hours">Runtime:</label>
+                <div class="form-row">
+                    <div class="col">
+                        <input type="number" class="form-control" name="hours" id="hours" min="0" max="10" placeholder="h" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" class="form-control" name="minutes" id="minutes" min="0" max="59" placeholder="mm" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" class="form-control" name="seconds" id="seconds" min="0" max="59" placeholder="ss" required>
+                    </div>
+                </div>
+            </div>
+
+            <input type="file" name="video" id="video" required>
+            <input type="submit" name="submit" >
+
         </form>
 
 
