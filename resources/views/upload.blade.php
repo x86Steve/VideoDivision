@@ -13,7 +13,9 @@
         <script>
             function updateForm()
             {
+                //window.alert("called method");
                 var type = document.querySelector('input[name="mediatype"]:checked').value;
+                //window.alert(type);
                 //var show = type === "show";
                 //var episode = type === "episode";
 
@@ -25,20 +27,22 @@
                 var episodeElements = document.getElementById("episodeFields").querySelectorAll("input");
                 for (i = 0; i < episodeElements.length; i++)
                 {
-                    episodeElements[i].disabled = (type === "episode") ? false : true;
+                //window.alert(episodeElements[i]);
+                    episodeElements[i].disabled = (type === "show") ? false : true;
                 }
+                //window.alert("got here");
 
-                var nonShowElements = document.getElementById("nonShowFields").querySelectorAll("input");
-                for (i = 0; i < nonShowElements.length; i++)
-                {
-                    nonShowElements[i].disabled = (type === "show") ? true : false;
-                }
-
-                var nonEpisodeFields = document.getElementById("nonEpisodeFields").querySelectorAll("input");
-                for (i = 0; i < nonEpisodeFields.length; i++)
-                {
-                    nonEpisodeFields[i].disabled = (type === "episode") ? true : false;
-                }
+//                var nonShowElements = document.getElementById("nonShowFields").querySelectorAll("input");
+//                for (i = 0; i < nonShowElements.length; i++)
+//                {
+//                    nonShowElements[i].disabled = (type === "show") ? true : false;
+//                }
+//
+//                var nonEpisodeFields = document.getElementById("nonEpisodeFields").querySelectorAll("input");
+//                for (i = 0; i < nonEpisodeFields.length; i++)
+//                {
+//                    nonEpisodeFields[i].disabled = (type === "episode") ? true : false;
+//                }
 
 //                if (type === "episode")
 //                {
@@ -62,9 +66,9 @@
                 //document.getElementById("episodeFields").setAttribute("disabled", ) = (type === "episode") ? " : true;
                 //document.getElementById("nonShowFields").disabled = (type === "show") ? true : false;
 
-                document.getElementById("episodeFields").hidden = (type === "episode") ? false : true;
-                document.getElementById("nonShowFields").hidden = (type === "show") ? true : false;
-                document.getElementById("nonEpisodeFields").hidden = (type === "episode") ? true : false;
+                document.getElementById("episodeFields").hidden = (type === "show") ? false : true;
+//                document.getElementById("nonShowFields").hidden = (type === "show") ? true : false;
+//                document.getElementById("nonEpisodeFields").hidden = (type === "episode") ? true : false;
             }
         </script>
 
@@ -140,9 +144,10 @@
                     </div>
                 </div>
             </div>
-
-            <input type="file" name="video" id="video" required>
-            <input type="submit" name="submit" >
+            <div class="form-group">
+                <input type="file" class="form-control-file" name="video" id="video" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
 
         </form>
 
