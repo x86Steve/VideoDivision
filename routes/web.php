@@ -30,4 +30,14 @@ Route::get('/login', function () {
 
 Route::get('/search', 'Search\SearchController@basicSearch');
 
+Route::get('/live_search/grid', 'Search\LiveSearch@getGridView');
+Route::get('/live_search/table', 'Search\LiveSearch@getTableView');
+
+Route::get('/live_search/action', 'Search\LiveSearch@grid')->name('live_search.grid');
+Route::get('/live_search/action2', 'Search\LiveSearch@table')->name('live_search.table');
+
+
+Route::get('/video_details', 'ViewVideo@getView')->name('video_details');
+
+
 
