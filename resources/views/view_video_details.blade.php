@@ -34,8 +34,8 @@
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-    //BUTTON TO ROUTE TO VIDEO PLAYER ######################################
-    //EDIT THIS TO WHATEVER YOU WANT #######################################
+    <!---//BUTTON TO ROUTE TO VIDEO PLAYER ######################################
+    //EDIT THIS TO WHATEVER YOU WANT ####################################### --->
     <a href="{{ route('video_details', $isMovie) }}">
         <button type="submit" class="btn btn-dark">Watch Now!</button>
     </a>
