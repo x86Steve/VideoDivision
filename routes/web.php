@@ -64,7 +64,7 @@ Route::get('/videoexample', function () {
     $video .= $movie;
     $title = DB::table('Video')->first()->Title;
 
-    return view('videoexample')->with(compact('video','title'));
+    return view('videoExample')->with(compact('video','title'));
 });
 
 Route::get('/video/{filename}', function ($filename) {

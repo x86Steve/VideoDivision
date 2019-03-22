@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>VideoDivision</title>
-    <link rel = "stylesheet" href = "/css/app.css">
-    <script src="/js/app.js"></script>
+    <link rel = "stylesheet" href = "/public/css/app.css">
+    <script src="/public/js/app.js"></script>
 </head>
 <body>
 @include('inc.navbar')

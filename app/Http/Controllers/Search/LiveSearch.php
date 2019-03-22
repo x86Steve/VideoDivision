@@ -48,7 +48,7 @@ class LiveSearch extends SearchController
                     <td>".$row->Year."</td>
                     <td>".$row->Subscription."</td>
                     <td>".$row->Current_Rating."</td>
-                    <td><a href=\"/video_details?video=".$video_id."\">
+                    <td><a href=\"/public/video_details?video=".$video_id."\">
         <button type=\"submit\" class=\"btn btn-dark\">Details</button>
     </a></td>                    
                     </tr>";
@@ -107,7 +107,7 @@ class LiveSearch extends SearchController
                     }
                     $video_id = $row -> Video_ID;
 
-                    $output .= "<a href=\"/video_details?video=".$video_id."\">
+                    $output .= "<a href=\"/public/video_details?video=".$video_id."\">
                     <img src=\"http://videodivision.net/assets/images/thumbnails/".$video_id.".jpg\" alt=\"Check Out video details!\" width=\"195\" height=\"280\" border=\"0\">
                     </a> <br><br><br>";
 
