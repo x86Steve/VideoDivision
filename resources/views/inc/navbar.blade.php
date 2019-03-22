@@ -9,10 +9,20 @@
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item {{ Request::segment(1) === 'contact' ? 'active' : null }}">
-                <a class="nav-link" href="/contact">Contact</a>
+                <a class="nav-link" href="/public/contact">Contact</a>
             </li>
             <li class="nav-item {{ Request::segment(1) === 'about' ? 'active' : null }}">
-                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="/public/about">About</a>
+            </li>
+            <li class="nav-item {{ Request::segment(1) === 'videoexample' ? 'active' : null }}">
+                <a class="nav-link" href="/public/videoexample">Video Example</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Videos</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="/public/live_search/grid">Grid View</a>
+                    <a class="dropdown-item" href="/public/live_search/table">Table View</a>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrator-Login</a>
@@ -21,7 +31,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hey, {{ Auth::user()->name }}!</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="#">Edit Profile</a>
+                    <a class="dropdown-item" href="/public/profile">Edit Profile</a>
                     <a class="dropdown-item" href="#">Edit Subscription</a>
                     <a class="dropdown-item" href="#">Watch your shows!</a>
                         <a class="dropdown-item" href="{{ route('logout') }}"
@@ -37,17 +47,20 @@
             @endif
             @guest
                 <li class="nav-item {{ Request::segment(1) === 'register' ? 'active' : null }}">
-                    <a class="nav-link" href="/register">Register</a>
+                    <a class="nav-link" href="/public/register">Register</a>
                 </li>
                 <li class="nav-item {{ Request::segment(1) === 'login' ? 'active' : null }}">
-                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/public/login">Login</a>
                 </li>
             @endguest
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="{{ action('Search\SearchController@basicSearch') }}" method="GET" role="search">
+        <!---
+            DILAPIDATED BUTTON KEEP UNTIL FURTHER NOTICE######################################
+            <form class="form-inline my-2 my-lg-0" action="\{\{ action('Search\SearchController@basicSearch') }}" method="GET" role="search">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="q">
             <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
         </form>
+        --->
     </div>
 </nav>
 

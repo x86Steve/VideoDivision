@@ -95,6 +95,102 @@ class SearchController extends Controller
         return $videosByTitle;
     }
 
+    public function getVideoByID($q)
+    {
+        $videosByID = DB::table('Video')
+            ->where('Video.Video_ID', '=' , "$q")
+            ->select('Video.*')
+            ->get();
+
+        return $videosByID;
+    }
+
+    public function getMovieByID($q)
+    {
+        $moviesByTitle = DB::table('Movie')
+            ->where('Movie.Movie_ID', '=' , "$q")
+            ->select('Movie.*')
+            ->first();
+
+        return $moviesByTitle;
+    }
+
+    public function getCastOfMovie($q)
+    {
+        $cast = DB::table('Actor')
+            ->join('Cast', 'Cast.Actor_ID', 'Actor.Actor_ID')
+            ->join('Movie','Movie.Movie_ID','Cast.Movie_ID')
+            ->where('Movie.Movie_ID', '=' , "$q")
+            ->select('Actor.*')
+            -> get()
+            ->unique('Actor_ID');
+
+        return $cast;
+    }
+
+    public function getDirectorsOfMovie($q)
+    {
+        $directors = DB::table('Director')
+            ->join('Directors', 'Directors.Director_ID', 'Director.Director_ID')
+            ->join('Movie','Movie.Movie_ID','Directors.Movie_ID')
+            ->where('Movie.Movie_ID', '=' , "$q")
+            ->select('Director.*')
+            -> get()
+            ->unique('Director_ID');
+
+        return $directors;
+
+    }
+
+    public function getCastOfShow($q)
+    {
+        $cast = DB::table('Actor')
+        ->join('Cast', 'Cast.Actor_ID', 'Actor.Actor_ID')
+        ->join('Episode','Episode.Episode_ID','Cast.Episode_ID')
+        ->where('Episode.Show_ID', '=' , "$q")
+        ->select('Actor.*')
+        -> get()
+        ->unique('Actor_ID');
+
+        return $cast;
+    }
+
+    public function getDirectorsOfShow($q)
+    {
+        $directors = DB::table('Director')
+            ->join('Directors', 'Directors.Director_ID', 'Director.Director_ID')
+            ->join('Episode','Episode.Episode_ID','Directors.Episode_ID')
+            ->where('Episode.Show_ID', '=' , "$q")
+            ->select('Director.*')
+            -> get()
+            ->unique('Director_ID');
+
+        return $directors;
+    }
+
+    public function getGenres($q)
+    {
+        $genres = DB::table('Genre')
+            ->join('Genres', 'Genres.Genre_ID', 'Genre.Genre_ID')
+            ->where('Genres.Video_ID', '=', "$q")
+            ->select("Genre.*")
+            ->get();
+
+        return $genres;
+
+    }
+    public function getLastEpisodeByVideoID($q)
+    {
+        $lastEpisode = DB::table('Episode')
+            ->where('Episode.Show_ID', '=' , "$q")
+            ->select('Episode.*')
+            ->orderBy('Season_Number', 'desc')
+            ->orderBy('Episode_Number','desc')
+            ->first();
+        return $lastEpisode;
+
+    }
+
     private function getVideosByGenre($q)
     {
         $moviesByGenre = DB::table('Video')
@@ -149,11 +245,21 @@ class SearchController extends Controller
         }
         return view('search', ['results' => $this->searchAll($q), 'q' =>$q]);
 
-
-
-
     }
 
+    public function queryAll($q)
+    {
+        $ByTitle = $this->getVideosByTitle($q);
+        $ByActor = $this->getVideosByActors($q);
+        $ByDirector = $this->getVideosByDirector($q);
+        $ByGenre = $this->getVideosByGenre($q);
+        $BySub = $this->getVideosBySubscription($q);
+
+        $results = $ByTitle->merge($BySub)->merge($ByGenre)->merge($ByActor)->merge($ByDirector) -> unique('Video_ID')->sortBy('Title');
+
+        return $results;
+
+    }
     private function searchAll($q)
     {
         $ByTitle = $this->getVideosByTitle($q);
