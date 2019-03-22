@@ -49,6 +49,8 @@ class UploadController extends Controller {
             $summary = Request::get('summary');
             $sub = Request::get('subscription');
             $mediatype = Request::get('mediatype');
+            //$getID3 = new getID3;
+            //$file2 = $getID3->analyze($file);
             $runtime = Request::get('hours') . ':' . Request::get('minutes') . ':' . Request::get('seconds');
             $showId = Request::get('showId');
             $seasonNumber = Request::get('seasonNumber');

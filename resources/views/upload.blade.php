@@ -27,7 +27,7 @@
                 var episodeElements = document.getElementById("episodeFields").querySelectorAll("input");
                 for (i = 0; i < episodeElements.length; i++)
                 {
-                //window.alert(episodeElements[i]);
+                    //window.alert(episodeElements[i]);
                     episodeElements[i].disabled = (type === "show") ? false : true;
                 }
                 //window.alert("got here");
@@ -69,6 +69,12 @@
                 document.getElementById("episodeFields").hidden = (type === "show") ? false : true;
 //                document.getElementById("nonShowFields").hidden = (type === "show") ? true : false;
 //                document.getElementById("nonEpisodeFields").hidden = (type === "episode") ? true : false;
+            }
+            function initPlayer()
+            {
+                var player = document.getElementById("player");
+                var source = document.getElementById("source");
+                source.src = window.URL.createObjectURL(input.file);
             }
         </script>
 
@@ -145,9 +151,14 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="file" class="form-control-file" name="video" id="video" required>
+                <input type="file" class="form-control-file" name="video" id="video" onchange="initPlayer" required>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
+
+            <video id="player" class="video-js vjs-default-skin vjs-big-play-centered"
+                   controls >
+                <source type="video/mp4"/>
+            </video>
 
         </form>
 
