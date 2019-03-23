@@ -32,6 +32,7 @@
 
             function initPlayer()
             {
+                //alert("initPlayer()");
                 var options = {};
                 var source = document.getElementById("source");
                 var video = document.getElementById("video");
@@ -39,20 +40,24 @@
                 {
                 var url = window.URL.createObjectURL(video.files[0]);
                 source.setAttribute('src', url);
-                var player = videojs('player');
+                //document.getElementById("player").addEventListener("onloadedmetadata", loadDuration());
                 }
+                else
+                {
+                    document.getElementById("duration").setAttribute("value", "");
+                    source.setAttribute('src', "");
+                }
+                var player = videojs('player');
             }
 
             function loadDuration()
             {
+                //alert("loadDuration()");
                 var player = videojs('player');
                 var date = new Date(null);
                 date.setSeconds(player.duration());
                 var fullDuration = date.toISOString().substr(11, 8);
-                document.getElementById("hours").setAttribute("value", fullDuration.substr(0, 2));
-                document.getElementById("minutes").setAttribute("value", fullDuration.substr(3, 2));
-                document.getElementById("seconds").setAttribute("value", fullDuration.substr(6, 2));
-                //window.alert("Duration: " + duration);
+                document.getElementById("duration").setAttribute("value", fullDuration);
             }
         </script>
 
@@ -115,18 +120,8 @@
             <!--</div>-->
 
             <div class="form-group">
-                <label for="hours">Runtime:</label>
-                <div class="form-row">
-                    <div class="col">
-                        <input type="number" class="form-control" name="hours" id="hours" min="0" max="10" placeholder="h" required disabled>
-                    </div>
-                    <div class="col">
-                        <input type="number" class="form-control" name="minutes" id="minutes" min="0" max="59" placeholder="mm" required disabled>
-                    </div>
-                    <div class="col">
-                        <input type="number" class="form-control" name="seconds" id="seconds" min="0" max="59" placeholder="ss" required disabled>
-                    </div>
-                </div>
+                <label for="duration">Runtime:</label>
+                <input type="text" class="form-control" id="duration" name="duration" readonly>
             </div>
             <div class="form-group">
                 <input type="file" class="form-control-file" name="video" id="video" onchange="initPlayer()" required>
