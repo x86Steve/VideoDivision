@@ -70,7 +70,7 @@ class UploadController extends Controller {
             // enter movie info in DB
             if ($mediatype == "movie") {
                 DB::table('Movie')->insertGetId(
-                        ['File_Path' => $path, 'Length' => $runtime]);
+                        ['Movie_ID' => $id, 'File_Path' => $path, 'Length' => $runtime]);
             }
             // enter episode info in DB
             else if ($mediatype == "episode") {

@@ -17,7 +17,6 @@
         <script>
             function updateForm()
             {
-                //window.alert("updateForm()");
                 var type = document.querySelector('input[name="mediatype"]:checked').value;
 
                 var i;
@@ -32,31 +31,31 @@
 
             function initPlayer()
             {
-                //alert("initPlayer()");
-                var options = {};
-                var source = document.getElementById("source");
+                //var options = {};
                 var video = document.getElementById("video");
+                var url = "";
                 if (video.files.length > 0)
                 {
-                var url = window.URL.createObjectURL(video.files[0]);
-                source.setAttribute('src', url);
-                //document.getElementById("player").addEventListener("onloadedmetadata", loadDuration());
-                }
-                else
+                    url = URL.createObjectURL(video.files[0]);
+                    var player = videojs('player');
+                    player.ready(function ()
+                    {
+                        var fileType = video.files[0].type;
+                        this.src({type: fileType, src: url});
+                    });
+                } else
                 {
                     document.getElementById("duration").setAttribute("value", "");
-                    source.setAttribute('src', "");
+                    //source.setAttribute('src', "");
                 }
-                var player = videojs('player');
             }
 
             function loadDuration()
             {
-                //alert("loadDuration()");
                 var player = videojs('player');
                 var date = new Date(null);
                 date.setSeconds(player.duration());
-                var fullDuration = date.toISOString().substr(11, 8);
+                var fullDuration = videojs.formatTime(player.duration());
                 document.getElementById("duration").setAttribute("value", fullDuration);
             }
         </script>
@@ -128,8 +127,13 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
 
-            <video id="player" class="video-js" onloadedmetadata="loadDuration()" controls >
-                <source id="source" type="video/mp4"/>
+            <video 
+                id="player" 
+                class="video-js vjs-default-skin" 
+                onloadedmetadata="loadDuration()" 
+                controls 
+                >
+                <!--<source id="source" src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"/>-->
             </video>
 
         </form>
