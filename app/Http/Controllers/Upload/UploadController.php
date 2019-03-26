@@ -10,17 +10,17 @@ use DB;
 
 class UploadController extends Controller
 {
-    
-    function loadData()
+
+    function loadPage($status)
     {
         $actors = DB::table('Actor')->orderBy('First_Name', 'asc')->get();
-        //echo $allActors;
+        return view('upload', ['status' => $status, 'actors' => $actors]);
     }
 
     function index()
     {
-        loadData();
-        return view('upload', ['status' => 0, 'newShowId' => -1, 'actors' => $actors]);
+        //loadData();
+        return self::loadPage(0);
     }
 
     function uploadFile()
@@ -82,7 +82,7 @@ class UploadController extends Controller
         }
 
 
-        return view('upload', ['status' => 1, 'newShowId' => $newShowId]);
+        return self::loadPage(1);
 //        } else {
 //            return view('upload', ['status' => 0, 'newShowId' => -1]);
 //        }

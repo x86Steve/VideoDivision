@@ -68,6 +68,17 @@
                 <input type="text" class="form-control" name="subscription" id="subscription" placeholder="Subscription" required>
             </div>
 
+            <div id="actors">
+                <div class="form-group">
+                    <label for="actorSelect">Actor name</label>
+                    <select class="form-control" id="actorSelect">
+                        @foreach ($actors as $actor)
+                            <option label="{{$actor->First_Name}} {{$actor->Last_Name}}" value="{{$actor->Actor_ID}}" >
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             <!--All submissions contain a movie or episode-->
             <!--<div id="nonShowFields">-->
             <!--</div>-->
@@ -101,8 +112,8 @@
 
         @if ($status === 1 && $newShowId == "-1")
         <h2>Upload success</h2>
-        @elseif ($newShowId != "-1")
-        <h2>Created new show with ID {{serialize($newShowId)}}</h2>
+        {{-- @elseif ($newShowId != "-1")
+        <h2>Created new show with ID {{serialize($newShowId)}}</h2> --}}
         @elseif ($status === 2)
         <h2>Upload failed</h2>
         @endif       
