@@ -24,6 +24,9 @@
                     <a class="dropdown-item" href="/public/live_search/table">Table View</a>
                 </div>
             </li>
+            <li class="nav-item {{ Request::segment(1) === 'my_videos' ? 'active' : null }}">
+                <a class="nav-link" href="/public/my_videos">My Videos</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrator-Login</a>
             </li>

@@ -1,3 +1,4 @@
+{{--DOES NOT INCLUDE LAYOUTS DIRECTLY TO ALLOW GRID TO BE LARGER--}}
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,7 @@
     @if(Request::is('/'))
         @include('inc.showcase')
     @endif
-
+        {{--SEARCH BAR AND LABELS--}}
         <h1 align="center"><br>Search <br></h1><br />
 
             <br>
@@ -46,7 +47,7 @@
                 </div>
             </div>
 
-
+        {{--SCIRPT THAT RETURNS LIVE SEARCH HTML AND PRINTS--}}
             <script>
                 $(document).ready(function(){
 

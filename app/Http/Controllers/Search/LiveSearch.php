@@ -7,16 +7,19 @@ use DB;
 
 class LiveSearch extends SearchController
 {
+    //Used to route to view live_search
     function getGridView()
     {
         return view('live_search')->with('isGridView', 1);
     }
 
+    //used to route to view live_search
     function getTableView()
     {
         return view('live_search')->with('isGridView', 0);
     }
 
+    //Formats live search in table format
     function table(Request $request)
     {
         if($request -> ajax())
@@ -69,6 +72,7 @@ class LiveSearch extends SearchController
         }
     }
 
+    //formats live search in grid format
     function grid(Request $request)
     {
         if($request -> ajax())
@@ -90,32 +94,35 @@ class LiveSearch extends SearchController
 
             if($total_row > 0 )
             {
-                $counter = 1;
-                $mod = ceil(($total_row+1)/3);
-                $output .= " 
-        <div class=\"container\">
-            <div class=\"row\">
-                <div class=\"col-sm\">";
+                $counter = 0;
+                $numOfCols = 3;
+                $bootstrapColWidth = floor(12 / $numOfCols * 1.22);
+
+                $output .= " <div class=\"container-fluid\">
+            <div class=\"row\">";
+
 
                 foreach ($data as $row)
                 {
-                    if (($counter % $mod) === 0)
-                    {
-                        $output .= "</div>
-                <div class=\"col-sm\"> ";
-
-                    }
                     $video_id = $row -> Video_ID;
 
+                    $output .= "<div class=\"col-md-".$bootstrapColWidth."\">";
                     $output .= "<a href=\"/public/video_details?video=".$video_id."\">
                     <img src=\"http://videodivision.net/assets/images/thumbnails/".$video_id.".jpg\" alt=\"Check Out video details!\" width=\"195\" height=\"280\" border=\"0\">
-                    </a> <br><br><br>";
+                    </a> <h5>".substr($row->Title, 0, 22)."</h5>
+                    <br><br></div>";
 
                     $counter = $counter + 1;
+
+                    if (($counter % $numOfCols) === 0)
+                    {
+                        $output .= "</div><div class=\"row\">";
+
+                    }
                 }
                 $output .= "</div>
-            </div>
-        </div>";
+                            </div>
+                            </div>";
 
             }
             else
