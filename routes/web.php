@@ -17,9 +17,13 @@ Route::get('/', function () {
 });
 
 
-Route::get('/profile', function () {
+/*
+ * Route::get('/profile', function () {
     return view('profile.profile');
 });
+ */
+
+Route::get('/profile', "UserProfileController@index");
 
 Route::get('/about', function () {
     return view('about');

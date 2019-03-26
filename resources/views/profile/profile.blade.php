@@ -32,7 +32,7 @@
                         <h5 class="mb-3">User Profile</h5>
                         <div class="row">
                             <div class="col-md-6">
-                                <h6><b>About</b></h6>
+                                <h6><b>Welcome, {{$username}}</b></h6>
                                 <p>
                                     Web Designer, UI/UX Engineer
                                 </p>
@@ -52,9 +52,15 @@
                                 <a href="#" class="badge badge-dark badge-pill">Harry Potter 4</a>
                                 <a href="#" class="badge badge-dark">Naruto The Movie</a>
                                 <hr>
-                                <h6>Subscriber Status:</h6>
-                                <span class="badge badge-success"></i> Subscribed! &checkmark;</span>
-                                <span class="badge badge-danger"></i> Payment information needs updating! &cross;</span>
+                                <h6>Subscriber Status</h6>
+                                @if($subscriberstatus === 0)
+                                    <span class="badge badge-danger"></i>&cross; Please review payment information! &cross;</span>
+                                @elseif($subscriberstatus === 1)
+                                    <span class="badge badge-success"></i>Everything's lookin' good! Enjoy! &checkmark;</span>
+                                @else
+                                    <a href="/public/subscribe" class="badge badge-info">Please consider subscribing!</a>
+                                @endif
+
                             </div>
                             <div class="col-md-12">
                                 <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
