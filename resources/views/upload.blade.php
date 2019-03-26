@@ -14,52 +14,6 @@
 
         @section('content')
 
-        <script>
-            function updateForm()
-            {
-                var type = document.querySelector('input[name="mediatype"]:checked').value;
-
-                var i;
-                var episodeElements = document.getElementById("episodeFields").querySelectorAll("input");
-                for (i = 0; i < episodeElements.length; i++)
-                {
-                    episodeElements[i].disabled = (type === "show") ? false : true;
-                }
-
-                document.getElementById("episodeFields").hidden = (type === "show") ? false : true;
-            }
-
-            function initPlayer()
-            {
-                //var options = {};
-                var video = document.getElementById("video");
-                var url = "";
-                if (video.files.length > 0)
-                {
-                    url = URL.createObjectURL(video.files[0]);
-                    var player = videojs('player');
-                    player.ready(function ()
-                    {
-                        var fileType = video.files[0].type;
-                        this.src({type: fileType, src: url});
-                    });
-                } else
-                {
-                    document.getElementById("duration").setAttribute("value", "");
-                    //source.setAttribute('src', "");
-                }
-            }
-
-            function loadDuration()
-            {
-                var player = videojs('player');
-                var date = new Date(null);
-                date.setSeconds(player.duration());
-                var fullDuration = videojs.formatTime(player.duration());
-                document.getElementById("duration").setAttribute("value", fullDuration);
-            }
-        </script>
-
         <h1>Upload video</h1>
 
         <br>
@@ -119,22 +73,25 @@
             <!--</div>-->
 
             <div class="form-group">
-                <label for="duration">Runtime:</label>
-                <input type="text" class="form-control" id="duration" name="duration" readonly>
-            </div>
-            <div class="form-group">
                 <input type="file" class="form-control-file" name="video" id="video" onchange="initPlayer()" required>
+            </div>
+            <div id="videopreview" hidden>
+                <video 
+                    id="player" 
+                    class="video-js vjs-default-skin vjs-big-play-centered"
+                    width="730"
+                    onloadedmetadata="loadDuration()" 
+                    controls 
+                    >
+                    <!--<source id="source" src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"/>-->
+                </video>
+                <div class="form-group">
+                    <label for="duration">Runtime:</label>
+                    <input type="text" class="form-control" id="duration" name="duration" readonly>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
 
-            <video 
-                id="player" 
-                class="video-js vjs-default-skin" 
-                onloadedmetadata="loadDuration()" 
-                controls 
-                >
-                <!--<source id="source" src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"/>-->
-            </video>
 
         </form>
 
@@ -151,6 +108,61 @@
         @endif       
 
         @endsection
+
+        <script>
+
+                   // this is called when the user changes what type of video
+                   // is being uploaded
+                   function updateForm()
+                   {
+                       var type = document.querySelector('input[name="mediatype"]:checked').value;
+
+                       var i;
+                       var episodeElements = document.getElementById("episodeFields").querySelectorAll("input");
+                       for (i = 0; i < episodeElements.length; i++)
+                       {
+                           episodeElements[i].disabled = (type === "show") ? false : true;
+                       }
+
+                       document.getElementById("episodeFields").hidden = (type === "show") ? false : true;
+                   }
+
+                   // this is called when the user changes the
+                   // value of the file input (chooses a new file)
+                   function initPlayer()
+                   {
+                       var video = document.getElementById("video");
+                       if (video.files.length > 0)
+                       {
+                           document.getElementById("videopreview").hidden = false;
+                           var player = videojs('player');
+
+                           // when the player is ready, load the new
+                           // video information into the videojs object
+                           player.ready(function ()
+                           {
+                               var fileType = video.files[0].type;
+                               var url = URL.createObjectURL(video.files[0]);
+                               this.src({type: fileType, src: url});
+                           });
+                       } else
+                       {
+                           document.getElementById("videopreview").hidden = true;
+                       }
+                   }
+
+                   // this is called once the videojs player has finished
+                   // loading metadata for the video
+                   function loadDuration()
+                   {
+                       var player = videojs('player');
+//                var date = new Date(null);
+//                date.setSeconds(player.duration());
+                       var fullDuration = videojs.formatTime(player.duration());
+                       document.getElementById("duration").setAttribute("value", fullDuration);
+                   }
+
+        </script>
 
     </body>
 </html>
