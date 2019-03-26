@@ -20,13 +20,14 @@
 
         <form id="form" method="POST" enctype="multipart/form-data">
             @csrf
+            <h2>Basic information</h2>
             <div class="form-group">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="mediatype" id="moviechoice" onclick="updateForm()" checked="true" value="movie" required>
+                    <input class="form-check-input" type="radio" name="mediatype" id="moviechoice" onclick="changeMediaType()" checked="true" value="movie" required>
                     <label class="form-check-label" for="moviechoice">Movie</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="mediatype" id="showchoice" onclick="updateForm()" value="show" >
+                    <input class="form-check-input" type="radio" name="mediatype" id="showchoice" onclick="changeMediaType()" value="show" >
                     <label class="form-check-label" for="showchoice">Show</label>
                 </div>
             </div>
@@ -69,19 +70,35 @@
             </div>
 
             <div id="actors">
+                <h2>Actors</h2>
                 <div class="form-group">
-                    <label for="actorSelect">Actor name</label>
-                    <select class="form-control" id="actorSelect">
+                    <label for="actorSelect1">Choose existing actor</label>
+                    <select class="form-control" id="actorSelect1">
                         @foreach ($actors as $actor)
-                            <option label="{{$actor->First_Name}} {{$actor->Last_Name}}" value="{{$actor->Actor_ID}}" >
-                        @endforeach
+                        <option label="{{$actor->First_Name}} {{$actor->Last_Name}}" value="{{$actor->Actor_ID}}" >
+                            @endforeach
                     </select>
+                    <div class="form-check">
+                        <input class="form-check-input" id="addNew1" type="checkbox" onchange="toggleActorNameFields()" >
+                        <label class="form-check-label" for="addNew1">Add new actor to database</label>
+                    </div>
+                    <div class="body" hidden>
+                        <label for="actorInput1">Enter name</label>
+                        <input class="form-control" id="actorInput1">
+                    </div>
                 </div>
+
             </div>
 
+            <div class="form-group btn-group">
+                <button class="btn btn-primary" type="button" onclick="addActor()">+</button>
+                <button class="btn btn-danger" type="button" onclick="removeActor()">-</button>
+            </div>
             <!--All submissions contain a movie or episode-->
             <!--<div id="nonShowFields">-->
             <!--</div>-->
+
+            <h2>File</h2>            
 
             <div class="form-group">
                 <input type="file" class="form-control-file" name="video" id="video" onchange="initPlayer()" required>
@@ -114,66 +131,95 @@
         <h2>Upload success</h2>
         {{-- @elseif ($newShowId != "-1")
         <h2>Created new show with ID {{serialize($newShowId)}}</h2> --}}
-        @elseif ($status === 2)
-        <h2>Upload failed</h2>
-        @endif       
+    @elseif ($status === 2)
+    <h2>Upload failed</h2>
+    @endif       
 
         @endsection
 
         <script>
 
-                   // this is called when the user changes what type of video
-                   // is being uploaded
-                   function updateForm()
-                   {
-                       var type = document.querySelector('input[name="mediatype"]:checked').value;
+                    // this is called when the user changes what type of video
+                    // is being uploaded
+                    function changeMediaType()
+                    {
+                        var type = document.querySelector('input[name="mediatype"]:checked').value;
 
-                       var i;
-                       var episodeElements = document.getElementById("episodeFields").querySelectorAll("input");
-                       for (i = 0; i < episodeElements.length; i++)
-                       {
-                           episodeElements[i].disabled = (type === "show") ? false : true;
-                       }
+                        var i;
+                        var episodeElements = document.getElementById("episodeFields").querySelectorAll("input");
+                        for (i = 0; i < episodeElements.length; i++)
+                        {
+                            episodeElements[i].disabled = (type === "show") ? false : true;
+                        }
 
-                       document.getElementById("episodeFields").hidden = (type === "show") ? false : true;
-                   }
+                        document.getElementById("episodeFields").hidden = (type === "show") ? false : true;
+                    }
 
-                   // this is called when the user changes the
-                   // value of the file input (chooses a new file)
-                   function initPlayer()
-                   {
-                       var video = document.getElementById("video");
-                       if (video.files.length > 0)
-                       {
-                           document.getElementById("videopreview").hidden = false;
-                           var player = videojs('player');
+                    // this is called when the user checks or unchecks
+                    // an "add new actor" checkbox
+                    function toggleActorNameFields()
+                    {
+                        var actors = document.querySelectorAll('#actors > .form-group');
+                        var i;
+                        for (i = 0; i < actors.length; i++)
+                        {
+                            var checked = actors[i].querySelector('.form-check-input').checked;
+                            actors[i].querySelector('.body').hidden = !checked;
+                            actors[i].querySelector('#actorSelect').disabled = checked;
+                        }
+                    }
 
-                           // when the player is ready, load the new
-                           // video information into the videojs object
-                           player.ready(function ()
-                           {
-                               var fileType = video.files[0].type;
-                               var url = URL.createObjectURL(video.files[0]);
-                               this.src({type: fileType, src: url});
-                           });
-                       } else
-                       {
-                           document.getElementById("videopreview").hidden = true;
-                       }
-                   }
+                    function addActor()
+                    {
+                        var count = document.querySelectorAll('#actors > .form-group').length + 1;
+                        var firstActor = document.querySelector('#actors > .form-group');
+                        var newActor = firstActor.cloneNode(true);
+                        newActor.querySelector('label').for = "actorSelect" + count;
+                        //alert(newActor.querySelector('label'))
+                        newActor.querySelector('select').id = "actorSelect" + count;
+                        newActor.querySelector('.form-check-input').id = "addNew" + count;
+                        newActor.querySelector('.form-check-label').for = "addNew" + count;
+                        newActor.querySelector('.body > label').for = "actorInput" + count;
+                        newActor.querySelector('.body > input').id = "actorInput" + count;
+                        document.getElementById("actors").appendChild(newActor);
+                    }
 
-                   // this is called once the videojs player has finished
-                   // loading metadata for the video
-                   function loadDuration()
-                   {
-                       var player = videojs('player');
-//                var date = new Date(null);
-//                date.setSeconds(player.duration());
-                       var fullDuration = videojs.formatTime(player.duration());
-                       document.getElementById("duration").setAttribute("value", fullDuration);
-                   }
+                    // this is called when the user changes the
+                    // value of the file input (chooses a new file)
+                    function initPlayer()
+                    {
+                        var video = document.getElementById("video");
+                        if (video.files.length > 0)
+                        {
+                            document.getElementById("videopreview").hidden = false;
+                            var player = videojs('player');
 
-        </script>
+                            // when the player is ready, load the new
+                            // video information into the videojs object
+                            player.ready(function ()
+                            {
+                                var fileType = video.files[0].type;
+                                var url = URL.createObjectURL(video.files[0]);
+                                this.src({type: fileType, src: url});
+                            });
+                        } else
+                        {
+                            document.getElementById("videopreview").hidden = true;
+                        }
+                    }
 
-    </body>
-</html>
+                    // this is called once the videojs player has finished
+                    // loading metadata for the video
+                    function loadDuration()
+                    {
+                        var player = videojs('player');
+                        //                var date = new Date(null);
+                        //                date.setSeconds(player.duration());
+                        var fullDuration = videojs.formatTime(player.duration());
+                        document.getElementById("duration").setAttribute("value", fullDuration);
+                    }
+
+                    </script>
+
+                    </body>
+                    </html>
