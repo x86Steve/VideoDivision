@@ -34,7 +34,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hey, {{ Auth::user()->name }}!</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="#">Edit Profile</a>
+                    <a class="dropdown-item" href="/public/profile">Edit Profile</a>
                     <a class="dropdown-item" href="#">Edit Subscription</a>
                     <a class="dropdown-item" href="#">Watch your shows!</a>
                         <a class="dropdown-item" href="{{ route('logout') }}"
