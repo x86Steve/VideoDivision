@@ -51,8 +51,9 @@ Route::get('/live_search/action2', 'Search\LiveSearch@table')->name('live_search
 
 Route::get('/video_details', 'ViewVideo@getView')->name('video_details');
 
+Route::post('/video_details', 'ViewVideo@subscribe');
 
-
+Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
 Auth::routes();
 
