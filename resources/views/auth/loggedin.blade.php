@@ -4,7 +4,7 @@
     <script>
         function goHome()
         {
-            window.location.replace ("/");
+            window.location.replace ("/public");
         }
         setTimeout(goHome, 4000);
     </script>
