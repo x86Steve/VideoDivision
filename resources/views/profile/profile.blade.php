@@ -42,7 +42,7 @@
                                 </p>
                             </div>
                             <div class="col-md-6">
-                                <h6>Recently Watched</h6>
+                                <h6>Current Subscriptions</h6>
                                 <a href="#" class="badge badge-dark badge-pill">Men In Black</a>
                                 <a href="#" class="badge badge-dark badge-pill">Men In Black II</a>
                                 <a href="#" class="badge badge-dark badge-pill">Men In Black III</a>
@@ -54,7 +54,7 @@
                                 <hr>
                                 <h6>Subscriber Status</h6>
                                 @if($subscriberstatus === 0)
-                                    <span class="badge badge-danger"></i>&cross; Please review payment information! &cross;</span>
+                                    <a href="/public/subscribe" class="badge  badge-danger">&cross; Please review payment information! &cross;</a>
                                 @elseif($subscriberstatus === 1)
                                     <span class="badge badge-success"></i>Everything's lookin' good! Enjoy! &checkmark;</span>
                                 @else
