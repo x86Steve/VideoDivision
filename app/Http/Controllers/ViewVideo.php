@@ -1,18 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Request;
 
 class ViewVideo extends Search\SearchController
 {
-    function viewDetails($Video_ID)
+    //I cant remember if this function is ever called but here it is.
+    /**function viewDetails($Video_ID)
     {
         $details = $Video_ID;
         return view('view_video_details', ['details' =>$details]);
     }
+     * **/
 
+    //Used to see video details page
     function getView()
     {
         $video_id = Input::get ( 'video' );
@@ -22,6 +26,16 @@ class ViewVideo extends Search\SearchController
         $genres = $this -> getGenres($video_id);
 
         $isMovie = $results[0]->IsMovie;
+
+        if (\Auth::check()) {
+            $userID = \Auth::user()->id;
+        }
+        else
+        {
+            $userID = -1;
+        }
+
+        $isSubbed = $this -> isSubbed($video_id, $userID);
 
         if ($isMovie){
             $extra = $this -> getMovieByID($video_id);
@@ -34,12 +48,108 @@ class ViewVideo extends Search\SearchController
             $directors = $this -> getDirectorsOfShow($video_id);
         }
 
-        return view('view_video_details',  ['isMovie' => $isMovie,
+        return view('view_video_details',  [
+            'User_ID' => $userID,
+            'isSubbed' => $isSubbed,
+            'isMovie' => $isMovie,
             'file' => $results,
             'extra'=>$extra,
             'directors' => json_decode(json_encode($directors),true),
             'cast' => json_decode(json_encode($cast),true),
             'genres'=>json_decode(json_encode($genres),true)]);
+
+    }
+
+    //Used to add entries to the database showing the user has subscribed
+    function subscribe()
+    {
+
+        $User_ID = Request::get('User_ID');
+
+        #CHANGE TO BE DYNAMIC NUMBER INSTEAD OF 10
+        if($this->getSubs($User_ID)->count() < 10)
+        {
+            $Video_ID = Request::get('Video_ID');
+            $isMovie = Request::get('isMovie');
+
+            DB::table('active_subscriptions')->insertGetId(
+                ['User_ID' => $User_ID, 'Video_ID' => $Video_ID, 'isMovie' =>$isMovie]);
+
+            return $this->getView();
+        }
+        else
+        {
+            return $this->getView();
+        }
+
+    }
+
+    //Used to see the videos you are currently subbed to
+    function getMyVideosView()
+    {
+        $output = '';
+
+        if (\Auth::check()) {
+            $user_id = \Auth::user()->id;
+        }
+        else
+        {
+            $user_id = -1;
+        }
+
+
+        $user_videos = DB::table('Video')
+            ->join('active_subscriptions', 'active_subscriptions.Video_ID', 'Video.Video_ID')
+            ->where('active_subscriptions.User_ID', '=', "$user_id")
+            ->select('Video.*')
+            ->orderBy('Title','asc')
+            ->get()
+            ->unique('Video_ID')
+            ;
+
+
+        $total_row = $user_videos -> count();
+
+        if($total_row > 0 )
+        {
+            $counter = 0;
+            $numOfCols = 3;
+            $bootstrapColWidth = floor(12 / $numOfCols * 1.22);
+
+            $output .= " <div class=\"container-fluid\">
+                         <div class=\"row\">";
+
+            foreach ($user_videos as $row)
+            {
+                $video_id = $row -> Video_ID;
+
+                $output .= "<div class=\"col-md-".$bootstrapColWidth."\">";
+                $output .= "<a href=\"/public/video_details?video=".$video_id."\">
+                        <img src=\"http://videodivision.net/assets/images/thumbnails/".$video_id.".jpg\" alt=\"Check Out video details!\" width=\"195\" height=\"280\" border=\"0\">
+                        </a> <h5>".substr($row->Title, 0, 22)."</h5>
+                        <br><br></div>";
+
+                $counter = $counter + 1;
+
+                if ((($counter % $numOfCols) == 0))
+                {
+                    $output .= "</div><div class=\"row\">";
+                }
+            }
+            $output .= "</div>
+                </div>
+                </div>";
+
+        }
+        else
+        {
+            $output = '<h2 align="center" colsapn="5"> You are not subscribed to any Videos!</h2>';
+        }
+
+
+        return view('subscribed_videos',  [
+            'output' => $output
+        ]);
 
     }
 

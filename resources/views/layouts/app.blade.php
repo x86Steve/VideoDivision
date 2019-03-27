@@ -22,7 +22,6 @@
         <div id="app">
             @include('inc.navbar')
             <div class="container">
-
                 @if(Request::is('/'))
                     @include('inc.showcase')
                 @endif

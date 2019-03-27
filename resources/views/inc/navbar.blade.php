@@ -24,6 +24,9 @@
                     <a class="dropdown-item" href="/public/live_search/table">Table View</a>
                 </div>
             </li>
+            <li class="nav-item {{ Request::segment(1) === 'my_videos' ? 'active' : null }}">
+                <a class="nav-link" href="/public/my_videos">My Videos</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrator-Login</a>
             </li>
@@ -31,7 +34,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hey, {{ Auth::user()->name }}!</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="#">Edit Profile</a>
+                    <a class="dropdown-item" href="/public/profile">Edit Profile</a>
                     <a class="dropdown-item" href="#">Edit Subscription</a>
                     <a class="dropdown-item" href="#">Watch your shows!</a>
                         <a class="dropdown-item" href="{{ route('logout') }}"

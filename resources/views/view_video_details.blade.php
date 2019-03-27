@@ -1,14 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- videodivision.net/assets/images/thumbnails/placeHolder.jpg--}}
 
+    {{--WARNING, THIS CODE IS CANCER--}}
+
+    {{--Display video thumbnail on page--}}
     <br>
     <br>
     <img src="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg"  width= "240" height= "360"
          alt = "Place Holder" title="Production Title"
         align = "left">
 
+    {{--BASIC INFO (TITLE, RATING, YEAR, SUBSCRIPTION--}}
     <h2>
         <br>
         &nbsp;&nbsp; <strong>Title:</strong>  <?php echo ($file)[0]->Title?>
@@ -19,7 +22,7 @@
         &nbsp;&nbsp; <strong>Year:</strong>  <?php echo ($file)[0]->Year?> <br> <br>
         &nbsp;&nbsp; <strong>Subscription:</strong> <?php echo ($file)[0]->Subscription?> <br> <br> </h2>
 
-
+    {{--IF MOVIE DISPLAY LENGTH, IF EPISODE DISPLAY AMOUNT OF EPISODES (FIX EPISODE LENGTH ERROR)--}}
         @if ($isMovie === 1)
 
             <h3><strong>&nbsp;&nbsp;&nbsp;&nbsp;Length: </strong><?php echo $extra->Length?> </h3>
@@ -30,16 +33,101 @@
         @endif
         <br>
 
+    {{--A BUNCH OF SPACES FOR FORMATTING (Screw using align)--}}
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-    <!---//BUTTON TO ROUTE TO VIDEO PLAYER ######################################
-    //EDIT THIS TO WHATEVER YOU WANT ####################################### --->
-    <a href="{{ route('video_details', $isMovie) }}">
-        <button type="submit" class="btn btn-dark">Watch Now!</button>
-    </a>
+    {{--IF THE USER IS SUBBED GIVE ACCESS TO WATCH NOW BUTTON--}}
+        @if($isSubbed === true)
+            @if ($isMovie == 1)
+                <a class="nav-link" href="/watch/<?php echo ($file)[0]->Video_ID?>">
+                    <button type="submit" class="btn btn-dark">Watch Now!</button>
+                </a>
+            @else
+                <a class="nav-link" href="/watch/<?php echo ($file)[0]->Video_ID?>/episode/1">
+                    <button type="submit" class="btn btn-dark">Watch Now!</button>
+                </a>
+            @endif
 
+            {{--OTHERWISE GIVE ACCESS TO SUBSCRIBE BUTTON--}}
+        @else
+            <button
+                type="button"
+                class="btn btn-dark"
+                data-toggle="modal"
+                data-target="#subscribeModal">
+                Subscribe!
+            </button>
+            {{--IF USER IS LOGGED IN LET THEM SUBSCRIBE--}}
+            @if($User_ID != -1)
+                <div class="modal fade" id="subscribeModal"
+                     tabindex="-1" role="dialog"
+                     aria-labelledby="subscribeModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"
+                                    id="subscribeModalLabel">Subscribe?</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    Please confirm you would like to subscribe to
+                                    <b><span id="sub-title"><?php echo ($file)[0]->Title?></span></b>
+                                    .
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                        class="btn btn-dark"
+                                        data-dismiss="modal">Close</button>
+                                <span class="pull-right">
+            <form id = "form" method="post">
+                {{ csrf_field() }}
+                <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
+                <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
+                <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
+                <input type="submit" class ="btn btn-dark"/>
+            </form>
+
+            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{--IF USER IS NOT LOGGED IN ASK THEM TO LOGIN TO SUBSCRIBE--}}
+            @else
+                <div class="modal fade" id="subscribeModal"
+                     tabindex="-1" role="dialog"
+                     aria-labelledby="subscribeModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"
+                                    id="subscribeModalLabel">Please Login</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    Please Login to subscribe to this video.
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                        class="btn btn-dark"
+                                        data-dismiss="modal">Close</button>
+                                <span class="pull-right">
+
+                    <a class="btn btn-dark" href="/public/login">Login</a>
+            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+        @endif
+
+    {{--OTHER BASIC INFO (SUMMARY, GENRES, CAST, DIRECTORS)--}}
     <br>
     <br>
     <br>
