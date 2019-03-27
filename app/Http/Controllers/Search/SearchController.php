@@ -4,9 +4,37 @@ namespace App\Http\Controllers\Search;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use DB;
-
+//Search functions up the wasszu.
+//Literally all my controllers extend this controller so i have access to these functions.
+//Its probs bad practice but hell yeah it works.
 class SearchController extends Controller
 {
+
+    protected function isSubbed($video_id, $user_id)
+    {
+        $isSubbed = false;
+
+        $subscription = DB::table('active_subscriptions')
+            ->where('User_ID', '=', "$user_id")
+            ->where('Video_ID', '=', "$video_id")
+            ->get();
+
+        if($subscription->count()>0){$isSubbed = true;}
+
+        return $isSubbed;
+    }
+
+    protected function getSubs($user_id)
+    {
+
+        $subscriptions = DB::table('active_subscriptions')
+            ->where('User_ID', '=', "$user_id")
+            ->get()
+            ->unique('Video_ID');
+
+        return $subscriptions;
+
+    }
 
     private function getMoviesByActor($q)
     {
@@ -84,7 +112,7 @@ class SearchController extends Controller
         return $ByDirector;
     }
 
-    private function getVideosByTitle($q)
+    public function getVideosByTitle($q)
     {
         $videosByTitle = DB::table('Video')
             ->where('Video.Title', 'like' , "%$q%")

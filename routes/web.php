@@ -16,6 +16,15 @@ Route::get('/', function () {
     return view('home');
 });
 
+
+/*
+ * Route::get('/profile', function () {
+    return view('profile.profile');
+});
+ */
+
+Route::get('/profile', "UserProfileController@index");
+
 Route::get('/about', function () {
     return view('about');
 });
@@ -51,8 +60,9 @@ Route::get('/live_search/action2', 'Search\LiveSearch@table')->name('live_search
 
 Route::get('/video_details', 'ViewVideo@getView')->name('video_details');
 
+Route::post('/video_details', 'ViewVideo@subscribe');
 
-
+Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
 Auth::routes();
 
@@ -64,7 +74,7 @@ Route::get('/videoexample', function () {
     $video .= $movie;
     $title = DB::table('Video')->first()->Title;
 
-    return view('videoexample')->with(compact('video','title'));
+    return view('videoExample')->with(compact('video','title'));
 });
 
 Route::get('/video/{filename}', function ($filename) {
