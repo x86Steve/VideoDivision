@@ -16,6 +16,15 @@ Route::get('/', function () {
     return view('home');
 });
 
+
+/*
+ * Route::get('/profile', function () {
+    return view('profile.profile');
+});
+ */
+
+Route::get('/profile', "UserProfileController@index");
+
 Route::get('/about', function () {
     return view('about');
 });
@@ -53,8 +62,15 @@ Route::get('/video_details', 'ViewVideo@getView')->name('video_details');
 
 Auth::routes();
 
-/* Sydney's adds */
 
+Route::post('/video_details', 'ViewVideo@subscribe');
+
+Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
+
+Auth::routes();
+
+
+/*Sydney's Adds*/
 Route::get('/watch/{video_id}', 'WatchVideo@getView')->name('watch');
 Route::get('/watch/{video_id}/episode/{episode_number}', 'WatchVideo@getEpisodeView')->name('watch');
 
