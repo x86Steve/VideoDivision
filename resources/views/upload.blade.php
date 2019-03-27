@@ -73,18 +73,19 @@
                 <h2>Actors</h2>
                 <div class="form-group">
                     <label for="actorSelect1">Choose existing actor</label>
-                    <select class="form-control" id="actorSelect1">
+                    <select class="form-control" id="actorSelect1" name="actorSelect1" required>
                         @foreach ($actors as $actor)
                         <option label="{{$actor->First_Name}} {{$actor->Last_Name}}" value="{{$actor->Actor_ID}}" >
                             @endforeach
                     </select>
                     <div class="form-check">
-                        <input class="form-check-input" id="addNew1" type="checkbox" onchange="toggleActorNameFields()" >
+                        <input class="form-check-input" name="addNew1" id="addNew1" type="checkbox" onchange="toggleActorNameFields()" >
                         <label class="form-check-label" for="addNew1">Add new actor to database</label>
                     </div>
-                    <div class="body" hidden>
-                        <label for="actorInput1">Enter name</label>
-                        <input class="form-control" id="actorInput1">
+                    <div class="body form-row" hidden>
+                        <label for="actorInputFirst1">Enter name</label>
+                        <input class="form-control form-control-inline" id="actorInputFirst1" name="actorInputFirst1">
+                        <input class="form-control" id="actorInputLast1" name="actorInputLast1">
                     </div>
                 </div>
 
@@ -125,7 +126,7 @@
 
         <br>
 
-        @if ($status === 1 && $newShowId == "-1")
+        @if ($status === 1)
         <h2>Upload success</h2>
         {{-- @elseif ($newShowId != "-1")
         <h2>Created new show with ID {{serialize($newShowId)}}</h2> --}}

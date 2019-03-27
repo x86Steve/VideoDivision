@@ -53,17 +53,26 @@ class UploadController extends Controller
         $showId = Request::get('showId');
         $seasonNumber = Request::get('seasonNumber');
         $episodeNumber = Request::get('episodeNumber');
-        $newShowId = -1;
+        //$newShowId = -1;
+        $videoId = null;
+        $episodeId = null;
+        
+        
+        //echo "Hello world!";
+        //echo Request::get('duration');
+        //$addNew = 'actorSelect' . $count;
+        //echo $addNew;
+        //echo Request::get('addNew1');
 
         // enter video info in DB
         if ($mediatype != "episode")
         {
-            $id = DB::table('Video')->insertGetId(
+            $videoId = DB::table('Video')->insertGetId(
                     ['Title' => $title, 'Year' => $year, 'Summary' => $summary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]);
             if ($mediatype == "show")
             {
                 //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
-                $newShowId = $id; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
+                //$newShowId = $videoId; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
             }
         }
 
@@ -71,16 +80,43 @@ class UploadController extends Controller
         if ($mediatype == "movie")
         {
             DB::table('Movie')->insertGetId(
-                    ['Movie_ID' => $id, 'File_Path' => $path, 'Length' => $runtime]);
+                    ['Movie_ID' => $videoId, 'File_Path' => $path, 'Length' => $runtime]);
         }
         // enter episode info in DB
         else if ($mediatype == "episode")
         {
-            DB::table('Episode')->insertGetId(
+            $episodeId = DB::table('Episode')->insertGetId(
                     ['Show_ID' => $showId, 'Season_Number' => $seasonNumber, 'Episode_Number' => $episodeNumber,
                         'Episode_Title' => $title, 'File_Path' => $path, 'Length' => $runtime, 'Episode_Summary' => $summary]);
         }
 
+        // enter cast info in DB
+        $count = 1;
+        $actor = null;
+        //while ($actor = Request::get('actorSelect' . $count) != null)
+        //{
+            $actor = Request::get('actorSelect' . $count);
+            if (Request::get('addNew' . $count) == 'on')
+            {
+                // use the custom actor name
+                $fn = Request::get('actorInputFirst' . $count);
+                $ln = Request::get('actorInputLast' . $count);
+            }
+            else
+            {
+                // use the selected actor name
+
+            }
+            $actorId = DB::table('Actor')->insertGetId(
+                ['First_Name' => $fn, 'Last_Name' => $ln]
+            );
+            DB::table('Cast')->insert(
+                ['IsMovie' => ($mediatype == "movie"), 'Episode_ID' => $episodeId, 'Actor_ID' => $actorId, 'Movie_ID' => $videoId]
+            );
+            $count++;
+        //}
+
+        echo $count;
 
         return self::loadPage(1);
 //        } else {
