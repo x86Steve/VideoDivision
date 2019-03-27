@@ -3,7 +3,20 @@
 @section('content')
     <h1>About</h1>
     <p>
-        Sane quos unde esto sed una est bere. Funditus co is formemus converto id. Equidem quidnam at si mutetur frigida innatas. Cur vitari angeli iii haberi rea. Luce ei quem scio vita ne apud. Is dicunt patere vi putavi ne. Percipitur propositio co in cognitione id perciperem et alloquendo. Rem idemque sex exigere credidi scripto.
+       Video Division is a new subscription service for watching
+       TV episodes and movies on your favorite device. It also has user profile pages to keep up with your friends
+       and chat with them about your favorite movies and TV shows. This site
+       delivers the best experience anywhere, anytime.
+        <br>
+
+        If you are not a Video Division member sign up and start 
+        enjoying our large variety of content immediately. 
+
+         <br>
+
+        We have all your favorite TV shows and movies all in one place. We have contracts with Netflix, 
+        Hulu, and other streaming service to give you access to 
+        their exclusive content so you can enjoy everything in one place.
     </p>
 @endsection
 
