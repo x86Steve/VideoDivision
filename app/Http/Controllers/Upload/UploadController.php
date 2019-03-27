@@ -116,7 +116,7 @@ class UploadController extends Controller
             $count++;
         //}
 
-        echo $count;
+        //echo $count;
 
         return self::loadPage(1);
 //        } else {
