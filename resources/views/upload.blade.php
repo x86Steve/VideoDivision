@@ -20,7 +20,7 @@
 
         <form id="form" method="POST" enctype="multipart/form-data">
             @csrf
-            <h2>Basic information</h2>
+            <h2>General information</h2>
             <div class="form-group">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="mediatype" id="moviechoice" onclick="changeMediaType()" checked="true" value="movie" required>
@@ -92,7 +92,7 @@
 
             <div class="form-group btn-group">
                 <button class="btn btn-primary" type="button" onclick="addActor()">+</button>
-                <button class="btn btn-danger" type="button" onclick="removeActor()">-</button>
+                <button class="btn btn-danger" id="removeButton" type="button" onclick="removeActor()" disabled>-</button>
             </div>
             <!--All submissions contain a movie or episode-->
             <!--<div id="nonShowFields">-->
@@ -110,9 +110,7 @@
                     width="730"
                     onloadedmetadata="loadDuration()" 
                     controls 
-                    >
-                    <!--<source id="source" src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"/>-->
-                </video>
+                    />
                 <div class="form-group">
                     <label for="duration">Runtime:</label>
                     <input type="text" class="form-control" id="duration" name="duration" readonly>
@@ -165,23 +163,41 @@
                         {
                             var checked = actors[i].querySelector('.form-check-input').checked;
                             actors[i].querySelector('.body').hidden = !checked;
-                            actors[i].querySelector('#actorSelect').disabled = checked;
+                            actors[i].querySelector('#actorSelect' + (i + 1)).disabled = checked;
                         }
                     }
 
+                    // this is called when the user clicks the plus button
+                    // to add an actor
                     function addActor()
                     {
-                        var count = document.querySelectorAll('#actors > .form-group').length + 1;
+                        var newCount = document.querySelectorAll('#actors > .form-group').length + 1;
                         var firstActor = document.querySelector('#actors > .form-group');
                         var newActor = firstActor.cloneNode(true);
-                        newActor.querySelector('label').for = "actorSelect" + count;
+                        newActor.querySelector('label').htmlFor = "actorSelect" + newCount;
                         //alert(newActor.querySelector('label'))
-                        newActor.querySelector('select').id = "actorSelect" + count;
-                        newActor.querySelector('.form-check-input').id = "addNew" + count;
-                        newActor.querySelector('.form-check-label').for = "addNew" + count;
-                        newActor.querySelector('.body > label').for = "actorInput" + count;
-                        newActor.querySelector('.body > input').id = "actorInput" + count;
+                        newActor.querySelector('select').id = "actorSelect" + newCount;
+                        newActor.querySelector('select').disabled = false;
+                        newActor.querySelector('.form-check-input').id = "addNew" + newCount;
+                        newActor.querySelector('.form-check-input').checked = false;
+                        newActor.querySelector('.form-check-label').htmlFor = "addNew" + newCount;
+                        newActor.querySelector('.body > label').htmlFor = "actorInput" + newCount;
+                        newActor.querySelector('.body > input').id = "actorInput" + newCount;
+                        newActor.querySelector('.body > input').value = "";
+                        newActor.querySelector('.body').hidden = true;
                         document.getElementById("actors").appendChild(newActor);
+                        document.getElementById("removeButton").disabled = false;
+                    }
+
+                    // this is called when the user clicks the minus button
+                    // to remove an actor
+                    function removeActor()
+                    {
+                        var lastElement = document.getElementById("actors").lastElementChild;
+                        document.getElementById("actors").removeChild(lastElement);
+                        var count = document.querySelectorAll('#actors > .form-group').length;
+                        if (count == 1)
+                            document.getElementById("removeButton").disabled = true;
                     }
 
                     // this is called when the user changes the
@@ -213,8 +229,6 @@
                     function loadDuration()
                     {
                         var player = videojs('player');
-                        //                var date = new Date(null);
-                        //                date.setSeconds(player.duration());
                         var fullDuration = videojs.formatTime(player.duration());
                         document.getElementById("duration").setAttribute("value", fullDuration);
                     }
