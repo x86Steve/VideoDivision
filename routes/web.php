@@ -91,5 +91,18 @@ Route::get('/video/{filename}', function ($filename) {
 
     return response("File doesn't exists", 404);
 });
+/************************************************************************/
+Route::get('posts', 'PostController@posts')->name('posts');
+
+Route::post('posts', 'PostController@postPost')->name('posts.post');
+
+Route::get('posts/{id}', 'PostController@show')->name('posts.show');
+
+
+
 
 //Route::get('/loggedin', 'HomeController@index')->name('loggedin');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
