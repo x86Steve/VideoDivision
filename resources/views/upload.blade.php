@@ -178,13 +178,22 @@
                         newActor.querySelector('label').htmlFor = "actorSelect" + newCount;
                         //alert(newActor.querySelector('label'))
                         newActor.querySelector('select').id = "actorSelect" + newCount;
+                        newActor.querySelector('select').name = "actorSelect" + newCount;
                         newActor.querySelector('select').disabled = false;
                         newActor.querySelector('.form-check-input').id = "addNew" + newCount;
+                        newActor.querySelector('.form-check-input').name = "addNew" + newCount;
                         newActor.querySelector('.form-check-input').checked = false;
                         newActor.querySelector('.form-check-label').htmlFor = "addNew" + newCount;
-                        newActor.querySelector('.body > label').htmlFor = "actorInput" + newCount;
-                        newActor.querySelector('.body > input').id = "actorInput" + newCount;
+                        
+                        newActor.querySelector('.body > label').htmlFor = "actorInputFirst" + newCount;
+                        newActor.querySelector('.body > input').id = "actorInputFirst" + newCount;
+                        newActor.querySelector('.body > input').name = "actorInputFirst" + newCount;
                         newActor.querySelector('.body > input').value = "";
+                        //newActor.querySelector('.body > label').htmlFor = "actorInputFirst" + newCount;
+                        newActor.querySelectorAll('.body > input')[1].id = "actorInputLast" + newCount;
+                        newActor.querySelectorAll('.body > input')[1].name = "actorInputLast" + newCount;
+                        newActor.querySelectorAll('.body > input')[1].value = "";
+
                         newActor.querySelector('.body').hidden = true;
                         document.getElementById("actors").appendChild(newActor);
                         document.getElementById("removeButton").disabled = false;

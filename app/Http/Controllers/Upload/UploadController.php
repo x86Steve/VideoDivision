@@ -92,31 +92,38 @@ class UploadController extends Controller
 
         // enter cast info in DB
         $count = 1;
-        $actor = null;
-        //while ($actor = Request::get('actorSelect' . $count) != null)
-        //{
-            $actor = Request::get('actorSelect' . $count);
+        $actorId = null;
+        while (null !== ($actorId = Request::get('actorSelect' . $count)) || null !== ($fn =  Request::get('actorInputFirst' . $count)))
+        {
+            //$actor = Request::get('actorSelect' . $count);
             if (Request::get('addNew' . $count) == 'on')
             {
                 // use the custom actor name
-                $fn = Request::get('actorInputFirst' . $count);
+                //$fn = ;
                 $ln = Request::get('actorInputLast' . $count);
+                $actorId = DB::table('Actor')->insertGetId(
+                ['First_Name' => $fn, 'Last_Name' => $ln]
+                );
+                echo "First name: " . $fn;
+                echo "Last name: " . $ln;
             }
             else
             {
                 // use the selected actor name
-
+                //$actorId = Request::get('actorSelect' . $count)
             }
-            $actorId = DB::table('Actor')->insertGetId(
-                ['First_Name' => $fn, 'Last_Name' => $ln]
-            );
+            
+            //echo "Episode ID: " . $episodeId;
+            echo "Actor ID: " . $actorId;
+            echo "Video ID: " . $videoId;
+            
             DB::table('Cast')->insert(
                 ['IsMovie' => ($mediatype == "movie"), 'Episode_ID' => $episodeId, 'Actor_ID' => $actorId, 'Movie_ID' => $videoId]
             );
             $count++;
-        //}
+        }
 
-        //echo $count;
+        echo "Count: " . ($count - 1);
 
         return self::loadPage(1);
 //        } else {
