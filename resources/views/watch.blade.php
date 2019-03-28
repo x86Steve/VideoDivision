@@ -31,7 +31,7 @@
         <div class="btn-group" role="group" aria-label="...">
             @if ($episode_number != 1)
                 <a class="nav-link"
-                   href="/watch/ <?php echo ($file)[0]->Video_ID?>/episode/<?php echo $episode_number - 1?>">
+                   href="/public/watch/ <?php echo ($file)[0]->Video_ID?>/episode/<?php echo $episode_number - 1?>">
                     <button type="submit" class="btn btn-dark btn-lg active btn-block"><span aria-hidden="true" align="right"></span> Previous
                         Episode
                     </button>
@@ -41,7 +41,7 @@
             <button type="submit" class="btn btn-dark btn-lg active btn-block">All Episodes</button>
             </a>-->
             <a class="nav-link"
-               href="/watch/<?php echo ($file)[0]->Video_ID?>  /episode/<?php echo $episode_number + 1?>"><span
+               href="/public/watch/<?php echo ($file)[0]->Video_ID?>  /episode/<?php echo $episode_number + 1?>"><span
                         aria-hidden="true"></span>
                 <button type="submit" class="btn btn-dark btn-lg active btn-block">Next Episode</button>
             </a>

@@ -41,13 +41,19 @@
     {{--IF THE USER IS SUBBED GIVE ACCESS TO WATCH NOW BUTTON--}}
         @if($isSubbed === true)
             @if ($isMovie == 1)
-                <a class="nav-link" href="/watch/<?php echo ($file)[0]->Video_ID?>">
+
+                <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>">
                     <button type="submit" class="btn btn-dark">Watch Now!</button>
                 </a>
+
+
             @else
-                <a class="nav-link" href="/watch/<?php echo ($file)[0]->Video_ID?>/episode/1">
+
+                <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>/episode/1">
                     <button type="submit" class="btn btn-dark">Watch Now!</button>
                 </a>
+
+
             @endif
 
             {{--OTHERWISE GIVE ACCESS TO SUBSCRIBE BUTTON--}}
