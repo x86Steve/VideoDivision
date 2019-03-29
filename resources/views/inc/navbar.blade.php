@@ -16,6 +16,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
                     <a class="dropdown-item" href="/public/live_search/grid">Grid View</a>
                     <a class="dropdown-item" href="/public/live_search/table">Table View</a>
+                    <a class="dropdown-item" href="/public/posts">Video Ratings</a>
                 </div>
             </li>
             <li class="nav-item {{ Request::segment(1) === 'my_videos' ? 'active' : null }}">
