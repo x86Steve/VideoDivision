@@ -34,7 +34,6 @@
                         <th>Title</th>
                         <th>Year</th>
                         <th>Subscription</th>
-                        <th>Rating</th>
                         <th>View Page</th>
                     </tr>
                             @endif

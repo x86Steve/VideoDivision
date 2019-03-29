@@ -50,7 +50,6 @@ class LiveSearch extends SearchController
                     <td>".$row->Title."</td>
                     <td>".$row->Year."</td>
                     <td>".$row->Subscription."</td>
-                    <td>".$row->Current_Rating."</td>
                     <td><a href=\"/public/video_details?video=".$video_id."\">
         <button type=\"submit\" class=\"btn btn-dark\">Details</button>
     </a></td>                    
