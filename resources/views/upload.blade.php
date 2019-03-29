@@ -43,7 +43,7 @@
 
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" class="form-control" name="title" id="title" placeholder="Video Title" required>
+            <input type="text" class="form-control" name="title" id="title" placeholder="Movie Title" required>
         </div>
         <div class="form-group">
             <label for="year">Year</label>
@@ -154,9 +154,6 @@
     @endif
 @endsection
 
-
-
-
     <script>
         // this is called when the user changes what type of video
         // is being uploaded
@@ -169,6 +166,7 @@
                 episodeElements[i].disabled = (type === "show") ? false : true;
             }
 
+            document.getElementById("title").placeholder = (type === "show") ? "Show Title" : "Movie Title";
             document.getElementById("showFields").hidden = (type === "show") ? false : true;
         }
 

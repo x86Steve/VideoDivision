@@ -28,7 +28,7 @@ class UploadController extends Controller
         return self::loadPage(0);
     }
 
-    function uploadFile()
+    function submit()
     {
         if (Request::hasFile('video')) {
                 $file = Request::file('video');
