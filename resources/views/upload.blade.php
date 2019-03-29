@@ -166,7 +166,7 @@
                 episodeElements[i].disabled = (type === "show") ? false : true;
             }
 
-            document.getElementById("title").placeholder = (type === "show") ? "Show Title" : "Movie Title";
+            document.getElementById("title").placeholder = (type === "show") ? "Episode Title" : "Movie Title";
             document.getElementById("showFields").hidden = (type === "show") ? false : true;
         }
 

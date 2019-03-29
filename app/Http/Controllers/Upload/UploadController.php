@@ -54,10 +54,11 @@ class UploadController extends Controller
         $sub = Request::get('subscription');
         $mediatype = Request::get('mediatype');
         $runtime = Request::get('duration');
-        $showId = Request::get('showId');
         $seasonNumber = Request::get('seasonNumber');
         $episodeNumber = Request::get('episodeNumber');
+        $addNewShow = (Request::get('addNewShow') == "on");
         //$newShowId = -1;
+        $showId = null; //Request::get('showId');
         $videoId = null;
         $episodeId = null;
 
@@ -69,24 +70,36 @@ class UploadController extends Controller
         //echo Request::get('addNew1');
 
         // enter video info in DB
-        if ($mediatype != "episode") {
+        // new show needs its own summary!
+        if ($mediatype == "movie" || ($mediatype == "show" && $addNewShow)) 
+        {
                 $videoId = DB::table('Video')->insertGetId(
                     ['Title' => $title, 'Year' => $year, 'Summary' => $summary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
                 );
-                if ($mediatype == "show") {
+                    $showId = $videoId;
+                if ($mediatype == "show") 
+                {
                         //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
                         //$newShowId = $videoId; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
                     }
             }
 
-        // enter movie info in DB
+            else if (!$addNewShow)
+            {
+                $showId = Request::get('showSelect');
+            }
+            
+
+            // enter movie info in DB
         if ($mediatype == "movie") {
                 DB::table('Movie')->insertGetId(
                     ['Movie_ID' => $videoId, 'File_Path' => $path, 'Length' => $runtime]
                 );
             }
+
+
         // enter episode info in DB
-        else if ($mediatype == "episode") {
+        else if ($mediatype == "show") {
                 $episodeId = DB::table('Episode')->insertGetId(
                     [
                         'Show_ID' => $showId, 'Season_Number' => $seasonNumber, 'Episode_Number' => $episodeNumber,
@@ -107,16 +120,16 @@ class UploadController extends Controller
                         $actorId = DB::table('Actor')->insertGetId(
                             ['First_Name' => $fn, 'Last_Name' => $ln]
                         );
-                        echo "First name: " . $fn;
-                        echo "Last name: " . $ln;
+                        //echo "First name: " . $fn;
+                        //echo "Last name: " . $ln;
                     } else {
                         // use the selected actor name
                         //$actorId = Request::get('actorSelect' . $count)
                     }
 
                 //echo "Episode ID: " . $episodeId;
-                echo "Actor ID: " . $actorId;
-                echo "Video ID: " . $videoId;
+                //echo "Actor ID: " . $actorId;
+                //echo "Video ID: " . $videoId;
 
                 DB::table('Cast')->insert(
                     ['IsMovie' => ($mediatype == "movie"), 'Episode_ID' => $episodeId, 'Actor_ID' => $actorId, 'Movie_ID' => $videoId]
@@ -124,7 +137,7 @@ class UploadController extends Controller
                 $count++;
             }
 
-        echo "Count: " . ($count - 1);
+        //echo "Count: " . ($count - 1);
 
         return self::loadPage(1);
         //        } else {
