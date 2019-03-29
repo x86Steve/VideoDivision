@@ -72,6 +72,7 @@ Auth::routes();
 
 /*Sydney's Adds*/
 Route::get('/watch/{video_id}', 'WatchVideo@getView')->name('watch');
-Route::get('/watch/{video_id}/episode/{episode_number}', 'WatchVideo@getEpisodeView')->name('watch');
+Route::get('/watch/{video_id}/season/{season_number}/episode/{episode_number}', 'WatchVideo@getEpisodeView')->name('watch');
+Route::get('/watch/{video_id}/episode1', 'WatchVideo@getFirstView')->name('watch');
 
 //Route::get('/loggedin', 'HomeController@index')->name('loggedin');
