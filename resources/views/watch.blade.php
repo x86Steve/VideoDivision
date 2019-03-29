@@ -6,7 +6,7 @@
 
     @if ($isMovie == 0)
         <p>
-            <strong>S<?php echo $extra->Season_Number?>: E<?php echo $episode_number?> </strong>
+            <strong>S<?php echo $season_number?>: E<?php echo $episode_number?> </strong>
             <?php echo $episode_title?>
         </p>
     @endif
@@ -28,23 +28,28 @@
     @if ($isMovie == 0)
         <p>
 
-        <div class="btn-group" role="group" aria-label="...">
+        <div class="btn-group" role="group">
             @if ($episode_number != 1)
-                <a class="nav-link"
-                   href="/public/watch/ <?php echo ($file)[0]->Video_ID?>/episode/<?php echo $episode_number - 1?>">
-                    <button type="submit" class="btn btn-dark btn-lg active btn-block"><span aria-hidden="true" align="right"></span> Previous
-                        Episode
-                    </button>
+                <a class = "nav-link" href="/public/watch/<?php echo ($file)[0]->Video_ID?>/season/<?php echo $season_number?>/episode/<?php echo $episode_number - 1?>">
+                    <button type="submit" class="btn btn-dark">Previous Episode</button>
                 </a>
             @endif
-            <!--<a class = "nav-link" href="insert episode list link here" > <span aria-hidden="true"></span>
+        <!--<a class = "nav-link" href="insert episode list link here" > <span aria-hidden="true"></span>
             <button type="submit" class="btn btn-dark btn-lg active btn-block">All Episodes</button>
             </a>-->
-            <a class="nav-link"
-               href="/public/watch/<?php echo ($file)[0]->Video_ID?>  /episode/<?php echo $episode_number + 1?>"><span
-                        aria-hidden="true"></span>
-                <button type="submit" class="btn btn-dark btn-lg active btn-block">Next Episode</button>
-            </a>
+            @if ($last_episode_of_series_number != $episode_number)
+                @if ($number_of_seasons == 1)
+                    <a class = "nav-link" href="/public/watch/<?php echo ($file)[0]->Video_ID?>/season/<?php echo $season_number?>/episode/<?php echo $episode_number + 1?>">
+                        <button type="submit" class="btn btn-dark">Next Episode</button>
+                    </a>
+                @else
+                    @if ($last_season_flag == 1)
+                        <a class = "nav-link" href="/public/watch/<?php echo ($file)[0]->Video_ID?>/season/<?php echo $season_number?>/episode/<?php echo $episode_number + 1?>">
+                            <button type="submit" class="btn btn-dark">Next Episode</button>
+                        </a>
+                    @endif
+                @endif
+            @endif
         </div>
         </p>
     @endif
