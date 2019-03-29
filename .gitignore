@@ -11,3 +11,5 @@ npm-debug.log
 yarn-error.log
 /nbproject/
 /_ide_helper.php
+public/css/app.css
+public/js/app.js

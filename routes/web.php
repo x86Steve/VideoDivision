@@ -49,7 +49,7 @@ Route::get('/search', 'Search\SearchController@basicSearch');
 
 Route::get('/upload', 'Upload\UploadController@index');
 
-Route::post('/upload', 'Upload\UploadController@uploadFile');
+Route::post('/upload', 'Upload\UploadController@submit');
 
 Route::get('/live_search/grid', 'Search\LiveSearch@getGridView');
 Route::get('/live_search/table', 'Search\LiveSearch@getTableView');
