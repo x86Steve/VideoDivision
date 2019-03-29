@@ -5,17 +5,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item {{ Request::segment(1) === null ? 'active' : null }}">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item {{ Request::segment(1) === 'contact' ? 'active' : null }}">
                 <a class="nav-link" href="/public/contact">Contact</a>
             </li>
             <li class="nav-item {{ Request::segment(1) === 'about' ? 'active' : null }}">
                 <a class="nav-link" href="/public/about">About</a>
-            </li>
-            <li class="nav-item {{ Request::segment(1) === 'videoexample' ? 'active' : null }}">
-                <a class="nav-link" href="/public/videoexample">Video Example</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Videos</a>

@@ -60,37 +60,16 @@ Route::get('/live_search/action2', 'Search\LiveSearch@table')->name('live_search
 
 Route::get('/video_details', 'ViewVideo@getView')->name('video_details');
 
+Auth::routes();
+
+
 Route::post('/video_details', 'ViewVideo@subscribe');
 
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
 Auth::routes();
 
-/* Syndey's adds */
 
-Route::get('/videoexample', function () {
-    $video = "http://videodivision.net";
-    $movie = DB::table('Movie')->first()->File_Path;
-    $video .= $movie;
-    $title = DB::table('Video')->first()->Title;
-
-    return view('videoExample')->with(compact('video','title'));
-});
-
-Route::get('/video/{filename}', function ($filename) {
-
-    $videosDir = base_path('resources/assets/videos');
-
-    if (file_exists($filePath = $videosDir."/".$filename)) {
-        $stream = new \App\Http\VideoStream($filePath);
-
-        return response()->stream(function() use ($stream) {
-            $stream->start();
-        });
-    }
-
-    return response("File doesn't exists", 404);
-});
 /************************************************************************/
 Route::get('posts', 'PostController@posts')->name('posts');
 
@@ -99,6 +78,12 @@ Route::post('posts', 'PostController@postPost')->name('posts.post');
 Route::get('posts/{id}', 'PostController@show')->name('posts.show');
 
 
+
+
+/*Sydney's Adds*/
+Route::get('/watch/{video_id}', 'WatchVideo@getView')->name('watch');
+Route::get('/watch/{video_id}/season/{season_number}/episode/{episode_number}', 'WatchVideo@getEpisodeView')->name('watch');
+Route::get('/watch/{video_id}/episode1', 'WatchVideo@getFirstView')->name('watch');
 
 
 //Route::get('/loggedin', 'HomeController@index')->name('loggedin');

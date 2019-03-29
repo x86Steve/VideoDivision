@@ -7,31 +7,32 @@
     {{--Display video thumbnail on page--}}
     <br>
     <br>
-    <img src="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg"  width= "240" height= "360"
-         alt = "Place Holder" title="Production Title"
-        align = "left">
+    <img src="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg" width="240"
+         height="360"
+         alt="Place Holder" title="Production Title"
+         align="left">
 
     {{--BASIC INFO (TITLE, RATING, YEAR, SUBSCRIPTION--}}
     <h2>
         <br>
-        &nbsp;&nbsp; <strong>Title:</strong>  <?php echo ($file)[0]->Title?>
+        &nbsp;&nbsp; <strong>Title:</strong> <?php echo ($file)[0]->Title?>
     </h2>
     <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <strong>Rating: </strong> <?php echo ($file)[0]->Current_Rating ?></h5>
     <h2>
-        &nbsp;&nbsp; <strong>Year:</strong>  <?php echo ($file)[0]->Year?> <br> <br>
-        &nbsp;&nbsp; <strong>Subscription:</strong> <?php echo ($file)[0]->Subscription?> <br> <br> </h2>
+        &nbsp;&nbsp; <strong>Year:</strong> <?php echo ($file)[0]->Year?> <br> <br>
+        &nbsp;&nbsp; <strong>Subscription:</strong> <?php echo ($file)[0]->Subscription?> <br> <br></h2>
 
     {{--IF MOVIE DISPLAY LENGTH, IF EPISODE DISPLAY AMOUNT OF EPISODES (FIX EPISODE LENGTH ERROR)--}}
-        @if ($isMovie === 1)
+    @if ($isMovie === 1)
 
-            <h3><strong>&nbsp;&nbsp;&nbsp;&nbsp;Length: </strong><?php echo $extra->Length?> </h3>
+        <h3><strong>&nbsp;&nbsp;&nbsp;&nbsp;Length: </strong><?php echo $extra->Length?> </h3>
 
-        @else
-            <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Seasons:</strong> <?php echo $extra->Season_Number?></h4>
-            <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Episodes:</strong> <?php echo $extra->Episode_Number?></h4>
-        @endif
-        <br>
+    @else
+        <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Seasons:</strong> <?php echo $extra->Season_Number?></h4>
+        <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Episodes:</strong> <?php echo $extra->Episode_Number?></h4>
+    @endif
+    <br>
 
     {{--A BUNCH OF SPACES FOR FORMATTING (Screw using align)--}}
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -39,120 +40,127 @@
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
     {{--IF THE USER IS SUBBED GIVE ACCESS TO WATCH NOW BUTTON--}}
-        @if($isSubbed === true)
-            <!---//BUTTON TO ROUTE TO VIDEO PLAYER ######################################
-        //EDIT THIS TO WHATEVER YOU WANT ####################################### --->
-            <a href="{{ route('video_details', $isMovie) }}">
+    @if($isSubbed === true)
+        @if ($isMovie == 1)
+
+            <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>">
                 <button type="submit" class="btn btn-dark">Watch Now!</button>
             </a>
-
-            {{--OTHERWISE GIVE ACCESS TO SUBSCRIBE BUTTON--}}
         @else
-            <button
+            <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>/episode1">
+                <button type="submit" class="btn btn-dark">Watch Now!</button>
+            </a>
+        @endif
+
+        {{--OTHERWISE GIVE ACCESS TO SUBSCRIBE BUTTON--}}
+    @else
+        <button
                 type="button"
                 class="btn btn-dark"
                 data-toggle="modal"
                 data-target="#subscribeModal">
-                Subscribe!
-            </button>
-            {{--IF USER IS LOGGED IN LET THEM SUBSCRIBE--}}
-            @if($User_ID != -1)
-                <div class="modal fade" id="subscribeModal"
-                     tabindex="-1" role="dialog"
-                     aria-labelledby="subscribeModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title"
-                                    id="subscribeModalLabel">Subscribe?</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p>
-                                    Please confirm you would like to subscribe to
-                                    <b><span id="sub-title"><?php echo ($file)[0]->Title?></span></b>
-                                    .
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button"
-                                        class="btn btn-dark"
-                                        data-dismiss="modal">Close</button>
-                                <span class="pull-right">
-            <form id = "form" method="post">
+            Subscribe!
+        </button>
+        {{--IF USER IS LOGGED IN LET THEM SUBSCRIBE--}}
+        @if($User_ID != -1)
+            <div class="modal fade" id="subscribeModal"
+                 tabindex="-1" role="dialog"
+                 aria-labelledby="subscribeModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"
+                                id="subscribeModalLabel">Subscribe?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                Please confirm you would like to subscribe to
+                                <b><span id="sub-title"><?php echo ($file)[0]->Title?></span></b>
+                                .
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button"
+                                    class="btn btn-dark"
+                                    data-dismiss="modal">Close
+                            </button>
+                            <span class="pull-right">
+            <form id="form" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
                 <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
                 <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
-                <input type="submit" class ="btn btn-dark"/>
+                <input type="submit" class="btn btn-dark"/>
             </form>
 
             </span>
-                            </div>
                         </div>
                     </div>
                 </div>
-                {{--IF USER IS NOT LOGGED IN ASK THEM TO LOGIN TO SUBSCRIBE--}}
-            @else
-                <div class="modal fade" id="subscribeModal"
-                     tabindex="-1" role="dialog"
-                     aria-labelledby="subscribeModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title"
-                                    id="subscribeModalLabel">Please Login</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p>
-                                    Please Login to subscribe to this video.
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button"
-                                        class="btn btn-dark"
-                                        data-dismiss="modal">Close</button>
-                                <span class="pull-right">
+            </div>
+            {{--IF USER IS NOT LOGGED IN ASK THEM TO LOGIN TO SUBSCRIBE--}}
+        @else
+            <div class="modal fade" id="subscribeModal"
+                 tabindex="-1" role="dialog"
+                 aria-labelledby="subscribeModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"
+                                id="subscribeModalLabel">Please Login</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                Please Login to subscribe to this video.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button"
+                                    class="btn btn-dark"
+                                    data-dismiss="modal">Close
+                            </button>
+                            <span class="pull-right">
 
                     <a class="btn btn-dark" href="/public/login">Login</a>
             </span>
-                            </div>
                         </div>
                     </div>
                 </div>
-            @endif
-
+            </div>
         @endif
+
+    @endif
 
     {{--OTHER BASIC INFO (SUMMARY, GENRES, CAST, DIRECTORS)--}}
     <br>
     <br>
     <br>
-        <h3><strong>Summary:</strong> <?php echo ($file)[0]->Summary?> <br> <br></h3>
+    <h3><strong>Summary:</strong> <?php echo ($file)[0]->Summary?> <br> <br></h3>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
 
-                        <h3><strong>Genre(s):</strong></h3>
-                        @foreach($genres as $genre)
-                        <h4>{{$genre['Name']}}&nbsp;&nbsp;</h4>
-                        @endforeach
-                </div>
-                <div class="col-sm">
-                    <h3><strong>Actor(s):</strong></h3>
-                    @foreach($cast as $actor)
-                        <h4> {{$actor['First_Name']}} {{$actor['Last_Name']}}</h4>
-                    @endforeach
-                </div>
-                <div class="col-sm">
-                    <h3><strong>Director(s):</strong></h3>
-                    @foreach($directors as $director)
-                        <h4> {{$director['First_Name']}} {{$director['Last_Name']}} </h4>
-                    @endforeach
+                <h3><strong>Genre(s):</strong></h3>
+                @foreach($genres as $genre)
+                    <h4>{{$genre['Name']}}&nbsp;&nbsp;</h4>
+                @endforeach
+            </div>
+            <div class="col-sm">
+                <h3><strong>Actor(s):</strong></h3>
+                @foreach($cast as $actor)
+                    <h4> {{$actor['First_Name']}} {{$actor['Last_Name']}}</h4>
+                @endforeach
+            </div>
+            <div class="col-sm">
+                <h3><strong>Director(s):</strong></h3>
+                @foreach($directors as $director)
+                    <h4> {{$director['First_Name']}} {{$director['Last_Name']}} </h4>
+                @endforeach
 
-                </div>
             </div>
         </div>
+    </div>
 
 
 @endsection
