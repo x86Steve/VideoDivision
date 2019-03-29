@@ -1,4 +1,4 @@
-<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+{{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
 
@@ -12,7 +12,7 @@
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
 
-<link href="{{ asset('css/preview.css') }}" rel="stylesheet">
+<link href="{{ asset('css/preview.css') }}" rel="stylesheet"> --}}
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
