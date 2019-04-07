@@ -1,3 +1,6 @@
+<!-- Feather For Icons -->
+<script src="https://unpkg.com/feather-icons"></script>
+
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <a class="navbar-brand" href="/">VideoDivision</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,9 +17,9 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Videos</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="/public/live_search/grid">Grid View</a>
-                    <a class="dropdown-item" href="/public/live_search/table">Table View</a>
-                    <a class="dropdown-item" href="/public/posts">Video Ratings</a>
+                    <a class="dropdown-item" href="/public/live_search/grid"><i data-feather="grid"></i> Grid View</a>
+                    <a class="dropdown-item" href="/public/live_search/table"><i data-feather="list"></i> Table View</a>
+                    <a class="dropdown-item" href="/public/posts"><i data-feather="star"></i> Video Ratings</a>
                 </div>
             </li>
             <li class="nav-item {{ Request::segment(1) === 'my_videos' ? 'active' : null }}">
@@ -29,13 +32,13 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hey, {{ Auth::user()->name }}!</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="/public/profile">Edit Profile</a>
-                    <a class="dropdown-item" href="#">Edit Subscription</a>
-                    <a class="dropdown-item" href="#">Watch your shows!</a>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
+                    <a class="dropdown-item" href="/public/profile"><i data-feather="edit-2"></i> Edit Profile</a>
+                    <a class="dropdown-item" href="#"><i data-feather="edit"></i> Edit Subscription</a>
+                    <a class="dropdown-item" href="#"><i data-feather="eye"></i> Watch your shows!</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
+                        <i data-feather="log-out"></i> {{ __('Logout') }}
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
@@ -61,4 +64,6 @@
         --->
     </div>
 </nav>
+
+<script>feather.replace()</script>
 

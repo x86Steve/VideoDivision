@@ -14,6 +14,8 @@
 
 <link href="{{ asset('css/preview.css') }}" rel="stylesheet"> --}}
 
+
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
