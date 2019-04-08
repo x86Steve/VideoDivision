@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Image;
 use Illuminate\Support\Facades\View;
+use DB;
 
 class UserProfileController extends Controller
 {
@@ -26,12 +27,18 @@ class UserProfileController extends Controller
                 ->with(array('CurrentUser' => Auth::user()));
 
         }
-
     }
     public function index()
     {
-        return View::make("profile.profile");
-           // ->with(array('CurrentUser' => Auth::user()));
+        $User_Sub_Video_IDs = DB::table('active_subscriptions')->where('User_ID',Auth::user()->id)->get();
+        $User_Sub_Video_Titles = array();
+
+        if (sizeof($User_Sub_Video_IDs) > 0)
+            foreach ($User_Sub_Video_IDs as $id)
+                $User_Sub_Video_Titles[] = DB::table('video')->where('Video_ID',$id->Video_ID)->first();
+
+        return View::make("profile.profile")
+            ->with(array('Video_Titles' => $User_Sub_Video_Titles));
     }
     //
 }

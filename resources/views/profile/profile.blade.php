@@ -53,14 +53,14 @@
                             </div>
                             <div class="col-md-6">
                                 <h6>Current Subscriptions</h6>
-                                <a href="#" class="badge badge-dark badge-pill">Men In Black</a>
-                                <a href="#" class="badge badge-dark badge-pill">Men In Black II</a>
-                                <a href="#" class="badge badge-dark badge-pill">Men In Black III</a>
-                                <a href="#" class="badge badge-dark badge-pill">Harry Potter 1</a>
-                                <a href="#" class="badge badge-dark badge-pill">Harry Potter 2</a>
-                                <a href="#" class="badge badge-dark badge-pill">Harry Potter 3</a>
-                                <a href="#" class="badge badge-dark badge-pill">Harry Potter 4</a>
-                                <a href="#" class="badge badge-dark">Naruto The Movie</a>
+                                <hr>
+                                @if(sizeof($Video_Titles) > 0)
+                                @foreach ($Video_Titles as $Title)
+                                    <a href="#" class="badge badge-dark badge-pill">{{$Title->Title}}</a>
+                                @endforeach
+                                @else
+                                    Hmm, it's a little empty here... Use the drop down menu to select some shows! :)
+                                @endif
                                 <hr>
                                 <h6>Subscriber Status</h6>
                                 @if(Auth::user()->isPaid === 0)
@@ -70,6 +70,7 @@
                                 @else
                                     <a href="/public/subscribe" class="badge badge-info">Please consider subscribing!</a>
                                 @endif
+                                <hr>
 
                             </div>
                             <div class="col-md-12">
