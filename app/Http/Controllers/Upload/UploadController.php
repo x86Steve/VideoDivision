@@ -52,23 +52,32 @@ class UploadController extends Controller
         $episodeNumber = Request::get('episodeNumber');
         $addNewShow = (Request::get('addNewShow') == "on");
         $newShowName = Request::get('showInput');
+        $newShowSummary = Request::get('showSummary');
         //$newShowId = -1;
         $showId = null; //Request::get('showId');
         $videoId = null;
         $episodeId = null;
 
-        if (Request::hasFile('video')) {
+        if (Request::hasFile('video')) 
+        {
             $file = Request::file('video');
             $filename = $file->getClientOriginalName();
-            if ($addNewShow)
+            
+            // get the lowercase name of the show
+            if ($mediatype == "show")
             {
-                $showDir = strtolower($newShowName);
+                if ($addNewShow)
+                {
+                    $showDir = strtolower($newShowName);
+                }
+                else
+                {
+                    $existingShowName = DB::table('Video')->select('Title')->where('Video_ID', $showId)->get()[0];
+                    $showDir = strtolower($existingShowName);
+                }
             }
-            else
-            {
-                $existingShowName = 
-            }
-            $videoDir = ($mediatype == "movie") ? "/movies" : "/tv-shows/" . ;
+                
+            $videoDir = ($mediatype == "movie") ? "/movies" : "/tv-shows/" . $showDir;
 
             // use laravel Storage facade method to store file,
             // using the private option so the URL cannot be discovered
@@ -88,10 +97,10 @@ class UploadController extends Controller
         if ($mediatype == "movie" || ($mediatype == "show" && $addNewShow)) 
         {
                 $videoId = DB::table('Video')->insertGetId(
-                    ['Title' => $title, 'Year' => $year, 'Summary' => $summary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
+                    ['Title' => $title, 'Year' => $year, 'Summary' => ($mediatype == "movie") ? $summary : $showSummary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
                 );
                     $showId = $videoId;
-                if ($mediatype == "show") 
+                if ($mediatype == "show")
                 {
                         //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
                         //$newShowId = $videoId; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
@@ -159,4 +168,3 @@ class UploadController extends Controller
         //        }
     }
 }
- 

@@ -79,8 +79,10 @@
                 </div>
                 <div id="newShowFields" hidden>
                     <label for="showInput">Enter show name</label>
-                    <input class="form-control" id="showInput" name="showInput"> {{-- <input class="form-control"
+                    <input class="form-control" id="showInput" name="showInput" placeholder="Show Name"> {{-- <input class="form-control"
                         id="actorInputLast1" name="actorInputLast1"> --}}
+                        <label for="showSummary">Enter show summary</label>
+                        <input class="form-control" id="showSummary" name="showSummary" placeholder="Summary text...">
                 </div>
                 <label for="seasonNumber">Season Number</label>
                 <input type="number" class="form-control" name="seasonNumber" id="seasonNumber" placeholder="#" required disabled>
