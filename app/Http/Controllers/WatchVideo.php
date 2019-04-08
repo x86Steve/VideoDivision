@@ -34,6 +34,7 @@ class WatchVideo extends Search\SearchController
             $cast = $this->getCastOfShow($video_id);
             $directors = $this->getDirectorsOfShow($video_id);
         }
+        $file_path = $extra->File_Path;
 
         return view('watch', [
             'User_ID' => $userID,
@@ -41,6 +42,7 @@ class WatchVideo extends Search\SearchController
             'isMovie' => $isMovie,
             'file' => $results,
             'extra' => $extra,
+            'file_path' => $file_path,
             'directors' => json_decode(json_encode($directors), true),
             'cast' => json_decode(json_encode($cast), true),
             'genres' => json_decode(json_encode($genres), true)]);
