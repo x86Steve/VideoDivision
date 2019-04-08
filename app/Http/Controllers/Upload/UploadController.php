@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Request;
 use DB;
+use Illuminate\Support\Facades\Request as IlluminateRequest;
 
 class UploadController extends Controller
 {
@@ -30,14 +31,7 @@ class UploadController extends Controller
 
     function submit()
     {
-        if (Request::hasFile('video')) {
-                $file = Request::file('video');
-                $filename = $file->getClientOriginalName();
-
-                // use laravel Storage facade method to store file,
-                // using the private option so the URL cannot be discovered
-                $path = Storage::putFileAs('videos', $file, $filename, 'private');
-            }
+        
 
         // Display File Size
         //        echo 'File Size: ' . $file->getSize();
@@ -57,10 +51,30 @@ class UploadController extends Controller
         $seasonNumber = Request::get('seasonNumber');
         $episodeNumber = Request::get('episodeNumber');
         $addNewShow = (Request::get('addNewShow') == "on");
+        $newShowName = Request::get('showInput');
         //$newShowId = -1;
         $showId = null; //Request::get('showId');
         $videoId = null;
         $episodeId = null;
+
+        if (Request::hasFile('video')) {
+            $file = Request::file('video');
+            $filename = $file->getClientOriginalName();
+            if ($addNewShow)
+            {
+                $showDir = strtolower($newShowName);
+            }
+            else
+            {
+                $existingShowName = 
+            }
+            $videoDir = ($mediatype == "movie") ? "/movies" : "/tv-shows/" . ;
+
+            // use laravel Storage facade method to store file,
+            // using the private option so the URL cannot be discovered
+            //$path = Storage::putFileAs('videos', $file, $filename, 'private');
+            $path = Storage::disk('videos')->putFileAs($videoDir, $file, $filename, 'private');
+        }
 
 
         //echo "Hello world!";

@@ -77,9 +77,9 @@
                     <input class="form-check-input" name="addNewShow" id="addNewShow" type="checkbox" onchange="toggleShowNameField()">
                     <label class="form-check-label" for="addNewShow">Add new show to database</label>
                 </div>
-                <div class="body form-row" hidden>
+                <div id="newShowFields" hidden>
                     <label for="showInput">Enter show name</label>
-                    <input class="form-control form-control-inline" id="showInput" name="showInput"> {{-- <input class="form-control"
+                    <input class="form-control" id="showInput" name="showInput"> {{-- <input class="form-control"
                         id="actorInputLast1" name="actorInputLast1"> --}}
                 </div>
                 <label for="seasonNumber">Season Number</label>
@@ -176,7 +176,7 @@
         {
             var checked = document.getElementById("addNewShow").checked;
             document.getElementById("showSelect").disabled = checked;
-            document.getElementById("showFields").querySelector('.body').hidden = !checked;
+            document.getElementById("newShowFields").hidden = !checked;
         }
 
         // this is called when the user checks or unchecks
