@@ -1,19 +1,14 @@
-@extends('layouts.app')
 
-@if(Auth::guest())
-    <script>
-        function goHome()
-        {
-            window.location.replace ("/");
-        }
-        setTimeout(goHome, 0);
-    </script>
-    @endif
+
+
+@extends('layouts.app')
+<!-- TODO Redirect user when they are not logged in. -->
+
 @section('content')
     <div class="container">
-        <div class="row my-2">
+        <div class="row ">
             <div class="col-lg-8 order-lg-2">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-pills">
                     <li class="nav-item">
                         <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
                     </li>
@@ -27,12 +22,27 @@
                         <a href="" data-target="#subscriptions" data-toggle="tab" class="nav-link">Subscriptions</a>
                     </li>
                 </ul>
+                <div class="container">
+                    <div class="row">
+                        <div class = "col-mid-10 col-md-offset-1">
+                            <img src="{{Config::get('customfilelocations.locations.avatars')}}{{Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 150px; height: 150px; float:left; border-radius: 50%;margin-right: 25%;">
+                            <!-- First line is required to upload images !-->
+                            <h2>{{Auth::user()->name}}'s Profile</h2>
+                            <form enctype="multipart/form-data" action="/public/profile" method="POST">
+                                <label><b>Update profile image</b></label>
+                                <input type="file" name="avatar">
+                                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                <input type="submit" class="pull-right btn btn-sm btn-primary">
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div class="tab-content py-4">
                     <div class="tab-pane active" id="profile">
                         <h5 class="mb-3">User Profile</h5>
                         <div class="row">
                             <div class="col-md-6">
-                                <h6><b>Welcome, {{$username}}</b></h6>
+                                <h6><b>Welcome, {{Auth::user()->name}}</b></h6>
                                 <p>
                                     Web Designer, UI/UX Engineer
                                 </p>
@@ -53,9 +63,9 @@
                                 <a href="#" class="badge badge-dark">Naruto The Movie</a>
                                 <hr>
                                 <h6>Subscriber Status</h6>
-                                @if($subscriberstatus === 0)
+                                @if(Auth::user()->isPaid === 0)
                                     <a href="/public/subscribe" class="badge  badge-danger">&cross; Please review payment information! &cross;</a>
-                                @elseif($subscriberstatus === 1)
+                                @elseif(Auth::user()->isPaid === 1)
                                     <span class="badge badge-success"></i>Everything's lookin' good! Enjoy! &checkmark;</span>
                                 @else
                                     <a href="/public/subscribe" class="badge badge-info">Please consider subscribing!</a>
@@ -95,7 +105,7 @@
                                 </table>
                             </div>
                         </div>
-                        <!--/row-->
+
                     </div>
                     <div class="tab-pane" id="messages">
                         <div class="alert alert-info alert-dismissable">
@@ -139,19 +149,19 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label form-control-label">First name</label>
                                 <div class="col-lg-9">
-                                    <input class="form-control" type="text" value="Jane">
+                                    <input class="form-control" type="text" value="{{Auth::user()->name }}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label form-control-label">Last name</label>
                                 <div class="col-lg-9">
-                                    <input class="form-control" type="text" value="Bishop">
+                                    <input class="form-control" type="text" value="{{Auth::user()->lastname}}">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label form-control-label">Email</label>
                                 <div class="col-lg-9">
-                                    <input class="form-control" type="email" value="email@gmail.com">
+                                    <input class="form-control" type="email" value="{{Auth::user()->email}}">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -197,21 +207,15 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-lg-3 col-form-label form-control-label">Username</label>
-                                <div class="col-lg-9">
-                                    <input class="form-control" type="text" value="janeuser">
-                                </div>
-                            </div>
-                            <div class="form-group row">
                                 <label class="col-lg-3 col-form-label form-control-label">Password</label>
                                 <div class="col-lg-9">
-                                    <input class="form-control" type="password" value="11111122333">
+                                    <input class="form-control" type="password" value="111111111111">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
                                 <div class="col-lg-9">
-                                    <input class="form-control" type="password" value="11111122333">
+                                    <input class="form-control" type="password" value="111111111111">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -225,14 +229,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 order-lg-1 text-center">
-                <img src="http://why.soserio.us/Media/Discord61553251537.png" class="mx-auto img-fluid img-circle d-block" alt="avatar">
-                <h6 class="mt-2">Upload a different photo</h6>
-                <label class="custom-file">
-                    <input type="file" id="file" class="form-control-file">
-                </label>
-            </div>
         </div>
     </div>
-    @endsection
-                                                      
+@endsection

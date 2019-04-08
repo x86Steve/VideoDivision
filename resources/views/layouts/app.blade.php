@@ -43,14 +43,7 @@
                 @if(Request::is('/'))
                     @include('inc.showcase')
                 @endif
-                <div class="row">
-                    <div class="col-mid-8 col-lg-8">
-                        <main class="py-4">
-                            @yield('content')
-                        </main>
-                    </div>
-                    </div>
-                </div>
+                    @yield('content')
             </div>
         </div>
         <footer id="footer" class="text-center">

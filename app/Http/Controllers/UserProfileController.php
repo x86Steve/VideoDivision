@@ -4,21 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use DB;
+use Image;
 use Illuminate\Support\Facades\View;
 
 class UserProfileController extends Controller
 {
+    public function update_avatar(Request $request)
+    {
+        // Handles user upload of avatar
+        if($request->hasFile('avatar'))
+        {
+            $avatar = $request->file('avatar');
+            $filename = time() . '.' . $avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300,300)->save(public_path('\\avatars\\' . $filename));
+
+            $user = Auth::user();
+            $user->avatar = $filename;
+            $user->save();
+
+            return View::make("profile.profile")
+                ->with(array('CurrentUser' => Auth::user()));
+
+        }
+
+    }
     public function index()
     {
-
-        $UserName = Auth::user()->name;
-        $UserInfo = DB::table("users")->where('name','=', $UserName)->get();
-        $SubscriberStatus =  $UserInfo[0]->isPaid;
-
-        return View::make("profile.profile")
-            ->with("username",$UserName)
-            ->with("subscriberstatus", $SubscriberStatus);
+        return View::make("profile.profile");
+           // ->with(array('CurrentUser' => Auth::user()));
     }
     //
 }
