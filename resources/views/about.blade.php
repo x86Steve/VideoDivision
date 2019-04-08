@@ -2,6 +2,13 @@
 
 @section('content')
     <h1>About</h1>
+
+    <div class="alert alert-danger" role="alert">
+        <center><strong><i data-feather="alert-triangle"></i> ACADEMIC PROJECT <i data-feather="alert-triangle"></i></strong> </center>
+          <p>This site is gaining absolutely no income from sources that are listed here. There will be no monetary or industrial value of this site of any kind!</p>
+        <p>This is strictly an academic project.</p>
+        <p>Thank you for understanding and please don't sue us.</p>
+    </div>
     <p>
        Video Division is a new subscription service for watching
        TV episodes and movies on your favorite device. It also has user profile pages to keep up with your friends

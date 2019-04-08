@@ -16,7 +16,7 @@ class UserProfileController extends Controller
         {
             $avatar = $request->file('avatar');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
-            Image::make($avatar)->resize(300,300)->save(public_path('\\avatars\\' . $filename));
+            Image::make($avatar)->resize(300,300)->save(public_path('/avatars/' . $filename));
 
             $user = Auth::user();
             $user->avatar = $filename;

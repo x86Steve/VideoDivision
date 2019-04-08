@@ -67,6 +67,5 @@
     </div>
 </nav>
 
-<!-- This tells all data-feathers to initialize and create the icon you requested -->
-<script>feather.replace()</script>
+
 
