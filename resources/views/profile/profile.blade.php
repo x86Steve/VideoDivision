@@ -56,7 +56,7 @@
                                 <hr>
                                 @if(sizeof($Video_Titles) > 0)
                                 @foreach ($Video_Titles as $Title)
-                                    <a href="#" class="badge badge-dark badge-pill">{{$Title->Title}}</a>
+                                    <a href="/public/watch/{{$Title->Video_ID}}" class="badge badge-dark badge-pill">{{$Title->Title}}</a>
                                 @endforeach
                                 @else
                                     Hmm, it's a little empty here... Use the drop down menu to select some shows! :)
