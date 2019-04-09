@@ -57,8 +57,7 @@ return [
 
         'videos' => [
             'driver' => 'local',
-            'root' => '/assets/videos',
-            'visibility' => 'private',
+            'root' => base_path('assets/videos'),
         ],
 
         's3' => [

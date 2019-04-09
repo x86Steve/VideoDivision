@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Upload;
 
 use App\Http\Controllers\Controller;
-//use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Request;
 use DB;
-use Illuminate\Support\Facades\Request as IlluminateRequest;
 
 class UploadController extends Controller
 {
@@ -25,21 +23,14 @@ class UploadController extends Controller
 
     function index()
     {
-        //loadData();
         return self::loadPage(0);
     }
 
     function submit()
     {
-        
-
         // Display File Size
         //        echo 'File Size: ' . $file->getSize();
         //        echo '<br>';
-        //Move Uploaded File
-        //$destinationPath = 'uploads';
-        //$file->move($destinationPath, $file->getClientOriginalName());
-        //$file->move($path);
 
         // get video metadata
         $title = Request::get('title');
@@ -53,8 +44,7 @@ class UploadController extends Controller
         $addNewShow = (Request::get('addNewShow') == "on");
         $newShowName = Request::get('showInput');
         $newShowSummary = Request::get('showSummary');
-        //$newShowId = -1;
-        $showId = null; //Request::get('showId');
+        $showId = Request::get('showSelect');
         $videoId = null;
         $episodeId = null;
 
@@ -72,17 +62,15 @@ class UploadController extends Controller
                 }
                 else
                 {
-                    $existingShowName = DB::table('Video')->select('Title')->where('Video_ID', $showId)->get()[0];
+                    $existingShowName = DB::table('Video')->select('Title')->where('Video_ID', $showId)->first()->Title;
                     $showDir = strtolower($existingShowName);
                 }
             }
                 
-            $videoDir = ($mediatype == "movie") ? "/movies" : "/tv-shows/" . $showDir;
-
-            // use laravel Storage facade method to store file,
-            // using the private option so the URL cannot be discovered
-            //$path = Storage::putFileAs('videos', $file, $filename, 'private');
-            $path = Storage::disk('videos')->putFileAs($videoDir, $file, $filename, 'private');
+            $videoDir = ($mediatype == "movie") ? "movies" : "tv-shows/" . $showDir . "/Season" . $seasonNumber;
+            // use laravel Storage facade method to store file
+            Storage::disk('videos')->putFileAs($videoDir, $file, $filename);
+            $path = base_path('assets/videos/' . $videoDir . '/' . $filename);
         }
 
 
@@ -97,7 +85,7 @@ class UploadController extends Controller
         if ($mediatype == "movie" || ($mediatype == "show" && $addNewShow)) 
         {
                 $videoId = DB::table('Video')->insertGetId(
-                    ['Title' => $title, 'Year' => $year, 'Summary' => ($mediatype == "movie") ? $summary : $showSummary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
+                    ['Title' => $title, 'Year' => $year, 'Summary' => ($mediatype == "movie") ? $summary : $newShowSummary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
                 );
                     $showId = $videoId;
                 if ($mediatype == "show")
@@ -105,13 +93,7 @@ class UploadController extends Controller
                         //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
                         //$newShowId = $videoId; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
                     }
-            }
-
-            else if (!$addNewShow)
-            {
-                $showId = Request::get('showSelect');
-            }
-            
+            }      
 
             // enter movie info in DB
         if ($mediatype == "movie") {
@@ -160,11 +142,6 @@ class UploadController extends Controller
                 $count++;
             }
 
-        //echo "Count: " . ($count - 1);
-
         return self::loadPage(1);
-        //        } else {
-        //            return view('upload', ['status' => 0, 'newShowId' => -1]);
-        //        }
     }
 }
