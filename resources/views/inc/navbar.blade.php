@@ -36,7 +36,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
                     <a class="dropdown-item" href="/public/profile"><i data-feather="edit-2"></i> Edit Profile</a>
                     <a class="dropdown-item" href="#"><i data-feather="edit"></i> Edit Subscription</a>
-                    <a class="dropdown-item" href="#"><i data-feather="eye"></i> Watch your shows!</a>
+                    <a class="dropdown-item" href="/public/my_videos"><i data-feather="eye"></i> Watch your shows!</a>
                     <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
