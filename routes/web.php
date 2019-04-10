@@ -58,13 +58,16 @@ Route::get('/live_search/table', 'Search\LiveSearch@getTableView');
 Route::get('/live_search/action', 'Search\LiveSearch@grid')->name('live_search.grid');
 Route::get('/live_search/action2', 'Search\LiveSearch@table')->name('live_search.table');
 
+Route::get('/live_user_search/grid', 'Search\LiveUserSearch@getGridView');
+Route::get('/live_user_search/action', 'Search\LiveUserSearch@grid')->name('live_user_search.grid');
+
 
 Route::get('/video_details', 'ViewVideo@getView')->name('video_details');
 
 Auth::routes();
 
 
-Route::post('/video_details', 'ViewVideo@subscribe');
+Route::post('/video_details', 'ViewVideo@postHandler')->name('postHandler');
 
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 

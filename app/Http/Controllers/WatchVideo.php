@@ -68,6 +68,11 @@ class WatchVideo extends Search\SearchController
             ->where('Episode.Episode_Number', '=', "$episode_number")
             ->select('Episode.*')
             ->first();
+        $seasonInfo = DB::table('Episode')
+            ->where('Episode.Show_ID', '=', "$show_id")
+            ->where('Episode.Season_Number', '=', "$season_number")
+            ->get();
+        $currentSeasonEps = $seasonInfo->count();
 
         $episode_number = $episodeInfo->Episode_Number;
         $episode_title = $episodeInfo->Episode_Title;
@@ -80,7 +85,7 @@ class WatchVideo extends Search\SearchController
             $lastSeasonFlag = 0;
         }
 
-        if (($episode_number == $lastEpisodeOfSeriesNumber) && ($season_number != $lastSeasonNumber)) {
+        if (($episode_number == $currentSeasonEps) && ($season_number != $lastSeasonNumber)) {
             $newSeason = $season_number + 1;
             $resetEpisodeNumber = 1;
 
