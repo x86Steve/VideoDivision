@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\View;
 use DB;
 class UserProfileController extends Controller
 {
+
     private function get_recent_activity()
     {
         $User_Recent_Activity_Table = DB::table('recent_activity')->where('user_id', Auth::user()->id)->select(array('entry','created_at'))->limit(5)->orderBy('created_at','desc')->get();
 
         return $User_Recent_Activity_Table;
     }
-
+  
     public function update_avatar(Request $request)
     {
         // Handles user upload of avatar
