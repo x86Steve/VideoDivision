@@ -90,6 +90,7 @@
                 <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
                 <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
                 <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
+                <input type="hidden" id="postType" name="postType" value="0">
                 <input type="submit" class="btn btn-dark"/>
             </form>
 
@@ -130,6 +131,35 @@
         @endif
 
     @endif
+
+    {{--A BUNCH OF SPACES FOR FORMATTING (Screw using align)--}}
+
+
+
+    {{--THE FAVORITE BUTTON--}}
+
+    @if($isFav === false)
+    <form id="form" method="post">
+        {{ csrf_field() }}
+        <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
+        <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
+        <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
+        <input type="hidden" id="postType" name="postType" value="1">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <button type="submit" class="btn btn-dark btn-sm">Favorite!</button>
+    </form>
+    @else
+        <form id="form" method="post">
+            {{ csrf_field() }}
+            <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
+            <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
+            <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
+            <input type="hidden" id="postType" name="postType" value="2">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-dark btn-sm">Un-favorite</button>
+        </form>
+    @endif
+
 
     {{--OTHER BASIC INFO (SUMMARY, GENRES, CAST, DIRECTORS)--}}
     <br>
