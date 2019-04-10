@@ -6,9 +6,16 @@ use Illuminate\Http\Request;
 use Auth;
 use Image;
 use Illuminate\Support\Facades\View;
-
+use DB;
 class UserProfileController extends Controller
 {
+    private function get_recent_activity()
+    {
+        $User_Recent_Activity_Table = DB::table('recent_activity')->where('user_id', Auth::user()->id)->select(array('entry','created_at'))->limit(5)->orderBy('created_at','desc')->get();
+
+        return $User_Recent_Activity_Table;
+    }
+
     public function update_avatar(Request $request)
     {
         // Handles user upload of avatar
@@ -24,14 +31,21 @@ class UserProfileController extends Controller
 
             return View::make("profile.profile")
                 ->with(array('CurrentUser' => Auth::user()));
-
         }
-
     }
     public function index()
     {
-        return View::make("profile.profile");
-           // ->with(array('CurrentUser' => Auth::user()));
+
+        $User_Sub_Video_IDs = DB::table('active_subscriptions')->where('User_ID', Auth::user()->id)->get();
+        $User_Sub_Video_Titles = array();
+
+        if (sizeof($User_Sub_Video_IDs) > 0)
+            foreach ($User_Sub_Video_IDs as $id)
+                $User_Sub_Video_Titles[] = DB::table('video')->where('Video_ID', $id->Video_ID)->first();
+
+        return View::make("profile.profile")
+            ->with(array('Video_Titles' => $User_Sub_Video_Titles,
+                'recent_activities' => $this->get_recent_activity()));
     }
     //
 }

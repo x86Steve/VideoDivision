@@ -20,8 +20,9 @@
             To view this video please enable JavaScript, and consider upgrading to a web browser that
             <a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
         </p>
-
     </video>
+
+    {{ActivityEntry("Started watching: " . helper_GetMovieTitleByID(($file)[0]->Video_ID))}}
     </body>
 
 
