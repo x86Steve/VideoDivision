@@ -36,24 +36,29 @@ class ViewVideo extends Search\SearchController
         }
 
         $isSubbed = $this -> isSubbed($video_id, $userID);
+        $isFav = $this -> isFaved($video_id, $userID);
 
         if ($isMovie){
             $extra = $this -> getMovieByID($video_id);
             $cast = $this -> getCastOfMovie($video_id);
             $directors = $this -> getDirectorsOfMovie($video_id);
+            $num_of_episodes = -1;
         }
         else{
             $extra = $this -> getLastEpisodeByVideoID($video_id);
             $cast = $this -> getCastOfShow($video_id);
             $directors = $this -> getDirectorsOfShow($video_id);
+            $num_of_episodes = $this -> getEpisodeCount($video_id);
         }
 
         return view('view_video_details',  [
             'User_ID' => $userID,
             'isSubbed' => $isSubbed,
             'isMovie' => $isMovie,
+            'isFav' => $isFav,
             'file' => $results,
             'extra'=>$extra,
+            'num_of_episodes' => $num_of_episodes,
             'directors' => json_decode(json_encode($directors),true),
             'cast' => json_decode(json_encode($cast),true),
             'genres'=>json_decode(json_encode($genres),true)]);
@@ -61,26 +66,66 @@ class ViewVideo extends Search\SearchController
     }
 
     //Used to add entries to the database showing the user has subscribed
-    function subscribe()
+    function postHandler()
     {
 
-        $User_ID = Request::get('User_ID');
+        $postType = Request::get('postType');
 
-        #CHANGE TO BE DYNAMIC NUMBER INSTEAD OF 10
-        if($this->getSubs($User_ID)->count() < 10)
+        if($postType == 0)
         {
+
+            $User_ID = Request::get('User_ID');
+
+            #CHANGE TO BE DYNAMIC NUMBER INSTEAD OF 10
+            if($this->getSubs($User_ID)->count() < 10)
+            {
+                $Video_ID = Request::get('Video_ID');
+                $isMovie = Request::get('isMovie');
+
+                DB::table('active_subscriptions')->insertGetId(
+                    ['User_ID' => $User_ID, 'Video_ID' => $Video_ID, 'isMovie' =>$isMovie]);
+
+                return $this->getView();
+            }
+            else
+            {
+                return $this->getView();
+            }
+        }
+        else if($postType == 1)
+        {
+            $User_ID = Request::get('User_ID');
+
             $Video_ID = Request::get('Video_ID');
-            $isMovie = Request::get('isMovie');
 
-            DB::table('active_subscriptions')->insertGetId(
-                ['User_ID' => $User_ID, 'Video_ID' => $Video_ID, 'isMovie' =>$isMovie]);
+            if($this->isFaved($Video_ID, $User_ID) === false)
+            DB::table('favorites')->insertGetId(
+                ['User_ID' => $User_ID, 'Video_ID' => $Video_ID]);
 
             return $this->getView();
+
         }
-        else
+        else if($postType == 2)
         {
+            $User_ID = Request::get('User_ID');
+
+            $Video_ID = Request::get('Video_ID');
+
+            if($this->isFaved($Video_ID, $User_ID) === true)
+                DB::table('favorites')
+                    ->where('User_ID', '=', "$User_ID")
+                    ->where('Video_ID', '=',"$Video_ID")
+                    ->delete()
+                ;
+
             return $this->getView();
         }
+
+    }
+
+    //Used to add entries to the database showing the user has subscribed
+    function favorite()
+    {
 
     }
 

@@ -10,6 +10,17 @@ use DB;
 class SearchController extends Controller
 {
 
+
+    protected function getEpisodeCount($video_id)
+    {
+        $episodes = DB::table('Episode')
+            ->where('Show_ID', '=', "$video_id")
+            ->get();
+
+        $count = $episodes ->count();
+        return $count;
+    }
+
     protected function isSubbed($video_id, $user_id)
     {
         $isSubbed = false;
@@ -23,6 +34,21 @@ class SearchController extends Controller
 
         return $isSubbed;
     }
+
+    protected function isFaved($video_id, $user_id)
+    {
+        $isFaved = false;
+
+        $favorite = DB::table('favorites')
+            ->where('User_ID', '=', "$user_id")
+            ->where('Video_ID', '=', "$video_id")
+            ->get();
+
+        if($favorite->count()>0){$isFaved = true;}
+
+        return $isFaved;
+    }
+
 
     protected function getSubs($user_id)
     {
