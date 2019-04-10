@@ -66,10 +66,6 @@ Auth::routes();
 
 Route::post('/video_details', 'ViewVideo@postHandler')->name('postHandler');
 
-Route::delete('/video_details', 'ViewVideo@delete')->name('delete_video_details');
-
-//Route::post('/video_details', 'ViewVideo@favorite')->name('favorite');
-
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
 Auth::routes();
