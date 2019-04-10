@@ -76,10 +76,14 @@
                                 <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
                                 <table class="table table-sm table-hover table-striped">
                                     <tbody>
+                                    @foreach($recent_activities as $activity)
                                     <tr>
                                         <td>
-                                            <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
+                                            <strong>{{Auth::user()->name}}</strong>  - {{$activity->entry}} -  <strong>{{ Carbon\Carbon::parse($activity->created_at)->diffForHumans()}}</strong>
+
                                         </td>
+                                    </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
