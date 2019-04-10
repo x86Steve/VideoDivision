@@ -58,6 +58,9 @@ Route::get('/live_search/table', 'Search\LiveSearch@getTableView');
 Route::get('/live_search/action', 'Search\LiveSearch@grid')->name('live_search.grid');
 Route::get('/live_search/action2', 'Search\LiveSearch@table')->name('live_search.table');
 
+Route::get('/live_user_search/grid', 'Search\LiveUserSearch@getGridView');
+Route::get('/live_user_search/action', 'Search\LiveUserSearch@grid')->name('live_user_search.grid');
+
 
 Route::get('/video_details', 'ViewVideo@getView')->name('video_details');
 
@@ -65,10 +68,6 @@ Auth::routes();
 
 
 Route::post('/video_details', 'ViewVideo@postHandler')->name('postHandler');
-
-Route::delete('/video_details', 'ViewVideo@delete')->name('delete_video_details');
-
-//Route::post('/video_details', 'ViewVideo@favorite')->name('favorite');
 
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
