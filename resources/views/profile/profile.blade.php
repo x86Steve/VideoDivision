@@ -3,7 +3,6 @@
 
 @extends('layouts.app')
 <!-- TODO Redirect user when they are not logged in. -->
-
 @section('content')
     <div class="container">
         <div class="row ">
@@ -81,27 +80,6 @@
                                         <td>
                                             <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
                                     </tbody>
                                 </table>
                             </div>

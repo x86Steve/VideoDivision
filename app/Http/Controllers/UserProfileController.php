@@ -7,7 +7,6 @@ use Auth;
 use Image;
 use Illuminate\Support\Facades\View;
 use DB;
-
 class UserProfileController extends Controller
 {
     public function update_avatar(Request $request)
@@ -25,7 +24,6 @@ class UserProfileController extends Controller
 
             return View::make("profile.profile")
                 ->with(array('CurrentUser' => Auth::user()));
-
         }
     }
     public function index()
