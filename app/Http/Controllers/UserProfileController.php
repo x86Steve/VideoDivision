@@ -10,6 +10,10 @@ use DB;
 
 class UserProfileController extends Controller
 {
+    public function update_settings(Request $request)
+    {
+
+    }
     public function update_avatar(Request $request)
     {
         // Handles user upload of avatar
