@@ -13,15 +13,11 @@
 
 <body>
 
-
-
-
-    
-@extends('layouts.app') 
+@extends('layouts.app')
 @section('content')
 
+    <br>
     <h1>Upload video</h1>
-
     <br>
 
     <form id="form" method="POST" enctype="multipart/form-data">
@@ -38,9 +34,6 @@
                 <label class="form-check-label" for="showchoice">Show</label>
             </div>
         </div>
-
-        <!--<input type="radio" name="mediatype" id="episodechoice" onclick="updateForm()" value="episode" > Episode-->
-
         <div class="form-group">
             <label for="title">Title</label>
             <input type="text" class="form-control" name="title" id="title" placeholder="Movie Title" required>
@@ -49,15 +42,10 @@
             <label for="year">Year</label>
             <input type="text" class="form-control" name="year" id="year" minlength="4" maxlength="4" placeholder="XXXX" required>
         </div>
-
         <div class="form-group">
             <label for="summary">Summary</label>
             <input type="text" class="form-control" name="summary" id="summary" placeholder="Summary text..." required>
         </div>
-
-        <!--Maybe make this read only if adding episode to existing show?-->
-        <!--<div id="movieFields">-->
-        <!--</div>-->
         <div class="form-group">
             <label for="subscription">Subscription</label>
             <input type="text" class="form-control" name="subscription" id="subscription" placeholder="Subscription" required>
@@ -79,10 +67,10 @@
                 </div>
                 <div id="newShowFields" hidden>
                     <label for="showInput">Enter show name</label>
-                    <input class="form-control" id="showInput" name="showInput" placeholder="Show Name"> {{-- <input class="form-control"
+                    <input class="form-control" id="showInput" name="showInput" placeholder="Show Name" required disabled> {{-- <input class="form-control"
                         id="actorInputLast1" name="actorInputLast1"> --}}
                         <label for="showSummary">Enter show summary</label>
-                        <input class="form-control" id="showSummary" name="showSummary" placeholder="Summary text...">
+                        <input class="form-control" id="showSummary" name="showSummary" placeholder="Summary text..." required disabled>
                 </div>
                 <label for="seasonNumber">Season Number</label>
                 <input type="number" class="form-control" name="seasonNumber" id="seasonNumber" placeholder="#" required disabled>
@@ -95,7 +83,7 @@
         <div id="actors">
             <h2>Actors</h2>
             <div class="form-group">
-                <label for="actorSelect1">Choose existing actor</label>
+                <label for="actorSelect1">Select an existing actor</label>
                 <select class="form-control" id="actorSelect1" name="actorSelect1" required>
                     @foreach ($actors as $actor)
                     <option label="{{$actor->First_Name}} {{$actor->Last_Name}}" value="{{$actor->Actor_ID}}">
@@ -103,15 +91,15 @@
                 </select>
                 <div class="form-check">
                     <input class="form-check-input" name="addNew1" id="addNew1" type="checkbox" onchange="toggleActorNameFields()">
-                    <label class="form-check-label" for="addNew1">Add new actor to database</label>
+                    <label class="form-check-label" for="addNew1">Enter new actor</label>
                 </div>
                 <div class="form-row" hidden>
                     {{-- <label for="actorInputFirst1">Enter name</label><br> --}}
                     <div class="col">
-                        <input class="form-control" id="actorInputFirst1" name="actorInputFirst1" placeholder="First name">
+                        <input class="form-control" id="actorInputFirst1" name="actorInputFirst1" placeholder="First name" required disabled>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="actorInputLast1" name="actorInputLast1" placeholder="Last name">
+                        <input class="form-control" id="actorInputLast1" name="actorInputLast1" placeholder="Last name" required disabled>
                     </div>
                 </div>
             </div>
@@ -119,8 +107,8 @@
         </div>
 
         <div class="form-group btn-group">
-            <button class="btn btn-primary" type="button" onclick="addActor()">+</button>
-            <button class="btn btn-danger" id="removeButton" type="button" onclick="removeActor()" disabled>-</button>
+            <button class="btn btn-primary" type="button" onclick="addActor()">+ Add actor</button>
+            <button class="btn btn-danger" id="removeButton" type="button" onclick="removeActor()" disabled>- Remove actor</button>
         </div>
         <!--All submissions contain a movie or episode-->
         <!--<div id="nonShowFields">-->
@@ -161,11 +149,13 @@
         // is being uploaded
         function changeMediaType() {
             var type = document.querySelector('input[name="mediatype"]:checked').value;
+            var newShowEnabled = document.getElementById("addNewShow").checked;
 
             var i;
             var episodeElements = document.getElementById("showFields").querySelectorAll("input");
             for (i = 0; i < episodeElements.length; i++) {
-                episodeElements[i].disabled = (type === "show") ? false : true;
+                if (episodeElements[i].parentElement.id != "newShowFields" || newShowEnabled)
+                    episodeElements[i].disabled = (type === "show") ? false : true;
             }
 
             document.getElementById("title").placeholder = (type === "show") ? "Episode Title" : "Movie Title";
@@ -179,6 +169,13 @@
             var checked = document.getElementById("addNewShow").checked;
             document.getElementById("showSelect").disabled = checked;
             document.getElementById("newShowFields").hidden = !checked;
+
+            var i;
+            var newShowElements = document.getElementById("newShowFields").querySelectorAll("input");
+            for (i = 0; i < newShowElements.length; i++)
+            {
+                newShowElements[i].disabled = !checked;
+            }
         }
 
         // this is called when the user checks or unchecks
@@ -190,6 +187,9 @@
                 var checked = actors[i].querySelector('.form-check-input').checked;
                 actors[i].querySelector('.form-row').hidden = !checked;
                 actors[i].querySelector('#actorSelect' + (i + 1)).disabled = checked;
+                nameInputs = actors[i].getElementsByClassName("form-row")[0].getElementsByTagName("input");
+                nameInputs[0].disabled = !checked;
+                nameInputs[1].disabled = !checked;
             }
         }
 
@@ -258,6 +258,7 @@
             var player = videojs('player');
             var fullDuration = videojs.formatTime(player.duration());
             document.getElementById("duration").setAttribute("value", fullDuration);
+            alert(fullDuration);
         }
     </script>
 
