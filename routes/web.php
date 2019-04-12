@@ -64,14 +64,10 @@ Route::get('/live_user_search/action', 'Search\LiveUserSearch@grid')->name('live
 
 Route::get('/video_details', 'ViewVideo@getView')->name('video_details');
 
-Auth::routes();
-
-
 Route::post('/video_details', 'ViewVideo@postHandler')->name('postHandler');
 
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
-Auth::routes();
 
 
 /************************************************************************/

@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
 
+        $this->loadHelpers();
+
         //
     }
 
@@ -31,5 +33,13 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         //
+    }
+
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__.'/../Helpers/*.php') as $filename)
+        {
+            require_once $filename;
+        }
     }
 }

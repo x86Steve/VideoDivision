@@ -16,6 +16,18 @@ class UserProfileController extends Controller
 
         return $User_Recent_Activity_Table;
     }
+
+    private function get_current_subscription_titles()
+    {
+        $User_Sub_Video_IDs = DB::table('active_subscriptions')->where('User_ID', Auth::user()->id)->get();
+        $User_Sub_Video_Titles = array();
+
+        if (sizeof($User_Sub_Video_IDs) > 0)
+            foreach ($User_Sub_Video_IDs as $id)
+                $User_Sub_Video_Titles[] = DB::table('Video')->where('Video_ID', $id->Video_ID)->first();
+
+            return $User_Sub_Video_Titles;
+    }
   
     public function update_avatar(Request $request)
     {
@@ -31,22 +43,19 @@ class UserProfileController extends Controller
             $user->save();
 
             return View::make("profile.profile")
-                ->with(array('CurrentUser' => Auth::user()));
+                ->with(array(
+                    'Video_Titles' => $this->get_current_subscription_titles(),
+                    'recent_activities' => $this->get_recent_activity(),
+                    'CurrentUser' => Auth::user()));
         }
     }
     public function index()
     {
-
-        $User_Sub_Video_IDs = DB::table('active_subscriptions')->where('User_ID', Auth::user()->id)->get();
-        $User_Sub_Video_Titles = array();
-
-        if (sizeof($User_Sub_Video_IDs) > 0)
-            foreach ($User_Sub_Video_IDs as $id)
-                $User_Sub_Video_Titles[] = DB::table('video')->where('Video_ID', $id->Video_ID)->first();
-
         return View::make("profile.profile")
-            ->with(array('Video_Titles' => $User_Sub_Video_Titles,
-                'recent_activities' => $this->get_recent_activity()));
+            ->with(array(
+                'Video_Titles' => $this->get_current_subscription_titles(),
+                'recent_activities' => $this->get_recent_activity(),
+                'CurrentUser' => Auth::user()));
     }
     //
 }
