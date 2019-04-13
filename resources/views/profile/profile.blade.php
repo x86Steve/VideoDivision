@@ -26,7 +26,7 @@
                         <div class = "col-mid-10 col-md-offset-1">
                             <img src="{{Config::get('customfilelocations.locations.avatars')}}{{Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 150px; height: 150px; float:left; border-radius: 50%;margin-right: 25%;">
                             <!-- First line is required to upload images !-->
-                            <h2>{{Auth::user()->name}}'s Profile</h2>
+                            <h2>{{Auth::user()->username}}'s Profile</h2>
                             <form enctype="multipart/form-data" action="/public/profile" method="POST">
                                 <label><b>Update profile image</b></label>
                                 <input type="file" name="avatar">
@@ -41,7 +41,7 @@
                         <h5 class="mb-3">User Profile</h5>
                         <div class="row">
                             <div class="col-md-6">
-                                <h6><b>Welcome, {{Auth::user()->name}}</b></h6>
+                                <h6><b>Welcome, {{Auth::user()->username}}</b></h6>
                                 <p>
                                     Web Designer, UI/UX Engineer
                                 </p>
@@ -129,6 +129,12 @@
                     </div>
                     <div class="tab-pane" id="edit">
                         <form role="form">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label">Username</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control" type="text" disabled value="{{Auth::user()->username }}">
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label form-control-label">First name</label>
                                 <div class="col-lg-9">

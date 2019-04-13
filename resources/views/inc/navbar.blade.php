@@ -32,7 +32,7 @@
             @if(Auth::check())
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style ="position: relative; padding-left: 50px;">
-                    <img src="{{Config::get('customfilelocations.locations.avatars')}}{{Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 32px; height: 32px; position: absolute; top:5px; left: 10px; border-radius: 50%">                    Hey, {{ Auth::user()->name }}!</a>
+                    <img src="{{Config::get('customfilelocations.locations.avatars')}}{{Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 32px; height: 32px; position: absolute; top:5px; left: 10px; border-radius: 50%">Hey, {{ Auth::user()->username }}!</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
                     <a class="dropdown-item" href="/public/profile"><i data-feather="edit-2"></i> Edit Profile</a>
                     <a class="dropdown-item disabled" href="#"><i data-feather="edit"></i> Edit Subscription</a>
