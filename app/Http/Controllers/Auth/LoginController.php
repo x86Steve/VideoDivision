@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-
+use JsonSchema\Exception\ValidationException;
 class LoginController extends Controller
 {
     /*
@@ -73,9 +73,11 @@ class LoginController extends Controller
     protected function sendFailedLoginResponse(Request $request)
     {
         $request->session()->put('login_error', trans('auth.failed'));
-        throw ValidationException::withMessages(
+        throw \Illuminate\Validation\ValidationException::withMessages(
             [
                 'error' => [trans('auth.failed')],
+                'username' => 'Username or password is incorrect.',
+                'password' => 'Username or password is incorrect.'
             ]
         );
     }
