@@ -13,7 +13,7 @@
     <h1 class="display-4">Welcome to VideoDivision.net</h1>
     <p class="lead">Say goodbye to Netflix , Hulu, and Crunchyroll!</p>
     <hr class="my-4">
-    @if(Auth::check())
+    @if(!Auth::check())
     <p>We can start you off by Logging in or, if you are new, Register now!</p>
     @endif
 
