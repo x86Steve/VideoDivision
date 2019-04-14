@@ -15,6 +15,8 @@
 
 
 
+
+
     
 @extends('layouts.app') 
 @section('content')
@@ -57,25 +59,33 @@
 
         <div id="showFields" hidden>
             <h2>Show information</h2>
-            <div class="form-group">
+            
                 <label for="showSelect">Show</label>
                 <select class="form-control" id="showSelect" name="showSelect" required>
                     @foreach ($shows as $show)
                     <option label="{{$show->Title}}" value="{{$show->Video_ID}}">
                         @endforeach
                 </select>
-                <div class="form-check">
-                    <input class="form-check-input" name="addNewShow" id="addNewShow" type="checkbox" onchange="toggleShowNameField()">
-                    <label class="form-check-label" for="addNewShow">Add new show to database</label>
-                </div>
-                <div id="newShowFields" hidden>
+            
+            <div class="form-check">
+                <input class="form-check-input" name="addNewShow" id="addNewShow" type="checkbox" onchange="toggleShowNameField()">
+                <label class="form-check-label" for="addNewShow">Add new show to database</label>
+            </div>
+            <div id="newShowFields" hidden>
+                <div class="form-group">
                     <label for="showInput">Enter show name</label>
                     <input class="form-control" id="showInput" name="showInput" placeholder="Show Name" required disabled>                    {{-- <input class="form-control" id="actorInputLast1" name="actorInputLast1"> --}}
+                </div>
+                <div class="form-group">
                     <label for="showSummary">Enter show summary</label>
                     <input class="form-control" id="showSummary" name="showSummary" placeholder="Summary text..." required disabled>
                 </div>
+            </div>
+            <div class="form-group">
                 <label for="seasonNumber">Season Number</label>
                 <input type="number" class="form-control" name="seasonNumber" id="seasonNumber" placeholder="#" required disabled>
+            </div>
+            <div class="form-group">
                 <label for="episodeNumber">Episode Number</label>
                 <input type="number" class="form-control" name="episodeNumber" id="episodeNumber" placeholder="#" required disabled>
             </div>
@@ -173,12 +183,9 @@
         <div class="form-group">
             <div id="videopreview" hidden>
                 <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" width="730" onloadedmetadata="loadDuration()"
-                    controls>
-            <div class="form-group">
-                <label for="duration">Runtime:</label>
-                <input type="text" class="form-control" id="duration" name="duration" readonly>
+                    controls>    
             </div>
-        </div>
+            <input id="duration" name="duration" readonly hidden>
         </div>
         <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -194,6 +201,8 @@
     <h2>Upload failed</h2>
     @endif
 @endsection
+
+
 
 
     <script>
@@ -212,7 +221,7 @@
 
             document.getElementById("title").placeholder = (type === "show") ? "Episode Title" : "Movie Title";
             document.getElementById("showFields").hidden = (type === "show") ? false : true;
-            toggleThumbnailFields();
+            toggleThumbnailAndGenreFields();
         }
 
         // this is called when the user checks or unchecks
@@ -229,7 +238,7 @@
             {
                 newShowElements[i].disabled = !checked;
             }
-            toggleThumbnailFields();
+            toggleThumbnailAndGenreFields();
         }
 
         // this is called when the user checks or unchecks
@@ -262,11 +271,9 @@
             newActor.querySelector('.form-check-input').checked = false;
             newActor.querySelector('.form-check-label').htmlFor = "addNew" + newCount;
 
-            //newActor.querySelector('.form-row > label').htmlFor = "actorInputFirst" + newCount;
             newActor.querySelector('.col > input').id = "actorInputFirst" + newCount;
             newActor.querySelector('.col > input').name = "actorInputFirst" + newCount;
             newActor.querySelector('.col > input').value = "";
-            //newActor.querySelector('.form-row > label').htmlFor = "actorInputFirst" + newCount;
             newActor.querySelectorAll('.col > input')[1].id = "actorInputLast" + newCount;
             newActor.querySelectorAll('.col > input')[1].name = "actorInputLast" + newCount;
             newActor.querySelectorAll('.col > input')[1].value = "";
@@ -388,22 +395,25 @@
 
         // this enables or disables the thumbnail fields
         // depending on the status of the form
-        function toggleThumbnailFields()
+        function toggleThumbnailAndGenreFields()
         {
             var mediaType = document.querySelector('input[name="mediatype"]:checked').value; 
             var newShowEnabled = document.getElementById("addNewShow").checked;
             var thumbnailFields = document.getElementById("thumbnailFields");
             var thumbnailInput = document.getElementById("thumbnail");
+            var genreFields = document.getElementById("genres");
 
             if (mediaType == "movie" || newShowEnabled)
             {
                 thumbnailFields.hidden = false;
                 thumbnailInput.disabled = false;
+                genreFields.hidden = false;
             }
             else
             {
                 thumbnailFields.hidden = true;
                 thumbnailInput.disabled = true;
+                genreFields.hidden = true;
             }
         }
 
@@ -448,9 +458,18 @@
         // loading metadata for the video
         function loadDuration() {
             var player = videojs('player');
-            var fullDuration = videojs.formatTime(player.duration());
-            document.getElementById("duration").setAttribute("value", fullDuration);
-            //alert(fullDuration);
+            var duration = SToHHMMSS(player.duration());
+            document.getElementById("duration").setAttribute("value", duration);
+        }
+
+        function SToHHMMSS(s)
+        {
+            var hours = parseInt(s / 3600);
+            s %= 3600;
+            var minutes = parseInt(s / 60);
+            s = parseInt(s % 60);
+            return hours + ":" + minutes + ":" + s;
+            //return 4;
         }
 
     </script>

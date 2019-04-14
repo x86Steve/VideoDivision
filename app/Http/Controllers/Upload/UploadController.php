@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Request;
 use DB;
+use Illuminate\Support\Facades\Request as IlluminateRequest;
 
 class UploadController extends Controller
 {
@@ -14,15 +15,15 @@ class UploadController extends Controller
     {
         // all fields in the Actor table are relevant
         $actors = DB::table('Actor')
-        ->orderBy('First_Name', 'asc')
-        ->get();
-        
+            ->orderBy('First_Name', 'asc')
+            ->get();
+
         // get only relevant information about videos where IsMovie is 0 (i.e. a show)
         $shows = DB::table('Video')
-        ->select('Video_ID', 'Title')
-        ->where('IsMovie', 0)
-        ->orderBy('Title', 'asc')
-        ->get();
+            ->select('Video_ID', 'Title')
+            ->where('IsMovie', 0)
+            ->orderBy('Title', 'asc')
+            ->get();
 
         $genres = DB::table('Genre')
             ->select('Genre_ID', 'Name')
@@ -69,53 +70,41 @@ class UploadController extends Controller
         $videoId = null;
         $episodeId = null;
 
-        if (Request::hasFile('video')) {
-                $file = Request::file('video');
-                $filename = $file->getClientOriginalName();
-
-                // get the lowercase name of the show
-                if ($mediatype == "show") {
-                        if ($addNewShow) {
-                                $showDir = strtolower($newShowName);
-                            } else {
-                                $existingShowName = DB::table('Video')->select('Title')->where('Video_ID', $showId)->first()->Title;
-                                $showDir = strtolower($existingShowName);
-                            }
-                    }
-
-                $videoDir = ($mediatype == "movie") ? "movies" : "tv-shows/" . $showDir . "/Season" . $seasonNumber;
-                // use laravel Storage facade method to store file
-                Storage::disk('videos')->putFileAs($videoDir, $file, $filename);
-                $path = base_path('assets/videos/' . $videoDir . '/' . $filename);
+        // upload video
+        $videoFile = Request::file('video');
+        $filename = $videoFile->getClientOriginalName();
+        // get the lowercase name of the show
+        if ($mediatype == "show") {
+            if ($addNewShow) {
+                $showDir = strtolower($newShowName);
+            } else {
+                $existingShowName = DB::table('Video')->select('Title')->where('Video_ID', $showId)->first()->Title;
+                $showDir = strtolower($existingShowName);
             }
-
-
-        //echo "Hello world!";
-        //echo Request::get('duration');
-        //$addNew = 'actorSelect' . $count;
-        //echo $addNew;
-        //echo Request::get('addNew1');
+        }
+        $videoDir = ($mediatype == "movie") ? "movies" : "tv-shows/" . $showDir . "/Season" . $seasonNumber;
+        // use laravel Storage facade method to store file
+        Storage::disk('videos')->putFileAs($videoDir, $videoFile, $filename);
+        $path = base_path('assets/videos/' . $videoDir . '/' . $filename);
 
         // enter video info in DB
-        // new show needs its own summary!
         if ($mediatype == "movie" || ($mediatype == "show" && $addNewShow)) {
-                $videoId = DB::table('Video')->insertGetId(
-                    ['Title' => $title, 'Year' => $year, 'Summary' => ($mediatype == "movie") ? $summary : $newShowSummary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
-                );
-                $showId = $videoId;
-                if ($mediatype == "show") {
-                        //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
-                        //$newShowId = $videoId; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
-                    }
+            $videoId = DB::table('Video')->insertGetId(
+                ['Title' => $title, 'Year' => $year, 'Summary' => ($mediatype == "movie") ? $summary : $newShowSummary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
+            );
+            $showId = $videoId;
+            if ($mediatype == "show") {
+                //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
+                //$newShowId = $videoId; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
             }
+        }
 
         // enter movie info in DB
         if ($mediatype == "movie") {
-            DB::table('Movie')->insertGetId(
+            DB::table('Movie')->insert(
                 ['Movie_ID' => $videoId, 'File_Path' => $path, 'Length' => $runtime]
             );
         }
-
 
         // enter episode info in DB
         else if ($mediatype == "show") {
@@ -130,11 +119,9 @@ class UploadController extends Controller
         // enter cast info in DB
         $count = 1;
         $actorId = null;
-        while (null !== ($actorId = Request::get('actorSelect' . $count)) || null !== ($fn =  Request::get('actorInputFirst' . $count))) {
+        while (null != ($actorId = Request::get('actorSelect' . $count)) || null != ($fn = Request::get('actorInputFirst' . $count))) {
             //$actor = Request::get('actorSelect' . $count);
             if (Request::get('addNew' . $count) == 'on') {
-                // use the custom actor name
-                //$fn = ;
                 $ln = Request::get('actorInputLast' . $count);
                 $actorId = DB::table('Actor')->insertGetId(
                     ['First_Name' => $fn, 'Last_Name' => $ln]
@@ -151,9 +138,54 @@ class UploadController extends Controller
             //echo "Video ID: " . $videoId;
 
             DB::table('Cast')->insert(
-                ['IsMovie' => ($mediatype == "movie"), 'Episode_ID' => $episodeId, 'Actor_ID' => $actorId, 'Movie_ID' => $videoId]
+                [
+                    'IsMovie' => ($mediatype == "movie"),
+                    'Episode_ID' => $episodeId,
+                    'Actor_ID' => $actorId,
+                    'Movie_ID' => $videoId
+                ]
             );
             $count++;
+        }
+
+        // enter director info in DB
+        $count = 1;
+        $directorId = null;
+        while (($directorId = Request::get('directorSelect' . $count)) != null || ($fn = Request::get('directorInputFirst' . $count)) != null) {
+            if (Request::get('addNewD' . $count) == 'on') {
+                $ln = Request::get('directorInputLast' . $count);
+                $directorId = DB::table('Director')->insertGetId(
+                    ['First_Name' => $fn, 'Last_Name' => $ln]
+                );
+            }
+            DB::table('Directors')->insert(
+                [
+                    'IsMovie' => ($mediatype == "movie"),
+                    'Episode_ID' => $episodeId,
+                    'Director_ID' => $directorId,
+                    'Movie_ID' => $videoId
+                ]
+            );
+            $count++;
+        }
+
+        // enter genre info in DB
+        $count = 1;
+        $genreId = null;
+        while (($genreId = Request::get('genreSelect' . $count)) != null) {
+            DB::table('Genres')->insert(
+                [
+                    'Genre_ID' => $genreId,
+                    'Video_ID' => $videoId,
+                ]
+            );
+            $count++;
+        }
+
+        // upload thumbnail
+        if ($videoId != null) {
+            $thumbnailFile = Request::file('thumbnail');
+            Storage::disk('thumbnails')->putFileAs('', $thumbnailFile, $videoId . ".jpg");
         }
 
         return self::loadPage(1);
