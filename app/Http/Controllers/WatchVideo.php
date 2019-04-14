@@ -62,6 +62,17 @@ class WatchVideo extends Search\SearchController
         $lastSeasonNumber = $lastEpisode->Season_Number;
         $numberOfSeasons = $lastSeasonNumber;
 
+        $seasonDescending = DB::table('Episode')
+            ->where('Episode.Show_ID', '=', "$show_id")
+            ->where('Episode.Season_Number', '=', "$season_number")
+            ->orderBy('Episode_Number', 'desc')
+            ->first();
+
+        if ($episode_number == 0)
+        {
+            $episode_number = $seasonDescending->Episode_Number;
+        }
+
 
         $episodeInfo = DB::table('Episode')
             ->where('Episode.Show_ID', '=', "$show_id")
@@ -71,8 +82,10 @@ class WatchVideo extends Search\SearchController
         $seasonInfo = DB::table('Episode')
             ->where('Episode.Show_ID', '=', "$show_id")
             ->where('Episode.Season_Number', '=', "$season_number")
+            ->orderBy('Episode_Number', 'desc')
             ->get();
         $currentSeasonEps = $seasonInfo->count();
+        $lastEpisodeOfSeasonNumber = $seasonDescending->Episode_Number;
 
         $episode_number = $episodeInfo->Episode_Number;
         $episode_title = $episodeInfo->Episode_Title;
@@ -85,7 +98,12 @@ class WatchVideo extends Search\SearchController
             $lastSeasonFlag = 0;
         }
 
-        if (($episode_number == $currentSeasonEps) && ($season_number != $lastSeasonNumber)) {
+        if ($episode_number == 0)
+        {
+            $episode_number = $seasonDescending->Episode_Number;
+        }
+
+        if (($episode_number == $currentSeasonEps+1) && ($season_number != $lastSeasonNumber)) {
             $newSeason = $season_number + 1;
             $resetEpisodeNumber = 1;
 
@@ -101,7 +119,8 @@ class WatchVideo extends Search\SearchController
                 'last_episode_of_series_number' => $lastEpisodeOfSeriesNumber,
                 'last_season_number' => $lastSeasonNumber,
                 'number_of_seasons' => $numberOfSeasons,
-                'last_season_flag' => $lastSeasonFlag
+                'last_season_flag' => $lastSeasonFlag,
+                'last_episode_season' => $lastEpisodeOfSeasonNumber
             ]);
         }
 
@@ -118,7 +137,8 @@ class WatchVideo extends Search\SearchController
             'last_episode_of_series_number' => $lastEpisodeOfSeriesNumber,
             'number_of_seasons' => $numberOfSeasons,
             'last_season_number' => $lastSeasonNumber,
-            'last_season_flag' => $lastSeasonFlag
+            'last_season_flag' => $lastSeasonFlag,
+            'last_episode_season' => $lastEpisodeOfSeasonNumber
         ]);
     }
 
@@ -144,6 +164,11 @@ class WatchVideo extends Search\SearchController
         $numberOfSeasons = $lastSeasonNumber;
         $lastSeasonFlag = 1;
 
+        $seasonDescending = DB::table('Episode')
+            ->where('Episode.Show_ID', '=', "$video_id")
+            ->where('Episode.Season_Number', '=', "1")
+            ->orderBy('Episode_Number', 'desc')->first();
+
         $firstEpisode = DB::table('Episode')
             ->where('Episode.Show_ID', '=', "$video_id")
             ->select('Episode.*')
@@ -156,6 +181,7 @@ class WatchVideo extends Search\SearchController
         $season_number = $firstEpisode->Season_Number;
         $file_path = $firstEpisode->File_Path;
         $episode_id = $firstEpisode->Episode_ID;
+        $lastEpisodeOfSeasonNumber = $seasonDescending->Episode_Number;
 
         return view('watch', [
             'extra' => $firstEpisode,
@@ -170,7 +196,8 @@ class WatchVideo extends Search\SearchController
             'last_season_number' => $lastSeasonNumber,
             'number_of_seasons' => $numberOfSeasons,
             'last_season_number' => $lastSeasonNumber,
-            'last_season_flag' => $lastSeasonFlag
+            'last_season_flag' => $lastSeasonFlag,
+            'last_episode_season' => $lastEpisodeOfSeasonNumber
         ]);
     }
 

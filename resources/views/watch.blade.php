@@ -38,7 +38,7 @@
         <!--<a class = "nav-link" href="insert episode list link here" > <span aria-hidden="true"></span>
             <button type="submit" class="btn btn-dark btn-lg active btn-block">All Episodes</button>
             </a>-->
-            @if ($last_episode_of_series_number != $episode_number)
+            @if ($lastEpisodeOfSeasonNumber != $episode_number)
                 @if ($number_of_seasons == 1)
                     <a class = "nav-link" href="/public/watch/<?php echo ($file)[0]->Video_ID?>/season/<?php echo $season_number?>/episode/<?php echo $episode_number + 1?>">
                         <button type="submit" class="btn btn-dark">Next Episode</button>
