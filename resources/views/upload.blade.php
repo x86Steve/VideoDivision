@@ -13,7 +13,9 @@
 
 <body>
 
-@extends('layouts.app')
+
+    
+@extends('layouts.app') 
 @section('content')
 
     <br>
@@ -67,10 +69,9 @@
                 </div>
                 <div id="newShowFields" hidden>
                     <label for="showInput">Enter show name</label>
-                    <input class="form-control" id="showInput" name="showInput" placeholder="Show Name" required disabled> {{-- <input class="form-control"
-                        id="actorInputLast1" name="actorInputLast1"> --}}
-                        <label for="showSummary">Enter show summary</label>
-                        <input class="form-control" id="showSummary" name="showSummary" placeholder="Summary text..." required disabled>
+                    <input class="form-control" id="showInput" name="showInput" placeholder="Show Name" required disabled>                    {{-- <input class="form-control" id="actorInputLast1" name="actorInputLast1"> --}}
+                    <label for="showSummary">Enter show summary</label>
+                    <input class="form-control" id="showSummary" name="showSummary" placeholder="Summary text..." required disabled>
                 </div>
                 <label for="seasonNumber">Season Number</label>
                 <input type="number" class="form-control" name="seasonNumber" id="seasonNumber" placeholder="#" required disabled>
@@ -105,19 +106,63 @@
             </div>
 
         </div>
-
         <div class="form-group btn-group">
             <button class="btn btn-primary" type="button" onclick="addActor()">+ Add actor</button>
             <button class="btn btn-danger" id="removeButton" type="button" onclick="removeActor()" disabled>- Remove actor</button>
         </div>
-        <!--All submissions contain a movie or episode-->
-        <!--<div id="nonShowFields">-->
-        <!--</div>-->
 
-        <h2>File</h2>
+        <div id="directors">
+            <h2>Directors</h2>
+            <div class="form-group">
+                <label for="actorSelect1">Select an existing director</label>
+                <select class="form-control" id="actorSelect1" name="actorSelect1" required>
+                                @foreach ($directors as $director)
+                                <option label="{{$director->First_Name}} {{$director->Last_Name}}" value="{{$director->Director_ID}}">
+                                    @endforeach
+                            </select>
+                <div class="form-check">
+                    <input class="form-check-input" name="addNew1" id="addNew1" type="checkbox" onchange="toggleActorNameFields()">
+                    <label class="form-check-label" for="addNew1">Enter new actor</label>
+                </div>
+                <div class="form-row" hidden>
+                    {{-- <label for="actorInputFirst1">Enter name</label><br> --}}
+                    <div class="col">
+                        <input class="form-control" id="actorInputFirst1" name="actorInputFirst1" placeholder="First name" required disabled>
+                    </div>
+                    <div class="col">
+                        <input class="form-control" id="actorInputLast1" name="actorInputLast1" placeholder="Last name" required disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div id="genres">
+            <h2>Genres</h2>
+            <div class="form-group">
+                <label for="genreSelect1">Select a genre</label>
+                <select class="form-control" id="genreSelect1" name="genreSelect1" required>
+                    @foreach ($genres as $genre)
+                    <option label="{{$genre->Name}}" value="{{$genre->Genre_ID}}">
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group btn-group">
+                <button class="btn btn-primary" type="button" onclick="addGenre()">+ Add genre</button>
+                <button class="btn btn-danger" id="removeGButton" type="button" onclick="removeGenre()" disabled>- Remove genre</button>
+            </div>
+        </div>
+
+        <h2>Files</h2>
+        <div id="thumbnailFields">
+            <div class="form-group">
+                <label for="thumbnail">Upload thumbnail</label>
+                <input type="file" class="form-control-file" id="thumbnail" name="thumbnail" accept=".jpg" onchange="loadImage()" required>
+            </div>
+            <img class="img-thumbnail" id="thumbnailPreview" width="200" hidden>
+        </div>
         <div class="form-group">
-            <input type="file" class="form-control-file" name="video" id="video" onchange="initPlayer()" required>
+            <label for="video">Upload video</label>
+            <input type="file" class="form-control-file" name="video" id="video" accept=".mp4" onchange="initPlayer()" required>
         </div>
         <div class="form-group">
             <div id="videopreview" hidden>
@@ -160,6 +205,7 @@
 
             document.getElementById("title").placeholder = (type === "show") ? "Episode Title" : "Movie Title";
             document.getElementById("showFields").hidden = (type === "show") ? false : true;
+            toggleThumbnailFields();
         }
 
         // this is called when the user checks or unchecks
@@ -176,6 +222,7 @@
             {
                 newShowElements[i].disabled = !checked;
             }
+            toggleThumbnailFields();
         }
 
         // this is called when the user checks or unchecks
@@ -232,24 +279,113 @@
                 document.getElementById("removeButton").disabled = true;
         }
 
-        // this is called when the user changes the
-        // value of the file input (chooses a new file)
+        function addGenre()
+        {
+            var newCount = document.querySelectorAll('#genres > .form-group').length + 1; 
+            var firstGenre = document.querySelector('#genres > .form-group'); 
+            var newGenre = firstGenre.cloneNode(true);
+            newGenre.querySelector('label').htmlFor = "genreSelect" + newCount;
+            newGenre.querySelector('select').id = "genreSelect" + newCount;
+            newGenre.querySelector('select').name = "genreSelect" + newCount;
+            document.getElementById("genres").appendChild(newGenre);
+            document.getElementById("removeGButton").disabled = false;
+        }
+
+        function removeGenre()
+        {
+            var lastElement = document.getElementById("genres").lastElementChild; 
+            document.getElementById("genres").removeChild(lastElement);
+            var count = document.querySelectorAll('#genres > .form-group').length; 
+            if (count == 1) document.getElementById("removeGButton").disabled = true;
+        }
+
+        function addDirector()
+        {
+            var newCount = document.querySelectorAll('#actors > .form-group').length + 1; 
+            var firstActor = document.querySelector('#actors > .form-group'); 
+            var newActor = firstActor.cloneNode(true);
+        }
+
+        function removeDirector()
+        {
+
+        }
+
+        // this is called when the value of the thumbnail input changes
+        function loadImage() {
+            var thumbnailPreview = document.getElementById("thumbnailPreview");
+            var thumbnailInput = document.getElementById("thumbnail");
+            var thumbnailFile = thumbnailInput.files[0];
+            if (checkExtension(thumbnailFile.name, "jpg"))
+            {
+                var srcUrl = URL.createObjectURL(thumbnailFile);
+                document.getElementById("thumbnailPreview").src = srcUrl;
+                thumbnailPreview.hidden = false;
+            }
+            else
+            {
+                alert("Please choose a JPG file."); 
+                thumbnailInput.value = null;
+                thumbnailPreview.hidden = true;
+            }
+        }
+
+        // this enables or disables the thumbnail fields
+        // depending on the status of the form
+        function toggleThumbnailFields()
+        {
+            var mediaType = document.querySelector('input[name="mediatype"]:checked').value; 
+            var newShowEnabled = document.getElementById("addNewShow").checked;
+            var thumbnailFields = document.getElementById("thumbnailFields");
+            var thumbnailInput = document.getElementById("thumbnail");
+
+            if (mediaType == "movie" || newShowEnabled)
+            {
+                thumbnailFields.hidden = false;
+                thumbnailInput.disabled = false;
+            }
+            else
+            {
+                thumbnailFields.hidden = true;
+                thumbnailInput.disabled = true;
+            }
+        }
+
+        // this is called when the value of the video input changes
         function initPlayer() {
             var video = document.getElementById("video");
             if (video.files.length > 0) {
                 document.getElementById("videopreview").hidden = false;
                 var player = videojs('player');
+                var videoFile = video.files[0];
 
                 // when the player is ready, load the new
                 // video information into the videojs object
                 player.ready(function () {
-                    var fileType = video.files[0].type;
-                    var url = URL.createObjectURL(video.files[0]);
-                    this.src({ type: fileType, src: url });
+                    var fileType = videoFile.type;
+                    if (checkExtension(videoFile.name, "mp4"))
+                    {
+                        var url = URL.createObjectURL(videoFile);
+                        this.src({ type: fileType, src: url });
+                    }
+                    else
+                    {
+                        alert("Please choose a MP4 file.");
+                        video.value = null;
+                        document.getElementById("videopreview").hidden = true;
+                    }
                 });
-            } else {
+            }
+            else
+            {
                 document.getElementById("videopreview").hidden = true;
             }
+        }
+
+        // checks if a given filename has the specified extension
+        function checkExtension(filename, extension) 
+        { 
+            return (filename.substring(filename.lastIndexOf('.') + 1, filename.length) == extension);
         }
 
         // this is called once the videojs player has finished
@@ -258,8 +394,9 @@
             var player = videojs('player');
             var fullDuration = videojs.formatTime(player.duration());
             document.getElementById("duration").setAttribute("value", fullDuration);
-            alert(fullDuration);
+            //alert(fullDuration);
         }
+
     </script>
 
 </body>
