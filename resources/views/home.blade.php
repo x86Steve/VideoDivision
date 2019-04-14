@@ -2,27 +2,16 @@
 
 @section('content')
     <h1>Home</h1>
-    <p> Invitus homines co externo se eo conatum. Forte multa at supra ex. Experimur admiserim gi de avocandam nuperrime. Habemus ac ceteris meipsum re. His liberius superest reperire eos cavendum. Probari to ii istarum possunt is. Ipsius melius nul audire creari contra cupere eae qui dat. </p>
-@endsection
 
-<!--
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-                </div>
-            </div>
-        </div>
+    <div class="columns">
+        <ul class="price">
+            <li class="header">Basic</li>
+            <li class="grey">$ 9.99 / year</li>
+            <li>10GB Storage</li>
+            <li>10 Emails</li>
+            <li>10 Domains</li>
+            <li>1GB Bandwidth</li>
+            <li class="grey"><a href="#" class="button">Sign Up</a></li>
+        </ul>
     </div>
-</div>
-!-- Feature to use later >
+@endsection
