@@ -14,6 +14,7 @@
 <body>
 
 
+
     
 @extends('layouts.app') 
 @section('content')
@@ -114,26 +115,29 @@
         <div id="directors">
             <h2>Directors</h2>
             <div class="form-group">
-                <label for="actorSelect1">Select an existing director</label>
-                <select class="form-control" id="actorSelect1" name="actorSelect1" required>
+                <label for="directorSelect1">Select an existing director</label>
+                <select class="form-control" id="directorSelect1" name="directorSelect1" required>
                                 @foreach ($directors as $director)
                                 <option label="{{$director->First_Name}} {{$director->Last_Name}}" value="{{$director->Director_ID}}">
                                     @endforeach
                             </select>
                 <div class="form-check">
-                    <input class="form-check-input" name="addNew1" id="addNew1" type="checkbox" onchange="toggleActorNameFields()">
-                    <label class="form-check-label" for="addNew1">Enter new actor</label>
+                    <input class="form-check-input" name="addNewD1" id="addNewD1" type="checkbox" onchange="toggleDirectorNameFields()">
+                    <label class="form-check-label" for="addNewD1">Enter new director</label>
                 </div>
                 <div class="form-row" hidden>
-                    {{-- <label for="actorInputFirst1">Enter name</label><br> --}}
                     <div class="col">
-                        <input class="form-control" id="actorInputFirst1" name="actorInputFirst1" placeholder="First name" required disabled>
+                        <input class="form-control" id="directorInputFirst1" name="directorInputFirst1" placeholder="First name" required disabled>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="actorInputLast1" name="actorInputLast1" placeholder="Last name" required disabled>
+                        <input class="form-control" id="directorInputLast1" name="directorInputLast1" placeholder="Last name" required disabled>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="form-group btn-group">
+            <button class="btn btn-primary" type="button" onclick="addDirector()">+ Add director</button>
+            <button class="btn btn-danger" id="removeDButton" type="button" onclick="removeDirector()" disabled>- Remove director</button>
         </div>
 
         <div id="genres">
@@ -146,9 +150,11 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group btn-group">
-                <button class="btn btn-primary" type="button" onclick="addGenre()">+ Add genre</button>
-                <button class="btn btn-danger" id="removeGButton" type="button" onclick="removeGenre()" disabled>- Remove genre</button>
+            <div>
+                <div class="form-group btn-group">
+                    <button class="btn btn-primary" type="button" onclick="addGenre()">+ Add genre</button>
+                    <button class="btn btn-danger" id="removeGButton" type="button" onclick="removeGenre()" disabled>- Remove genre</button>
+                </div>
             </div>
         </div>
 
@@ -188,6 +194,7 @@
     <h2>Upload failed</h2>
     @endif
 @endsection
+
 
     <script>
         // this is called when the user changes what type of video
@@ -279,36 +286,85 @@
                 document.getElementById("removeButton").disabled = true;
         }
 
+        // this is called when the user clicks the button 
+        // to add a genre
         function addGenre()
         {
             var newCount = document.querySelectorAll('#genres > .form-group').length + 1; 
-            var firstGenre = document.querySelector('#genres > .form-group'); 
+            var firstGenre = document.querySelector('#genres > .form-group');
+            var lastNode = document.getElementById("genres").lastChild;
             var newGenre = firstGenre.cloneNode(true);
             newGenre.querySelector('label').htmlFor = "genreSelect" + newCount;
             newGenre.querySelector('select').id = "genreSelect" + newCount;
             newGenre.querySelector('select').name = "genreSelect" + newCount;
-            document.getElementById("genres").appendChild(newGenre);
+            document.getElementById("genres").insertBefore(newGenre, lastNode); //appendChild(newGenre);
             document.getElementById("removeGButton").disabled = false;
         }
 
+        // this is called when the user clicks the button 
+        // to remove a genre
         function removeGenre()
         {
-            var lastElement = document.getElementById("genres").lastElementChild; 
-            document.getElementById("genres").removeChild(lastElement);
+            var lastGenre = document.getElementById("genres").lastChild.previousSibling; 
+            document.getElementById("genres").removeChild(lastGenre);
             var count = document.querySelectorAll('#genres > .form-group').length; 
             if (count == 1) document.getElementById("removeGButton").disabled = true;
         }
 
+        // this is called when the user clicks the button 
+        // to add a director
         function addDirector()
         {
-            var newCount = document.querySelectorAll('#actors > .form-group').length + 1; 
-            var firstActor = document.querySelector('#actors > .form-group'); 
-            var newActor = firstActor.cloneNode(true);
+            var newCount = document.querySelectorAll('#directors > .form-group').length + 1; 
+            var firstDirector = document.querySelector('#directors > .form-group'); 
+            var newDirector = firstDirector.cloneNode(true);
+
+            newDirector.querySelector('label').htmlFor = "directorSelect" + newCount;
+            newDirector.querySelector('select').id = "directorSelect" + newCount;
+            newDirector.querySelector('select').name = "directorSelect" + newCount;
+            newDirector.querySelector('select').disabled = false;
+            newDirector.querySelector('.form-check-input').id = "addNewD" + newCount;
+            newDirector.querySelector('.form-check-input').name = "addNewD" + newCount;
+            newDirector.querySelector('.form-check-input').checked = false;
+            newDirector.querySelector('.form-check-label').htmlFor = "addNewD" + newCount;
+
+            newDirector.querySelector('.col > input').id = "directorInputFirst" + newCount;
+            newDirector.querySelector('.col > input').name = "directorInputFirst" + newCount;
+            newDirector.querySelector('.col > input').value = "";
+            newDirector.querySelectorAll('.col > input')[1].id = "directorInputLast" + newCount;
+            newDirector.querySelectorAll('.col > input')[1].name = "directorInputLast" + newCount;
+            newDirector.querySelectorAll('.col > input')[1].value = "";
+
+            newDirector.querySelector('.form-row').hidden = true;
+            document.getElementById("directors").appendChild(newDirector);
+            document.getElementById("removeDButton").disabled = false;
         }
 
+        // this is called when the user clicks the button 
+        // to remove a director
         function removeDirector()
         {
+            var lastElement = document.getElementById("directors").lastElementChild;
+            document.getElementById("directors").removeChild(lastElement);
+            var count = document.querySelectorAll('#directors > .form-group').length;
+            if (count == 1)
+                document.getElementById("removeDButton").disabled = true;
+        }
 
+        // this is called when the user checks or unchecks
+        // an "add new actor" checkbox
+        function toggleDirectorNameFields()
+        {
+            var directors = document.querySelectorAll('#directors > .form-group');
+            var i;
+            for (i = 0; i < directors.length; i++) {
+                var checked = directors[i].querySelector('.form-check-input').checked;
+                directors[i].querySelector('.form-row').hidden = !checked;
+                directors[i].querySelector('#directorSelect' + (i + 1)).disabled = checked;
+                nameInputs = directors[i].getElementsByClassName("form-row")[0].getElementsByTagName("input");
+                nameInputs[0].disabled = !checked;
+                nameInputs[1].disabled = !checked;
+            }
         }
 
         // this is called when the value of the thumbnail input changes
