@@ -70,9 +70,21 @@ class UploadController extends Controller
         $videoId = null;
         $episodeId = null;
 
+        // enter video info in DB
+        if ($mediatype == "movie" || ($mediatype == "show" && $addNewShow)) {
+            $videoId = DB::table('Video')->insertGetId(
+                ['Title' => $title, 'Year' => $year, 'Summary' => ($mediatype == "movie") ? $summary : $newShowSummary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
+            );
+            $showId = $videoId;
+            if ($mediatype == "show") {
+                //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
+                //$newShowId = $videoId; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
+            }
+        }
+
         // upload video
         $videoFile = Request::file('video');
-        $filename = $videoFile->getClientOriginalName();
+        $filename = $videoId . $videoFile->getClientOriginalName();
         // get the lowercase name of the show
         if ($mediatype == "show") {
             if ($addNewShow) {
@@ -86,18 +98,6 @@ class UploadController extends Controller
         // use laravel Storage facade method to store file
         Storage::disk('videos')->putFileAs($videoDir, $videoFile, $filename);
         $path = base_path('assets/videos/' . $videoDir . '/' . $filename);
-
-        // enter video info in DB
-        if ($mediatype == "movie" || ($mediatype == "show" && $addNewShow)) {
-            $videoId = DB::table('Video')->insertGetId(
-                ['Title' => $title, 'Year' => $year, 'Summary' => ($mediatype == "movie") ? $summary : $newShowSummary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
-            );
-            $showId = $videoId;
-            if ($mediatype == "show") {
-                //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
-                //$newShowId = $videoId; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
-            }
-        }
 
         // enter movie info in DB
         if ($mediatype == "movie") {
