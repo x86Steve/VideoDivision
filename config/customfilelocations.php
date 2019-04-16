@@ -10,4 +10,4 @@ return [
     'locations' => [
         'avatars' => '/public/avatars/',
     ]
-];
+];  

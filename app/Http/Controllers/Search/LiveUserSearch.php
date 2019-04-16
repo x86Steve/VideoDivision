@@ -85,7 +85,7 @@ class LiveUserSearch extends SearchController
             if ($query != '')
             {
                 $data = DB::table('users')
-                    ->where('users.name', 'like', "%$query%")
+                    ->where('users.username', 'like', "%$query%")
                     ->select('users.*')
                     ->get();
             }
@@ -107,12 +107,12 @@ class LiveUserSearch extends SearchController
 
                 foreach ($data as $row)
                 {
-                    $user_img = $row->avatar;
+                    $user_img = asset('avatars') . '//' . $row->avatar;
 
                     $output .= "<div class=\"col-md-".$bootstrapColWidth."\">";
-                    $output .= "<a href=\"/public/profile\">
-                    <img src=\"http://videodivision.net/public/avatars/".$user_img."\" alt=\"Visit User's Profile!\" width=\"195\" height=\"280\" border=\"0\">
-                    </a> <h5>".substr($row->name, 0, 22)."</h5>
+                    $output .= "<a href=\"/public/profile/$row->username\">
+                    <img src=$user_img alt=\"Visit User's Profile!\" width=\"195\" height=\"280\" border=\"0\">
+                    </a> <h5>".substr($row->username, 0, 22). "</h5>
                     <br><br></div>";
 
                     $counter = $counter + 1;

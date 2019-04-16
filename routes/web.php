@@ -22,7 +22,7 @@ Route::get('/', function () {
     return view('profile.profile');
 });
  */
-
+Route::get('/profile/{username}', "UserProfileController@viewprofile");
 Route::get('/profile', "UserProfileController@index");
 Route::post('/profile','UserProfileController@update_avatar');
 

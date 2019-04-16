@@ -2,24 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Auth;
 use Image;
 use Illuminate\Support\Facades\View;
 use DB;
+
 class UserProfileController extends Controller
 {
-
-    private function get_recent_activity()
+    private function grab_target_user_table($username)
     {
-        $User_Recent_Activity_Table = DB::table('recent_activity')->where('user_id', Auth::user()->id)->select(array('entry','created_at'))->limit(5)->orderBy('created_at','desc')->get();
+        $user = null;
+        
+        try
+        {
+            $user = DB::table('users')->where('username', $username)->first();
+        }
+        catch(Exception $ex)
+        {
+            abort(404);
+        }
+
+        return $user;
+    }
+
+    private function get_recent_activity($CurrentUser = null)
+    {
+        $User_Recent_Activity_Table = DB::table('recent_activity')->where('user_id',(isset($CurrentUser) ? $CurrentUser->id : Auth::user()->id))->select(array('entry','created_at'))->limit(5)->orderBy('created_at','desc')->get();
 
         return $User_Recent_Activity_Table;
     }
 
-    private function get_current_subscription_titles()
+    private function get_current_subscription_titles($CurrentUser = null)
     {
-        $User_Sub_Video_IDs = DB::table('active_subscriptions')->where('User_ID', Auth::user()->id)->get();
+        $User_Sub_Video_IDs = DB::table('active_subscriptions')->where('User_ID',(isset($CurrentUser) ? $CurrentUser->id : Auth::user()->id))->get();
         $User_Sub_Video_Titles = array();
 
         if (sizeof($User_Sub_Video_IDs) > 0)
@@ -42,20 +59,25 @@ class UserProfileController extends Controller
             $user->avatar = $filename;
             $user->save();
 
-            return View::make("profile.profile")
-                ->with(array(
-                    'Video_Titles' => $this->get_current_subscription_titles(),
-                    'recent_activities' => $this->get_recent_activity(),
-                    'CurrentUser' => Auth::user()));
+            return $this->index();
         }
     }
-    public function index()
+    public function index($CurrentUser = null)
     {
         return View::make("profile.profile")
             ->with(array(
-                'Video_Titles' => $this->get_current_subscription_titles(),
-                'recent_activities' => $this->get_recent_activity(),
-                'CurrentUser' => Auth::user()));
+                'Video_Titles' => isset($CurrentUser) ? $this->get_current_subscription_titles($CurrentUser) : $this->get_current_subscription_titles(),
+                'recent_activities' => isset($CurrentUser) ? $this->get_recent_activity($CurrentUser) : $this->get_recent_activity(),
+                'CurrentUser' => $CurrentUser));
+    }
+
+    public function viewprofile($username)
+    {
+        // Is the user profile you're visiting yourself?
+        if (strtolower(Auth::user()->username) == strtolower($username))
+            return $this->index();
+
+        return $this->index($this->grab_target_user_table($username));
     }
     //
 }
