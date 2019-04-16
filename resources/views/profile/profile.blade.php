@@ -83,7 +83,7 @@
                                     @foreach($recent_activities as $activity)
                                     <tr>
                                         <td>
-                                            <strong>{{Auth::user()->name}}</strong>  - {{$activity->entry}} -  <strong>{{ Carbon\Carbon::parse($activity->created_at)->diffForHumans()}}</strong>
+                                            <strong>{{isset($CurrentUser) ? $CurrentUser->name : Auth::user()->name}}</strong>  - {{$activity->entry}} -  <strong>{{ Carbon\Carbon::parse($activity->created_at)->diffForHumans()}}</strong>
                                         </td>
                                     </tr>
                                     @endforeach
