@@ -52,6 +52,7 @@ class WatchVideo extends Search\SearchController
         $lastEpOfSeasonNumber = $lastEpOfSeason->Episode_Number;
         $lastEpOfSeriesNumber = $lastEpisode->Episode_Number;
         $numberOfSeasons = $lastEpisode->Season_Number;
+        $previousEp = 0;// used for special case 3
 
         if (($episode_number == $lastEpOfSeasonNumber) && ($season_number !=$numberOfSeasons))
         {
@@ -64,6 +65,7 @@ class WatchVideo extends Search\SearchController
         elseif (($episode_number == 1) && ($season_number != 1))
         {
             $isSpecialEpisode = 3; //1st episode of a non-first season
+            $previousEp = $this->getLastEpOfSeason($show_id, $season_number - 1)->Episode_Number;
         }
         elseif (($episode_number == 1) && ($season_number == 1))
         {
@@ -81,7 +83,8 @@ class WatchVideo extends Search\SearchController
             'episode_number' => $episode_number,
             'episode_title' => $episode_title,
             'isMovie' => $isMovie,
-            'number_of_seasons' => $numberOfSeasons
+            'number_of_seasons' => $numberOfSeasons,
+            'previous_episode' => $previousEp
         ]);
     }
 
@@ -94,6 +97,7 @@ class WatchVideo extends Search\SearchController
         $episode_title = $episodeInfo->Episode_Title;
         $seriesInfoDesc = $this->getSeriesInfoDesc($show_id);
         $numberOfSeasons = $seriesInfoDesc->Season_Number;
+        $previousEp = 1;
 
         return view('watch', [
             'file' => $file,
@@ -103,7 +107,8 @@ class WatchVideo extends Search\SearchController
             'episode_number' => 1,
             'episode_title' => $episode_title,
             'isMovie' => $isMovie,
-            'number_of_seasons' => $numberOfSeasons
+            'number_of_seasons' => $numberOfSeasons,
+            'previous_episode' => $previousEp
         ]);
     }
 

@@ -22,7 +22,7 @@
         </p>
     </video>
 
-    {{ActivityEntry("Started watching: " . helper_GetMovieTitleByID(($file)[0]->Video_ID))}}
+    v{{ActivityEntry("Started watching: " . helper_GetMovieTitleByID(($file)[0]->Video_ID))}}
     </body>
 
     @if ($isMovie == 0)
@@ -30,7 +30,7 @@
         <div class="btn-group" role="group">
             @if ($is_special_episode == 3)
                 <a class="nav-link"
-                   href="/public/watch/{{(($file)[0]->Video_ID)}}/season/{{($season_number - 1)}}/episode/{{(0)}}">
+                   href="/public/watch/{{(($file)[0]->Video_ID)}}/season/{{($season_number - 1)}}/episode/{{($previous_episode)}}">
                     <button type="submit" class="btn btn-dark">Previous Episode</button>
                 </a>
             @elseif ($is_special_episode == 0 || $is_special_episode == 1 || $is_special_episode == 2)
