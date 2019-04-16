@@ -11,6 +11,7 @@
                     <li class="nav-item">
                         <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
                     </li>
+                    @if(!isset($CurrentUser))
                     <li class="nav-item">
                         <a href="" data-target="#messages" data-toggle="tab" class="nav-link">What's Going on?</a>
                     </li>
@@ -20,19 +21,22 @@
                     <li class="nav-item">
                         <a href="" data-target="#subscriptions" data-toggle="tab" class="nav-link">Subscriptions</a>
                     </li>
+                    @endif
                 </ul>
                 <div class="container">
                     <div class="row">
                         <div class = "col-mid-10 col-md-offset-1">
-                            <img src="{{Config::get('customfilelocations.locations.avatars')}}{{Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 150px; height: 150px; float:left; border-radius: 50%;margin-right: 25%;">
+                            <img src="{{Config::get('customfilelocations.locations.avatars')}}{{ isset($CurrentUser) ? $CurrentUser->avatar : Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 150px; height: 150px; float:left; border-radius: 50%;margin-right: 25%;">
                             <!-- First line is required to upload images !-->
-                            <h2>{{Auth::user()->username}}'s Profile</h2>
+                            <h2>{{isset($CurrentUser) ? $CurrentUser->username : Auth::user()->username}}'s Profile</h2>
+                            @if(!isset($CurrentUser))
                             <form enctype="multipart/form-data" action="/public/profile" method="POST">
                                 <label><b>Update profile image</b></label>
                                 <input type="file" name="avatar">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                 <input type="submit" class="pull-right btn btn-sm btn-primary">
                             </form>
+                             @endif
                         </div>
                     </div>
                 </div>
@@ -41,7 +45,7 @@
                         <h5 class="mb-3">User Profile</h5>
                         <div class="row">
                             <div class="col-md-6">
-                                <h6><b>Welcome, {{Auth::user()->username}}</b></h6>
+                                <h6><b>Welcome, {{isset($CurrentUser) ? $CurrentUser->username : Auth::user()->username}}</b></h6>
                                 <p>
                                     Web Designer, UI/UX Engineer
                                 </p>
@@ -80,7 +84,6 @@
                                     <tr>
                                         <td>
                                             <strong>{{Auth::user()->name}}</strong>  - {{$activity->entry}} -  <strong>{{ Carbon\Carbon::parse($activity->created_at)->diffForHumans()}}</strong>
-
                                         </td>
                                     </tr>
                                     @endforeach

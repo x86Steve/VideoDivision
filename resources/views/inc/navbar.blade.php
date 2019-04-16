@@ -37,6 +37,7 @@
                     <a class="dropdown-item" href="/public/profile"><i data-feather="edit-2"></i> Edit Profile</a>
                     <a class="dropdown-item disabled" href="#"><i data-feather="edit"></i> Edit Subscription</a>
                     <a class="dropdown-item" href="/public/my_videos"><i data-feather="eye"></i> Watch your shows!</a>
+                    <a class="dropdown-item" href="/public/live_user_search/grid"><i data-feather="users"></i> Find a friend!</a>
                     <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
