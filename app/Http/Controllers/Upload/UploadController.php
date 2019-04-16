@@ -97,7 +97,8 @@ class UploadController extends Controller
         $videoDir = ($mediatype == "movie") ? "movies" : "tv-shows/" . $showDir . "/Season" . $seasonNumber;
         // use laravel Storage facade method to store file
         Storage::disk('videos')->putFileAs($videoDir, $videoFile, $filename);
-        $path = base_path('assets/videos/' . $videoDir . '/' . $filename);
+        //$path = base_path('assets/videos/' . $videoDir . '/' . $filename);
+        $path = "/assets/videos/" . $videoDir . '/' . $filename;
 
         // enter movie info in DB
         if ($mediatype == "movie") {
