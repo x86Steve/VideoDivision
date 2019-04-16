@@ -21,6 +21,12 @@
 @extends('layouts.app') 
 @section('content')
 
+<br> @if ($status === 1)
+<h2>Upload success</h2>
+@elseif ($status === 2)
+<h2>Upload failed</h2>
+@endif
+
     <br>
     <h1>Upload video</h1>
     <br>
@@ -195,11 +201,7 @@
 
     <script src='https://vjs.zencdn.net/7.4.1/video.js'></script>
 
-    <br> @if ($status === 1)
-    <h2>Upload success</h2>
-    @elseif ($status === 2)
-    <h2>Upload failed</h2>
-    @endif
+    
 @endsection
 
 
