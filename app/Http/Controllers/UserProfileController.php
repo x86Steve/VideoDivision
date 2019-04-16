@@ -48,6 +48,9 @@ class UserProfileController extends Controller
   
     public function update_avatar(Request $request)
     {
+        if (Auth::guest())
+            return redirect()->route('login');
+
         // Handles user upload of avatar
         if($request->hasFile('avatar'))
         {
@@ -64,6 +67,9 @@ class UserProfileController extends Controller
     }
     public function index($CurrentUser = null)
     {
+        if (Auth::guest())
+            return redirect()->route('login');
+
         return View::make("profile.profile")
             ->with(array(
                 'Video_Titles' => isset($CurrentUser) ? $this->get_current_subscription_titles($CurrentUser) : $this->get_current_subscription_titles(),

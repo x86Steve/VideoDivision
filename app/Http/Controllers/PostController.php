@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Post;
 use DB;
@@ -10,6 +11,8 @@ class PostController extends Controller
     public function posts()
 
     {
+        if (Auth::guest())
+            return redirect()->route('login');
 
         $posts = Post::all();
 
@@ -22,6 +25,8 @@ class PostController extends Controller
     public function show($id)
 
     {
+        if (Auth::guest())
+            return redirect()->route('login');
 
         $post = Post::find($id);
         $review = DB::table('ratings')->where("rateable_id","=","$id")->pluck('review');
@@ -34,6 +39,9 @@ class PostController extends Controller
     public function postPost(Request $request)
 
     {
+
+        if (Auth::guest())
+            return redirect()->route('login');
 
 
         request()->validate(['rate' => 'required']);

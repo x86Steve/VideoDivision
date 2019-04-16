@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Auth;
 use Illuminate\Support\Facades\Input;
 use DB;
 use Illuminate\Support\Facades\Storage;
@@ -132,6 +133,10 @@ class ViewVideo extends Search\SearchController
     //Used to see the videos you are currently subbed to
     function getMyVideosView()
     {
+
+        if (Auth::guest())
+            return redirect()->route('login');
+        
         $output = '';
 
         if (\Auth::check()) {
