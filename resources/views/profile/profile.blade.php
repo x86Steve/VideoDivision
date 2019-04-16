@@ -3,7 +3,6 @@
 
 @extends('layouts.app')
 <!-- TODO Redirect user when they are not logged in. -->
-
 @section('content')
     <div class="container">
         <div class="row ">
@@ -27,7 +26,7 @@
                         <div class = "col-mid-10 col-md-offset-1">
                             <img src="{{Config::get('customfilelocations.locations.avatars')}}{{Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 150px; height: 150px; float:left; border-radius: 50%;margin-right: 25%;">
                             <!-- First line is required to upload images !-->
-                            <h2>{{Auth::user()->name}}'s Profile</h2>
+                            <h2>{{Auth::user()->username}}'s Profile</h2>
                             <form enctype="multipart/form-data" action="/public/profile" method="POST">
                                 <label><b>Update profile image</b></label>
                                 <input type="file" name="avatar">
@@ -42,7 +41,7 @@
                         <h5 class="mb-3">User Profile</h5>
                         <div class="row">
                             <div class="col-md-6">
-                                <h6><b>Welcome, {{Auth::user()->name}}</b></h6>
+                                <h6><b>Welcome, {{Auth::user()->username}}</b></h6>
                                 <p>
                                     Web Designer, UI/UX Engineer
                                 </p>
@@ -53,14 +52,14 @@
                             </div>
                             <div class="col-md-6">
                                 <h6>Current Subscriptions</h6>
-                                <a href="#" class="badge badge-dark badge-pill">Men In Black</a>
-                                <a href="#" class="badge badge-dark badge-pill">Men In Black II</a>
-                                <a href="#" class="badge badge-dark badge-pill">Men In Black III</a>
-                                <a href="#" class="badge badge-dark badge-pill">Harry Potter 1</a>
-                                <a href="#" class="badge badge-dark badge-pill">Harry Potter 2</a>
-                                <a href="#" class="badge badge-dark badge-pill">Harry Potter 3</a>
-                                <a href="#" class="badge badge-dark badge-pill">Harry Potter 4</a>
-                                <a href="#" class="badge badge-dark">Naruto The Movie</a>
+                                <hr>
+                                @if(sizeof($Video_Titles) > 0)
+                                @foreach ($Video_Titles as $Title)
+                                    <a href="/public/watch/{{$Title->Video_ID}}" class="badge badge-dark badge-pill">{{$Title->Title}}</a>
+                                @endforeach
+                                @else
+                                    Hmm, it's a little empty here... Use the drop down menu to select some shows! :)
+                                @endif
                                 <hr>
                                 <h6>Subscriber Status</h6>
                                 @if(Auth::user()->isPaid === 0)
@@ -70,37 +69,21 @@
                                 @else
                                     <a href="/public/subscribe" class="badge badge-info">Please consider subscribing!</a>
                                 @endif
+                                <hr>
 
                             </div>
                             <div class="col-md-12">
                                 <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
                                 <table class="table table-sm table-hover table-striped">
                                     <tbody>
+                                    @foreach($recent_activities as $activity)
                                     <tr>
                                         <td>
-                                            <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
+                                            <strong>{{Auth::user()->name}}</strong>  - {{$activity->entry}} -  <strong>{{ Carbon\Carbon::parse($activity->created_at)->diffForHumans()}}</strong>
+
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
-                                        </td>
-                                    </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -146,6 +129,12 @@
                     </div>
                     <div class="tab-pane" id="edit">
                         <form role="form">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label">Username</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control" type="text" disabled value="{{Auth::user()->username }}">
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label form-control-label">First name</label>
                                 <div class="col-lg-9">
