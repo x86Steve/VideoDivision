@@ -121,7 +121,7 @@ class LiveUserSearch extends SearchController
 
                     $output .= "<div class=\"col-md-".$bootstrapColWidth."\">";
                     $output .= "<a href=\"/public/profile/$row->username\">
-                    <img src=$user_img alt=\"Visit User's Profile!\" width=\"195\" height=\"280\" border=\"0\">
+                    <img src=$user_img alt=\"Visit User's Profile!\" width=\"150\" height=\"150\" border-radius=\"50%\">
                     </a> <h5>".substr($row->username, 0, 22). "</h5>
                     <br><br></div>";
 
