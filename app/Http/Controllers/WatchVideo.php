@@ -91,7 +91,7 @@ class WatchVideo extends Search\SearchController
     {
         if (Auth::guest())
             return redirect()->route('login');
-        
+
         $file = $this->getVideoByID($show_id);
         $isMovie = $file[0]->IsMovie;
         $episodeInfo = $this->getEpisodeInfo($show_id, 1);
