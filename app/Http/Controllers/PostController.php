@@ -11,9 +11,6 @@ class PostController extends Controller
     public function posts()
 
     {
-        if (Auth::guest())
-            return redirect()->route('login');
-
         $posts = Post::all();
 
         return view('posts',compact('posts'));
@@ -28,9 +25,19 @@ class PostController extends Controller
         if (Auth::guest())
             return redirect()->route('login');
 
+
+
+
+
         $post = Post::find($id);
-        $review = DB::table('ratings')->where("rateable_id","=","$id")->pluck('review');
-        return view('postsShow',compact('post'), compact('review' ));
+
+        $review = DB::table('ratings')->where("rateable_id","=","$id")->pluck('review','username');
+        //$username=DB::table('ratings')->where("rateable_id","=","$id")->pluck('username');
+        $user_id = DB::table('ratings')->where("rateable_id","=","$id")->pluck('user_id');
+
+        $full_query = DB::table('ratings')->where('rateable_id', "=","$id")->pluck('username','review')->get();
+
+        return view('postsShow',compact('post'), compact('review','user_id','full_query' ));
 
     }
 
@@ -56,6 +63,8 @@ class PostController extends Controller
         $rating->user_id = auth()->user()->id;
 
         $rating->review= $request->message;
+
+        $rating->username=Auth::user()->username;
 
         $post->ratings()->save($rating);
 
