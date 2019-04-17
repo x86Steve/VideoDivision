@@ -85,14 +85,15 @@
                                     data-dismiss="modal">Close
                             </button>
                             <span class="pull-right">
-            <form id="form" method="post">
+                                    <input type="submit" class="btn btn-dark"/>
+            {{-- <form id="form" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
                 <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
                 <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
                 <input type="hidden" id="postType" name="postType" value="0">
                 <input type="submit" class="btn btn-dark"/>
-            </form>
+            </form> --}}
 
             </span>
                         </div>
