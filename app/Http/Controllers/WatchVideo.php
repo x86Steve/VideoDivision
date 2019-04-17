@@ -44,7 +44,7 @@ class WatchVideo extends Search\SearchController
         $lastEpisode = $this->getLastEpisodeByVideoID($show_id);
         $isSpecialEpisode = 0; //0 ignore, 1 last ep of season, 2 last episode of series,  3 for 1st episode of non-first season, 4 if first episode of series
         $lastEpOfSeason = $this->getLastEpOfSeason($show_id, $season_number);
-        $episodeInfo = $this->getEpisodeInfo($show_id, $episode_number);
+        $episodeInfo = $this->getEpisodeInfo($show_id, $episode_number, $season_number);
 
         $lastEpOfSeasonNumber = $lastEpOfSeason->Episode_Number;
         $lastEpOfSeriesNumber = $lastEpisode->Episode_Number;
@@ -92,7 +92,7 @@ class WatchVideo extends Search\SearchController
 
         $file = $this->getVideoByID($show_id);
         $isMovie = $file[0]->IsMovie;
-        $episodeInfo = $this->getEpisodeInfo($show_id, 1);
+        $episodeInfo = $this->getEpisodeInfo($show_id, 1, 1);
         $file_path = $episodeInfo->File_Path;
         $episode_title = $episodeInfo->Episode_Title;
         $seriesInfoDesc = $this->getSeriesInfoDesc($show_id);
@@ -152,10 +152,11 @@ class WatchVideo extends Search\SearchController
             ->get();
     }
 
-    function getEpisodeInfo($show_id, $episode_number)
+    function getEpisodeInfo($show_id, $episode_number, $season_number)
     {
         return $episodeInfo = DB::table('Episode')
             ->where('Episode.Show_ID', '=', "$show_id")
+            ->where('Episode.Season_Number', '=', "$season_number")
             ->where('Episode.Episode_Number', '=', "$episode_number")
             ->select('Episode.*')
             ->first();
