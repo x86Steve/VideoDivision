@@ -11,8 +11,8 @@
         </p>
     @endif
     <body>
-    <video id="1" autoplay class="video-js" width='768' height='432'
-           controls preload="metadata"
+    <video id="player" autoplay class="video-js" width='768' height='432'
+           controls
            poster="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg">
 
         <source src="http://videodivision.net{{($file_path)}}" type="video/mp4"/>
@@ -22,7 +22,10 @@
         </p>
     </video>
 
-    v{{ActivityEntry("Started watching: " . helper_GetMovieTitleByID(($file)[0]->Video_ID))}}
+    <script>
+        videojs("player", document, window);
+    </script>
+    {{ActivityEntry("Started watching: " . helper_GetMovieTitleByID(($file)[0]->Video_ID))}}
     </body>
 
     @if ($isMovie == 0)

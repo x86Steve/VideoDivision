@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.8"
     },
     "dependencies": {
-        "feather-icons": "^4.21.0"
+        "feather-icons": "^4.21.0",
+        "video.js": "^7.4.1"
     }
 }
