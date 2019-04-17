@@ -136,7 +136,7 @@ class ViewVideo extends Search\SearchController
 
         if (Auth::guest())
             return redirect()->route('login');
-        
+
         $output = '';
 
         if (\Auth::check()) {
