@@ -25,8 +25,6 @@ class WatchVideo extends Search\SearchController
         $file_path = $extra->File_Path;
 
         return view('watch', [
-            'User_ID' => $userID,
-            'isSubbed' => $isSubbed,
             'isMovie' => $isMovie,
             'file' => $results,
             'extra' => $extra,
