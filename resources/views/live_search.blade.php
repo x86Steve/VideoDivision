@@ -105,6 +105,8 @@
 
 <footer id="footer" class="text-center">
     <p> Copyright 2019 &copy; VideoDivision.net</p>
+    <!-- This tells all data-feathers to initialize and create the icon you requested -->
+    <script>feather.replace()</script>
 </footer>
 </body>
 </html>
