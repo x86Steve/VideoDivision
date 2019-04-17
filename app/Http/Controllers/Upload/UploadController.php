@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Upload;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Request;
+use Auth;
 use DB;
-use Illuminate\Support\Facades\Request as IlluminateRequest;
 
 class UploadController extends Controller
 {
@@ -45,11 +45,18 @@ class UploadController extends Controller
 
     function index()
     {
+        if (Auth::guest())
+            return redirect()->route('login');
+        else if (!Auth::user()->isAdmin)
+            return redirect()->route('home');
         return self::loadPage(0);
     }
 
     function submit()
     {
+        if (Auth::guest() || !Auth::user()->isAdmin) {
+            return redirect()->route('home');
+        }
         // Display File Size
         //        echo 'File Size: ' . $file->getSize();
         //        echo '<br>';
@@ -60,6 +67,7 @@ class UploadController extends Controller
         $summary = Request::get('summary');
         $sub = Request::get('subscription');
         $mediatype = Request::get('mediatype');
+        $isMovie = ($mediatype == "movie");
         $runtime = Request::get('duration');
         $seasonNumber = Request::get('seasonNumber');
         $episodeNumber = Request::get('episodeNumber');
@@ -71,22 +79,20 @@ class UploadController extends Controller
         $episodeId = null;
 
         // enter video info in DB
-        if ($mediatype == "movie" || ($mediatype == "show" && $addNewShow)) {
+        if ($isMovie || (!$isMovie && $addNewShow)) {
             $videoId = DB::table('Video')->insertGetId(
-                ['Title' => $title, 'Year' => $year, 'Summary' => ($mediatype == "movie") ? $summary : $newShowSummary, 'Subscription' => $sub, 'IsMovie' => ($mediatype == "movie") ? 1 : 0]
+                ['Title' => $isMovie ? $title : $newShowName, 'Year' => $year, 'Summary' => $isMovie ? $summary : $newShowSummary, 'Subscription' => $sub, 'IsMovie' => $isMovie ? 1 : 0]
             );
             $showId = $videoId;
-            if ($mediatype == "show") {
-                //echo DB::table('video')->select('Video_ID')->where('Title', $title)->get();
-                //$newShowId = $videoId; // DB::table('video')->select('Video_ID')->where('Title', $title)->get()->toArray()->first();
-            }
+        } else {
+            $videoId = $showId;
         }
 
         // upload video
         $videoFile = Request::file('video');
         $filename = $videoId . $videoFile->getClientOriginalName();
         // get the lowercase name of the show
-        if ($mediatype == "show") {
+        if (!$isMovie) {
             if ($addNewShow) {
                 $showDir = strtolower($newShowName);
             } else {
@@ -94,21 +100,21 @@ class UploadController extends Controller
                 $showDir = strtolower($existingShowName);
             }
         }
-        $videoDir = ($mediatype == "movie") ? "movies" : "tv-shows/" . $showDir . "/Season" . $seasonNumber;
+        $videoDir = ($isMovie) ? "movies" : "tv-shows/" . $showDir . "/Season" . $seasonNumber;
         // use laravel Storage facade method to store file
         Storage::disk('videos')->putFileAs($videoDir, $videoFile, $filename);
         //$path = base_path('assets/videos/' . $videoDir . '/' . $filename);
         $path = "/assets/videos/" . $videoDir . '/' . $filename;
 
         // enter movie info in DB
-        if ($mediatype == "movie") {
+        if ($isMovie) {
             DB::table('Movie')->insert(
                 ['Movie_ID' => $videoId, 'File_Path' => $path, 'Length' => $runtime]
             );
         }
 
         // enter episode info in DB
-        else if ($mediatype == "show") {
+        else if (!$isMovie) {
             $episodeId = DB::table('Episode')->insertGetId(
                 [
                     'Show_ID' => $showId, 'Season_Number' => $seasonNumber, 'Episode_Number' => $episodeNumber,
@@ -140,10 +146,10 @@ class UploadController extends Controller
 
             DB::table('Cast')->insert(
                 [
-                    'IsMovie' => ($mediatype == "movie"),
-                    'Episode_ID' => $episodeId,
+                    'IsMovie' => $isMovie,
+                    'Episode_ID' => $isMovie ? null : $episodeId,
                     'Actor_ID' => $actorId,
-                    'Movie_ID' => $videoId
+                    'Movie_ID' => $isMovie ? $videoId : null
                 ]
             );
             $count++;
@@ -161,30 +167,32 @@ class UploadController extends Controller
             }
             DB::table('Directors')->insert(
                 [
-                    'IsMovie' => ($mediatype == "movie"),
-                    'Episode_ID' => $episodeId,
+                    'IsMovie' => $isMovie,
+                    'Episode_ID' => $isMovie ? null : $episodeId,
                     'Director_ID' => $directorId,
-                    'Movie_ID' => $videoId
+                    'Movie_ID' => $isMovie ? $videoId : null
                 ]
             );
             $count++;
         }
 
-        // enter genre info in DB
-        $count = 1;
-        $genreId = null;
-        while (($genreId = Request::get('genreSelect' . $count)) != null) {
-            DB::table('Genres')->insert(
-                [
-                    'Genre_ID' => $genreId,
-                    'Video_ID' => $videoId,
-                ]
-            );
-            $count++;
+        if ($isMovie || $addNewShow) {
+            // enter genre info in DB
+            $count = 1;
+            $genreId = null;
+            while (($genreId = Request::get('genreSelect' . $count)) != null) {
+                DB::table('Genres')->insert(
+                    [
+                        'Genre_ID' => $genreId,
+                        'Video_ID' => $videoId,
+                    ]
+                );
+                $count++;
+            }
         }
 
         // upload thumbnail
-        if ($videoId != null) {
+        if (Request::hasFile('thumbnail')) {
             $thumbnailFile = Request::file('thumbnail');
             Storage::disk('thumbnails')->putFileAs('', $thumbnailFile, $videoId . ".jpg");
         }

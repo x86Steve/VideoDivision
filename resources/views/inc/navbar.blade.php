@@ -26,9 +26,6 @@
             <li class="nav-item {{ Request::segment(1) === 'my_videos' ? 'active' : null }}">
                 <a class="nav-link" href="/public/my_videos">My Videos</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrator-Login</a>
-            </li>
             @if(Auth::check())
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style ="position: relative; padding-left: 50px;">
@@ -38,6 +35,9 @@
                     <a class="dropdown-item disabled" href="#"><i data-feather="edit"></i> Edit Subscription</a>
                     <a class="dropdown-item" href="/public/my_videos"><i data-feather="eye"></i> Watch your shows!</a>
                     <a class="dropdown-item" href="/public/live_user_search/grid"><i data-feather="users"></i> Find a friend!</a>
+                    @if(Auth::user()->isAdmin)
+                    <a class="dropdown-item" href="/public/admin" style="color:#FF0000"><i data-feather="user-check"></i> Administration Control Panel</a>
+                    @endif
                     <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

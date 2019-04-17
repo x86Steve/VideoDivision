@@ -12,11 +12,6 @@
 </head>
 
 <body>
-
-
-
-
-
     
 @extends('layouts.app') 
 @section('content')
@@ -80,7 +75,7 @@
             <div id="newShowFields" hidden>
                 <div class="form-group">
                     <label for="showInput">Enter show name</label>
-                    <input class="form-control" id="showInput" name="showInput" placeholder="Show Name" required disabled>                    {{-- <input class="form-control" id="actorInputLast1" name="actorInputLast1"> --}}
+                    <input class="form-control" id="showInput" name="showInput" placeholder="Show Name" required disabled>
                 </div>
                 <div class="form-group">
                     <label for="showSummary">Enter show summary</label>
@@ -112,7 +107,6 @@
                     <label class="form-check-label" for="addNew1">Enter new actor</label>
                 </div>
                 <div class="form-row" hidden>
-                    {{-- <label for="actorInputFirst1">Enter name</label><br> --}}
                     <div class="col">
                         <input class="form-control" id="actorInputFirst1" name="actorInputFirst1" placeholder="First name" required disabled>
                     </div>
@@ -198,14 +192,11 @@
         </div>
 
     </form>
-
+    
     <script src='https://vjs.zencdn.net/7.4.1/video.js'></script>
 
     
 @endsection
-
-
-
 
     <script>
         // this is called when the user changes what type of video
@@ -217,7 +208,7 @@
             var i;
             var episodeElements = document.getElementById("showFields").querySelectorAll("input");
             for (i = 0; i < episodeElements.length; i++) {
-                if (episodeElements[i].parentElement.id != "newShowFields" || newShowEnabled)
+                if (episodeElements[i].parentElement.parentElement.id != "newShowFields" || newShowEnabled)
                     episodeElements[i].disabled = (type === "show") ? false : true;
             }
 
