@@ -51,19 +51,30 @@ class UserProfileController extends Controller
         if (Auth::guest())
             return redirect()->route('login');
 
-        // Handles user upload of avatar
-        if($request->hasFile('avatar'))
+        try
         {
-            $avatar = $request->file('avatar');
-            $filename = time() . '.' . $avatar->getClientOriginalExtension();
-            Image::make($avatar)->resize(300,300)->save(public_path('/avatars/' . $filename));
+            // Handles user upload of avatar
+            if($request->hasFile('avatar'))
+            {
+                $avatar = $request->file('avatar');
+                $filename = time() . '.' . $avatar->getClientOriginalExtension();
+                Image::make($avatar)->resize(300,300)->save(public_path('/avatars/' . $filename));
 
-            $user = Auth::user();
-            $user->avatar = $filename;
-            $user->save();
+                $user = Auth::user();
+                $user->avatar = $filename;
+                $user->save();
 
-            return $this->index();
+                return $this->index();
+            }
         }
+
+        catch (Exception $ex)
+        {
+            return $this->index()->with("error_msg","We only accept: JPG, PNG, GIF or WebP files!");
+        }
+
+
+        return $this->index();
     }
     public function index($CurrentUser = null)
     {
