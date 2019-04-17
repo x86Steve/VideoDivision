@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 
-
+use Auth;
 class WatchVideo extends Search\SearchController
 {
 
@@ -14,13 +14,8 @@ class WatchVideo extends Search\SearchController
         $results = $this->getVideoByID($video_id);
         $isMovie = $results[0]->IsMovie;
 
-        if (\Auth::check()) {
-            $userID = \Auth::user()->id;
-        } else {
-            $userID = -1;
-        }
-
-        $isSubbed = $this->isSubbed($video_id, $userID);
+        if (Auth::guest())
+            return redirect()->route('login');
 
         if ($isMovie) {
             $extra = $this->getMovieByID($video_id);
@@ -30,8 +25,6 @@ class WatchVideo extends Search\SearchController
         $file_path = $extra->File_Path;
 
         return view('watch', [
-            'User_ID' => $userID,
-            'isSubbed' => $isSubbed,
             'isMovie' => $isMovie,
             'file' => $results,
             'extra' => $extra,
@@ -42,6 +35,10 @@ class WatchVideo extends Search\SearchController
     //v2
     function getEpisodeView($show_id, $season_number, $episode_number)
     {
+
+        if (Auth::guest())
+            return redirect()->route('login');
+
         $file = $this->getVideoByID($show_id);
         $isMovie = $file[0]->IsMovie;
         $lastEpisode = $this->getLastEpisodeByVideoID($show_id);
@@ -90,6 +87,9 @@ class WatchVideo extends Search\SearchController
 
     function getFirstView($show_id)
     {
+        if (Auth::guest())
+            return redirect()->route('login');
+
         $file = $this->getVideoByID($show_id);
         $isMovie = $file[0]->IsMovie;
         $episodeInfo = $this->getEpisodeInfo($show_id, 1);

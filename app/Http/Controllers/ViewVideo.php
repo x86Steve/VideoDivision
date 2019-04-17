@@ -20,6 +20,10 @@ class ViewVideo extends Search\SearchController
     //Used to see video details page
     function getView()
     {
+        if (Auth::guest())
+            return redirect()->route('login');
+
+
         $video_id = Input::get ( 'video' );
 
         $results = $this -> getVideoByID($video_id);
@@ -136,7 +140,7 @@ class ViewVideo extends Search\SearchController
 
         if (Auth::guest())
             return redirect()->route('login');
-        
+
         $output = '';
 
         if (\Auth::check()) {

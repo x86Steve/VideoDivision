@@ -24,6 +24,12 @@
                     @endif
                 </ul>
                 <div class="container">
+                    @if(isset($error_msg))
+                        <div class="alert alert-danger alert-dismissable">
+                            <a class="panel-close close" data-dismiss="alert">×</a> {{$error_msg}}
+                        </div>
+                    @endif
+
                     <div class="row">
                         <div class = "col-mid-10 col-md-offset-1">
                             <img src="{{Config::get('customfilelocations.locations.avatars')}}{{ isset($CurrentUser) ? $CurrentUser->avatar : Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 150px; height: 150px; float:left; border-radius: 50%;margin-right: 25%;">
