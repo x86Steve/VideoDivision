@@ -13,27 +13,30 @@ class UploadController extends Controller
 
     function loadPage($status)
     {
-        // all fields in the Actor table are relevant
+        // get list of actors
         $actors = DB::table('Actor')
             ->orderBy('First_Name', 'asc')
             ->get();
 
-        // get only relevant information about videos where IsMovie is 0 (i.e. a show)
+        // get a list of shows
         $shows = DB::table('Video')
             ->select('Video_ID', 'Title')
             ->where('IsMovie', 0)
             ->orderBy('Title', 'asc')
             ->get();
 
+        // get list of genres
         $genres = DB::table('Genre')
             ->select('Genre_ID', 'Name')
             ->orderBy('Name', 'asc')
             ->get();
 
+        // get list of directors
         $directors = DB::table('Director')
             ->get()
             ->unique('Director_ID');
 
+        // return the upload page and pass it the data
         return view(
             'upload',
             [
@@ -45,23 +48,27 @@ class UploadController extends Controller
 
     function index()
     {
+        // if guest tries to access form, suggest they log in
         if (Auth::guest())
             return redirect()->route('login');
+        // if non-admin tries to access form, redirect to home
         else if (!Auth::user()->isAdmin)
             return redirect()->route('home');
+
         return self::loadPage(0);
     }
 
     function submit()
     {
-        if (Auth::guest() || !Auth::user()->isAdmin) {
+        // user may have been logged out; redirect to home
+        if (Auth::guest())
             return redirect()->route('home');
-        }
-        // Display File Size
-        //        echo 'File Size: ' . $file->getSize();
-        //        echo '<br>';
+        // if non-admin somehow sends a post request to this page,
+        // redirect to home
+        else if (!Auth::user()->isAdmin)
+            return redirect()->route('home');
 
-        // get video metadata
+        // get form fields
         $title = Request::get('title');
         $year = Request::get('year');
         $summary = Request::get('summary');
@@ -101,6 +108,18 @@ class UploadController extends Controller
             }
         }
         $videoDir = ($isMovie) ? "movies" : "tv-shows/" . $showDir . "/Season" . $seasonNumber;
+
+        // for episodes, ensure we are inserting a unique file name.
+        // movies don't have this issue because they have a unique video ID
+        // and we don't know the episode ID until insert into DB
+        if (!$isMovie) {
+            $prefixNum = 1;
+            while (self::episodeFilePathExists("/assets/videos/" . $videoDir . '/' . $prefixNum . $filename)) {
+                $prefixNum++;
+            }
+            $filename = $prefixNum . $filename;
+        }
+
         // use laravel Storage facade method to store file
         Storage::disk('videos')->putFileAs($videoDir, $videoFile, $filename);
         //$path = base_path('assets/videos/' . $videoDir . '/' . $filename);
@@ -133,16 +152,7 @@ class UploadController extends Controller
                 $actorId = DB::table('Actor')->insertGetId(
                     ['First_Name' => $fn, 'Last_Name' => $ln]
                 );
-                //echo "First name: " . $fn;
-                //echo "Last name: " . $ln;
-            } else {
-                // use the selected actor name
-                //$actorId = Request::get('actorSelect' . $count)
             }
-
-            //echo "Episode ID: " . $episodeId;
-            //echo "Actor ID: " . $actorId;
-            //echo "Video ID: " . $videoId;
 
             DB::table('Cast')->insert(
                 [
@@ -198,5 +208,12 @@ class UploadController extends Controller
         }
 
         return self::loadPage(1);
+    }
+
+    // checks if a filepath exists in an entry in the Episode table
+    function episodeFilePathExists(string $testPath)
+    {
+        $filePaths = DB::table('Episode')->select('File_Path')->get();
+        return $filePaths->contains("File_Path", $testPath);
     }
 }
