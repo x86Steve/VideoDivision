@@ -48,10 +48,6 @@ Route::post('/contact', "ContactController@mail");
 
 Route::get('/search', 'Search\SearchController@basicSearch');
 
-Route::get('/upload', 'Upload\UploadController@index');
-
-Route::post('/upload', 'Upload\UploadController@submit');
-
 Route::get('/live_search/grid', 'Search\LiveSearch@getGridView');
 Route::get('/live_search/table', 'Search\LiveSearch@getTableView');
 
@@ -68,6 +64,12 @@ Route::post('/video_details', 'ViewVideo@postHandler')->name('postHandler');
 
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
+// Admin routes
+Route::get('/admin/upload', 'Admin\UploadController@index');
+
+Route::post('/admin/upload', 'Admin\UploadController@submit');
+
+Route::get('/admin', 'Admin\AdminToolsController@index');
 
 
 /************************************************************************/
