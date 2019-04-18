@@ -32,10 +32,8 @@ class PostController extends Controller
         $post = Post::find($id);
 
         $review = DB::table('ratings')->where("rateable_id","=","$id")->pluck('review','username');
-        //$username=DB::table('ratings')->where("rateable_id","=","$id")->pluck('username');
         $user_id = DB::table('ratings')->where("rateable_id","=","$id")->pluck('user_id');
-
-        $full_query = DB::table('ratings')->where('rateable_id', "=","$id")->pluck('username','review')->get();
+        $full_query = DB::table('ratings')->where('rateable_id', "=","$id")->select('username','review','created_at','avatar')->get();
 
         return view('postsShow',compact('post'), compact('review','user_id','full_query' ));
 
@@ -47,28 +45,51 @@ class PostController extends Controller
 
     {
 
+
         if (Auth::guest())
             return redirect()->route('login');
 
 
-        request()->validate(['rate' => 'required']);
+        $id = $request->movieID;
+        $userid=$request->userID;
+        $user_id = DB::table('ratings')->where("rateable_id","=","$id")->pluck('user_id');
 
-        $post = Post::find($request->id);
+        $txt=0;
+        foreach($user_id as $user_id)
+        {
+            if ($user_id ==Auth::user()->id)
+            {
+                $txt=1;
+            }
+        }
 
+        if($txt==0)
+        {
+            request()->validate(['rate' => 'required']);
+            request()->validate(['message' => 'required']);
+            $post = Post::find($request->id);
+            $rating = new \willvincent\Rateable\Rating;
+            $rating->rating = $request->rate;
+            $rating->user_id = auth()->user()->id;
+            $rating->review = $request->message;
+            $rating->username = Auth::user()->username;
+            $rating->avatar = Auth::user()->avatar;
+            $post->ratings()->save($rating);
+        }
+        elseif($txt==1)
+        {
+            request()->validate(['rerate' => 'required']);
+            request()->validate(['remessage' => 'required']);
 
-        $rating = new \willvincent\Rateable\Rating;
+            DB::table('ratings')
+                ->where('user_id', $userid)
+                ->update(['review' => $request->remessage]);
 
-        $rating->rating = $request->rate;
+            DB::table('ratings')
+                ->where('user_id', $userid)
+                ->update(['rating' => $request->rerate]);
 
-        $rating->user_id = auth()->user()->id;
-
-        $rating->review= $request->message;
-
-        $rating->username=Auth::user()->username;
-
-        $post->ratings()->save($rating);
-
-
+        }
 
         return redirect()->route("posts");
 
