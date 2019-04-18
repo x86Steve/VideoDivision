@@ -68,6 +68,13 @@ Route::post('/video_details', 'ViewVideo@postHandler')->name('postHandler');
 
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
+/*****************************************************************************/
+
+Route::get('/inbox',  'InboxController@getView')->name('view_inbox');
+
+Route::get('/chat',  'ChatController@getView')->name('chat_window');
+
+Route::post('/chat', 'ChatController@postHandler')->name('postMessageHandler');
 
 
 /************************************************************************/
