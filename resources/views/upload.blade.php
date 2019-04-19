@@ -16,10 +16,10 @@
 @extends('layouts.app') 
 @section('content')
 
-<br> @if ($status === 1)
-<h2>Upload success</h2>
-@elseif ($status === 2)
-<h2>Upload failed</h2>
+<br> @if ($status == 1)
+<h2 style="color:green">Upload success</h2>
+@elseif ($status == 2)
+<h2 style="color:red">Upload failed</h2>
 @endif
 
     <br>
@@ -297,7 +297,7 @@
             newGenre.querySelector('label').htmlFor = "genreSelect" + newCount;
             newGenre.querySelector('select').id = "genreSelect" + newCount;
             newGenre.querySelector('select').name = "genreSelect" + newCount;
-            document.getElementById("genres").insertBefore(newGenre, lastNode); //appendChild(newGenre);
+            document.getElementById("genres").insertBefore(newGenre, lastNode);
             document.getElementById("removeGButton").disabled = false;
         }
 
@@ -462,7 +462,6 @@
             var minutes = parseInt(s / 60);
             s = parseInt(s % 60);
             return hours + ":" + minutes + ":" + s;
-            //return 4;
         }
 
     </script>
