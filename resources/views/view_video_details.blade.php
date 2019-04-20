@@ -23,7 +23,7 @@
         &nbsp;&nbsp; <strong>Year:</strong> <?php echo ($file)[0]->Year?> <br> <br>
         &nbsp;&nbsp; <strong>Subscription:</strong> <?php echo ($file)[0]->Subscription?> <br> <br></h2>
 
-    {{--IF MOVIE DISPLAY LENGTH, IF EPISODE DISPLAY AMOUNT OF EPISODES (FIX EPISODE LENGTH ERROR)--}}
+    {{--IF MOVIE DISPLAY LENGTH, IF EPISODE DISPLAY AMOUNT OF EPISODES--}}
     @if ($isMovie === 1)
 
         <h3><strong>&nbsp;&nbsp;&nbsp;&nbsp;Length: </strong><?php echo $extra->Length?> </h3>
