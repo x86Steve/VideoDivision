@@ -30,7 +30,7 @@
 
     @else
         <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Seasons:</strong> <?php echo $extra->Season_Number?></h4>
-        <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Episodes:</strong> <?php echo $extra->Episode_Number?></h4>
+        <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Episodes:</strong> <?php echo $num_of_episodes?></h4>
     @endif
     <br>
 
