@@ -63,6 +63,7 @@ class ChatController extends Search\SearchController
 
         $user_img = asset('avatars') . '//' . $user_info->avatar;
         $other_img = asset('avatars') . '//' . $other_info->avatar;
+
         foreach ($results as $chat)
         {
             //if user sent message have on right and darker

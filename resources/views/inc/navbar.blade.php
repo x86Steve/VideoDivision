@@ -35,6 +35,7 @@
                     <img src="{{Config::get('customfilelocations.locations.avatars')}}{{Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 32px; height: 32px; position: absolute; top:5px; left: 10px; border-radius: 50%">Hey, {{ Auth::user()->username }}!</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
                     <a class="dropdown-item" href="/public/profile"><i data-feather="edit-2"></i> Edit Profile</a>
+                    <a class="dropdown-item" href="/public/inbox"><i data-feather="mail"></i> Inbox</a>
                     <a class="dropdown-item disabled" href="#"><i data-feather="edit"></i> Edit Subscription</a>
                     <a class="dropdown-item" href="/public/my_videos"><i data-feather="eye"></i> Watch your shows!</a>
                     <a class="dropdown-item" href="/public/live_user_search/grid"><i data-feather="users"></i> Find a friend!</a>

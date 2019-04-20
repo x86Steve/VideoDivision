@@ -45,10 +45,9 @@ class InboxController extends Search\SearchController
             ->where('Sender_ID', '=' , "$user_id")
             ->orwhere('Receiver_ID', '=' , "$user_id")
             ->select('chat_log.*')
-            //->orderBy('Time_Sent', 'desc')
+            ->orderBy('Time_Sent', 'desc')
             ->get();
 
-        $testCount = $chats->count();
         //put them in a list
 
         $other_Ids = [];
@@ -79,19 +78,40 @@ class InboxController extends Search\SearchController
         foreach ($other_Ids as $other_user)
         {
             $user_info = DB::table('users')->where('id', '=', "$other_user")->first();
+            $most_recent = DB::table('chat_log')
+                ->where('Sender_ID', '=', "$other_user")
+                ->where('Receiver_ID', '=', "$user_id")
+                ->orWhere('Sender_ID', '=', "$user_id")
+                ->where('Receiver_ID', '=', "$other_user")
+                ->orderBy('Time_Sent', 'desc')
+                ->first();
 
             if(is_object($user_info))
             {
                 $user_img = asset('avatars') . '//' . $user_info->avatar;
 
+                $format_recent = '';
+                if(is_object($most_recent))
+                {
+                    $message = $most_recent->Message;
+                    if(strlen($message)>140)
+                    {
+                        $format_recent = substr($message, 0 , 140)."...";
+                    }
+                    else
+                    {
+                        $format_recent = $message;
+                    }
+                }
+
                 $output .= "
                               <div class=\"row\">
-                                <div class=\"col-sm\">
+                                <div class=\"col-sm-2\">
                                   <img src=$user_img alt=\"User Image\" width=\"95\" height=\"95\" border=\"0\">
                                   <br> $user_info->username
                                 </div>
                                 <div class=\"col-sm\">
-                                     Most Recent Message Text
+                                     ".$format_recent."
                                 </div>
                                 <div class=\"col-sm\">
                                      <br><a href=\"/public/chat?user=" . $other_user . "\">
@@ -105,6 +125,38 @@ class InboxController extends Search\SearchController
         }
         $output .= "</div>";
 
+        $friends = DB::table('friends')->where('User_ID','=',"$user_id")->paginate(50);
+
+        $message_friend = '';
+
+        foreach($friends as $friend)
+        {
+            $friend_info = DB::table('users')->where('id', '=', "$friend->Friend_ID")->first();
+
+            if(is_object($friend_info)) {
+                $friend_img = asset('avatars') . '//' . $friend_info->avatar;
+                $friend_name = $friend_info->username;
+
+                $message_friend .= '
+                <div class="row">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="float" >
+                          <img src='.$friend_img.' alt="Friend Image" width="40" height="40" border="0">
+                          <br> 
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="float" >
+                        <a href="/public/chat?user=' . $friend_info ->id . '">
+                                 <button type="submit" class="btn btn-dark btn-sm">Chat</button>
+                         </a>
+                     </div>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$friend_name.'
+                   
+                
+                </div><br>';
+            }
+
+        }
         //$output .= "<h4><strong>From: </strong>".$chat->Sender_ID."</h4><br>".$chat->Message."<br>";
 
 
@@ -112,7 +164,7 @@ class InboxController extends Search\SearchController
         //add a button to access that chat
 
 
-        return view('inbox', ['Messages'=>$output]);
+        return view('inbox', ['Messages'=>$output, 'Sidebar'=>$message_friend]);
 
     }
 
