@@ -80,7 +80,7 @@
                             </p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
                             <button type="submit" form="form" class="btn btn-dark">Subscribe</button>
             <form id="form" method="post">
                 {{ csrf_field() }}
@@ -114,7 +114,7 @@
                         <div class="modal-footer">
                             <button type="button"
                                     class="btn btn-dark"
-                                    data-dismiss="modal">Close
+                                    data-dismiss="modal">Cancel
                             </button>
                             <span class="pull-right">
 
