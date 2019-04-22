@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use DB;
-use Faker\Provider\DateTime;
 
 class CheckExpiredSubscriptions extends Command
 {
@@ -44,12 +43,13 @@ class CheckExpiredSubscriptions extends Command
         $subscriptions = DB::table('active_subscriptions')->get();
         foreach ($subscriptions as $subscription)
         {
-            if ($subscription->Start_Date < DateTime.now()->sub(new DateInterval('P1D')))
+            if (new \DateTime($subscription->Start_Date) < now()->sub('day', 1))
             {
                 // if the subscription was created more than 1 day ago,
                 // remove record from database
                 DB::table('active_subscriptions')->delete($subscription->ID);
-                $this->output->info("Removed " . $subscription->ID);
+                $this->info("Removed user " . $subscription->User_ID . "'s subscription to "
+                . $subscription->Video_ID . ". (Subscription ID " . $subscription->ID . ")");
             }
         }
     }

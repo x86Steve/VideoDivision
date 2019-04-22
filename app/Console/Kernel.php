@@ -27,6 +27,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        
+        // check for expired subscriptions every minute
         $schedule->command(CheckExpiredSubscriptions::class)
             ->everyMinute()
             ->appendOutputTo(base_path('expired_subscriptions_output.txt'));
