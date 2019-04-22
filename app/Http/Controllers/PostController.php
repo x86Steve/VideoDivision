@@ -27,13 +27,15 @@ class PostController extends Controller
 
 
 
-
+        DB::table('ratings')
+            ->where('user_id', Auth::user()->id)
+            ->update(['avatar' => Auth::user()->avatar]);
 
         $post = Post::find($id);
 
         $review = DB::table('ratings')->where("rateable_id","=","$id")->pluck('review','username');
         $user_id = DB::table('ratings')->where("rateable_id","=","$id")->pluck('user_id');
-        $full_query = DB::table('ratings')->where('rateable_id', "=","$id")->select('username','review','created_at','avatar')->get();
+        $full_query = DB::table('ratings')->where('rateable_id', "=","$id")->select('username','review','created_at','avatar','user_id')->get();
 
         return view('postsShow',compact('post'), compact('review','user_id','full_query' ));
 
@@ -88,6 +90,9 @@ class PostController extends Controller
             DB::table('ratings')
                 ->where('user_id', $userid)
                 ->update(['rating' => $request->rerate]);
+            DB::table('ratings')
+                ->where('user_id', $userid)
+                ->update(['avatar' => Auth::user()->avatar]);
 
         }
 

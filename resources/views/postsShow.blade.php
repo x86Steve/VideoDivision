@@ -32,7 +32,7 @@
                         <form action="{{ route('posts.post') }}" method="POST">
                             {{ csrf_field() }}
 
-                                <div class="container-fliud">
+                                <div class="container-fluid">
                                     <div class="wrapper row">
                                         <div class="preview col-md-6">
                                             <div class="preview-pic tab-content">
@@ -56,7 +56,7 @@
                                                     </div>
                                                     <p class="movie-description">{{ $post->Summary }}</p>
                                                     <div class="form-group">
-                                                        <label for="message">First Review</label>
+                                                        <label for="message">Enter your Review</label>
                                                     <textarea name="message" class="form-control" id="message" required placeholder="Please enter your review." cols="20" rows="5"></textarea>
                                                     <?php echo "<br>";?>
                                                 <button class="btn btn-success">Submit Review</button>
@@ -74,8 +74,16 @@
                                                             </div>
                                                             <p class="movie-description">{{ $post->Summary }}</p>
                                                             <div class="form-group">
-                                                                <label for="message">Second Review</label>
-                                                    <textarea name="remessage" class="form-control" id="message" required placeholder="Please enter your new review." cols="20" rows="5"></textarea>
+                                                                <label for="message">Your Review</label>
+
+
+                                                               <?php $user_review=DB::table('ratings')
+                                                                ->where('user_id',Auth::user()->id )
+                                                                ->pluck('review');?>
+
+
+
+                                                    <textarea name="remessage" class="form-control" id="message" required placeholder="{{$user_review["0"] }}"cols="20" rows="5"></textarea>
                                                     <?php echo "<br>";?>
                                                     <button class="btn btn-success">Change Review</button>
                                                 @endif
@@ -85,6 +93,10 @@
                                                 <label for="message">Latest Reviews for this Movie</label>
                                                 <?php echo "<br>";?>
                                                 <?php echo "<br>";?>
+
+
+
+
                                                 @foreach($full_query as $review)
 
 
