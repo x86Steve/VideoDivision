@@ -80,18 +80,14 @@
                             </p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button"
-                                    class="btn btn-dark"
-                                    data-dismiss="modal">Close
-                            </button>
-                            <span class="pull-right">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                            <button type="submit" form="form" class="btn btn-dark">Subscribe</button>
             <form id="form" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
                 <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
                 <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
                 <input type="hidden" id="postType" name="postType" value="0">
-                <input type="submit" class="btn btn-dark"/>
             </form>
 
             </span>
@@ -118,7 +114,7 @@
                         <div class="modal-footer">
                             <button type="button"
                                     class="btn btn-dark"
-                                    data-dismiss="modal">Close
+                                    data-dismiss="modal">Cancel
                             </button>
                             <span class="pull-right">
 
