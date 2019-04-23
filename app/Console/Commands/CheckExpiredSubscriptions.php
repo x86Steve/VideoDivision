@@ -38,7 +38,6 @@ class CheckExpiredSubscriptions extends Command
      */
     public function handle()
     {
-        $this->info("Ran!");
         // get the list of subscriptions from the database
         $subscriptions = DB::table('active_subscriptions')->get();
         foreach ($subscriptions as $subscription)
