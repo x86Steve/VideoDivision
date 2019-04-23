@@ -80,19 +80,26 @@
                                     <a href="/public/subscribe" class="badge badge-info">Please consider subscribing!</a>
                                 @endif
                                 <hr>
-
                             </div>
                             <div class="col-md-12">
-                                    <h5 class="mt-2"><span class="float-right"></span><i class="fas fa-clock"></i> Recent Activity</h5>
+                                <h5 class="mt-2"><span class="float-right"></span><i class="fas fa-clock"></i> Recent Activity</h5>
                                 <table class="table table-sm table-hover table-striped">
                                     <tbody>
                                     @foreach($recent_activities as $activity)
-                                    <tr>
-                                        <td>
-                                            <strong>{{isset($CurrentUser) ? $CurrentUser->name : Auth::user()->name}}</strong>  - {{$activity->entry}} -  <strong>{{ Carbon\Carbon::parse($activity->created_at)->diffForHumans()}}</strong>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>{{isset($CurrentUser) ? $CurrentUser->name : Auth::user()->name}}</strong>  - {{$activity->entry}} -  <strong>{{ Carbon\Carbon::parse($activity->created_at)->diffForHumans()}}</strong>
+                                            </td>
+                                        </tr>
                                     @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12">
+                                <h5 class="mt-2"><span class="float-right"></span><i class="fas fa-comments"></i> User Wall</h5>
+                                <table class="table table-sm table-hover table-striped">
+                                    <tbody>
+                                        
                                     </tbody>
                                 </table>
                             </div>

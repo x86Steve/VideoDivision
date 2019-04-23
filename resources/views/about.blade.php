@@ -3,8 +3,9 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 order-lg-1">
+            <div class="col-lg-11 order-lg-1">
                 <h1>About</h1>
+
                 <div class="alert alert-danger" role="alert">
                     <center><strong><i data-feather="alert-triangle"></i> ACADEMIC PROJECT <i data-feather="alert-triangle"></i></strong> </center>
                     <p>This site is gaining absolutely no income from sources that are listed here. There will be no monetary or industrial value of this site of any kind!</p>
