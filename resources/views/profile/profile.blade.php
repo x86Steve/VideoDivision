@@ -5,8 +5,8 @@
 <!-- TODO Redirect user when they are not logged in. -->
 @section('content')
     <div class="container">
-        <div class="row ">
-            <div class="col-lg-8 order-lg-2">
+        <div class="row">
+            <div class="col-lg-11 order-lg-1">
                 <ul class="nav nav-pills">
                     <li class="nav-item">
                         <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
@@ -83,7 +83,7 @@
 
                             </div>
                             <div class="col-md-12">
-                                <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>
+                                    <h5 class="mt-2"><span class="float-right"></span><i class="fas fa-clock"></i> Recent Activity</h5>
                                 <table class="table table-sm table-hover table-striped">
                                     <tbody>
                                     @foreach($recent_activities as $activity)

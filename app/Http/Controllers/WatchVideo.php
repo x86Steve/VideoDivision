@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-
 use Auth;
+
 class WatchVideo extends Search\SearchController
 {
 
