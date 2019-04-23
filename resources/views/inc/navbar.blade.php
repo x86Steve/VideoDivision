@@ -37,7 +37,7 @@
                     <a class="dropdown-item" href="/public/my_videos"><i class="fas fa-eye"></i> Watch your shows!</a>
                     <a class="dropdown-item" href="/public/live_user_search/grid"><i class="fas fa-users"></i> Find a friend!</a>
                     @if(Auth::user()->isAdmin)
-                    <a class="dropdown-item" href="/public/admin" style="color:#FF0000"><i data-feather="user-check"></i> Administration Control Panel</a>
+                    <a class="dropdown-item" href="/public/admin" style="color:#FF0000"><i class="fas fa-user-shield"></i> Administration Control Panel</a>
                     @endif
                     <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
