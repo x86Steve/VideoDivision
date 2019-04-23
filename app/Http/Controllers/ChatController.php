@@ -119,6 +119,8 @@ class ChatController extends Search\SearchController
             $Receiver_ID = Request::get('Receiver_ID');
             $message_text = Request::get('Message');
 
+            $message_text = strip_tags($message_text);
+
 
 
             DB::table('chat_log')->insertGetId(

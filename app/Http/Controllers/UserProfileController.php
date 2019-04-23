@@ -2,15 +2,82 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Session;
+use Exception;
 use Auth;
 use Image;
-use Illuminate\Support\Facades\View;
 use DB;
 
 class UserProfileController extends Controller
 {
+    public function update_profile(Request $request)
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'firstname' => 'string|required|regex:/^[\w-]*$/|max:50',
+                'lastname' => 'string|required|regex:/^[\w-]*$/|max:50',
+                //'email'=> 'nullable|string|email|unique:users',
+                'jobtitle' => 'nullable|string|max:50',
+                'description' => 'nullable|string|max:100',
+                'street' => 'nullable|regex:/([- ,\/0-9a-zA-Z]+)/|max:100',
+                'city' => 'nullable|string|max:50',
+                'state' => 'nullable|string|regex:/^[\w-]*$/|max:2|min:2',
+                'currentpassword' => 'required|string|min:8',
+                'newpassword' => 'nullable|min:8|string',
+                'newpassword_confirmed' => 'nullable|same:newpassword'
+            ]);
+
+        if ($validator->fails()) {
+            Session::flash('error', $validator->messages()->first());
+            return redirect()->back()->withInput($request->input())->withErrors($validator);
+        }
+
+        // Everything at this point is valid, so, now, lets make sure the password they entered is correct before adjusting DB
+        if (Hash::check($request->input('currentpassword'),Auth::user()->password))
+        {
+            $newpassword = null;
+            if (strcmp($request->input('newpassword'), $request->input('newpassword_confirmed') == 0) &&
+                strlen($request->input('newpassword_confirmed')>= 8))
+                $newpassword = Hash::make($request->input('newpassword_confirmed'));
+            else
+                $newpassword = Auth::user()->password;
+
+            // Password check passed, insert into database
+            DB::table('users')->where('username',Auth::user()->username)
+                ->update([
+                    'name' => $request->input('firstname'),
+                    'lastname' => $request->input('lastname'),
+                    'jobtitle' => $request->input('jobtitle'),
+                    'description' => $request->input('description'),
+                    'street' => $request->input('street'),
+                    'city' => $request->input('city'),
+                    'state' => $request->input('state'),
+                    'password' => $newpassword
+                    ]
+                );
+        }
+
+        else
+        {
+            // Failed password check, alert user.
+            Session::flash('error_password','You have supplied an incorrect password!');
+            return redirect()->back();
+        }
+
+        //
+
+        Session::flash('success_msg','Changes have been saved successfully!');
+        return redirect()->back();
+
+
+        //return $this->index()->with("success_msg", "Changes saved successfully!");
+    }
+
     private function grab_target_user_table($username)
     {
         $user = null;

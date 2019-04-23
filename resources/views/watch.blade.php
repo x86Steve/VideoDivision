@@ -1,28 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-
     <h1 style="font-size:60px;"><span class="bigger"> <?php echo ($file)[0]->Title?></span></h1>
     <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+    
+                @if ($isMovie == 0)
+                    <p>
+                        <strong>S<?php echo $season_number?>: E<?php echo $episode_number?> </strong>
+                        <?php echo $episode_title?>
+                    </p>
+                @endif
+                <body>
+                <video id="player" autoplay class="video-js" width='768' height='432'
+                       controls
+                       poster="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg">
 
-    @if ($isMovie == 0)
-        <p>
-            <strong>S<?php echo $season_number?>: E<?php echo $episode_number?> </strong>
-            <?php echo $episode_title?>
-        </p>
-    @endif
-    <body>
-    <video id="player" autoplay class="video-js" width='768' height='432'
-           controls
-           poster="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg">
-
-        <source src="http://videodivision.net{{($file_path)}}" type="video/mp4"/>
-        <p class='vjs-no-js'>
-            To view this video please enable JavaScript, and consider upgrading to a web browser that
-            <a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
-        </p>
-    </video>
-
+                    <source src="http://videodivision.net{{($file_path)}}" type="video/mp4"/>
+                    <p class='vjs-no-js'>
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                        <a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
+                    </p>
+                </video>
     <script>
         var myPlayer = videojs('player');
         videojs("player", {}, function(){
@@ -65,12 +63,7 @@
                 </a>
             @endif
         </div>
-        </p>
-    @endif
-
-
-
-
+    </div>
 @endsection
 
 <?php
