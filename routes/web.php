@@ -90,8 +90,8 @@ Route::get('posts/{id}', 'PostController@show')->name('posts.show');
 /*Sydney's Adds*/
 Route::get('/watch/{video_id}', 'WatchVideo@getView')->name('watch');
 Route::get('/watch/{video_id}/season/{season_number}/episode/{episode_number}', 'WatchVideo@getEpisodeView')->name('watch');
-Route::get('/watch/{video_id}/episode1', 'WatchVideo@getFirstView')->name('watch');
-
+//Route::get('/watch/{video_id}/episode1', 'WatchVideo@getFirstView')->name('watch'); //deprecated route->Episodes list now exists 4/22
+Route::get('/view/{video_id}', 'ListEpisodesController@getView')->name('Episodes');
 
 //Route::get('/loggedin', 'HomeController@index')->name('loggedin');
 
