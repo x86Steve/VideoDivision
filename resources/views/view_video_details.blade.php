@@ -47,7 +47,7 @@
                 <button type="submit" class="btn btn-dark">Watch Now!</button>
             </a>
         @else
-            <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>/episode1">
+            <a href="/public/view/<?php echo ($file)[0]->Video_ID?>">
                 <button type="submit" class="btn btn-dark">Watch Now!</button>
             </a>
         @endif
