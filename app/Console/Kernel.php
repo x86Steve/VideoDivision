@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         
         // check for expired subscriptions every minute
         $schedule->command(CheckExpiredSubscriptions::class)
-            ->everyMinute()
+            ->everyFiveMinutes()
             ->appendOutputTo(base_path('expired_subscriptions_output.txt'));
     }
 
