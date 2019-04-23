@@ -15,7 +15,8 @@ class SearchController extends Controller
     {
         $episodes = DB::table('Episode')
             ->where('Show_ID', '=', "$video_id")
-            ->get();
+            ->get()
+            ->unique();
 
         $count = $episodes ->count();
         return $count;
