@@ -1,103 +1,83 @@
 @extends('layouts.app')
 
 @section('content')
+    {{--WARNING, THIS CODE IS CANCER--}}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-11 order-lg-1">
-                {{--WARNING, THIS CODE IS CANCER--}}
+    {{--Display video thumbnail on page--}}
+    <br>
+    <br>
+    <img src="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg" width="240"
+         height="360"
+         alt="Place Holder" title="Production Title"
+         align="left">
 
-                {{--Display video thumbnail on page--}}
-                <br>
-                <br>
-                <img src="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg" width="240"
-                     height="360"
-                     alt="Place Holder" title="Production Title"
-                     align="left">
+    {{--BASIC INFO (TITLE, RATING, YEAR, SUBSCRIPTION--}}
+    <h2>
+        <br>
+        &nbsp;&nbsp; <strong>Title:</strong> <?php echo ($file)[0]->Title?>
+    </h2>
+    <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <strong>Rating: </strong> <?php echo ($file)[0]->Current_Rating ?></h5>
+    <h2>
+        &nbsp;&nbsp; <strong>Year:</strong> <?php echo ($file)[0]->Year?> <br> <br>
+        &nbsp;&nbsp; <strong>Subscription:</strong> <?php echo ($file)[0]->Subscription?> <br> <br></h2>
 
-                {{--BASIC INFO (TITLE, RATING, YEAR, SUBSCRIPTION--}}
-                <h2>
-                    <br>
-                    &nbsp;&nbsp; <strong>Title:</strong> <?php echo ($file)[0]->Title?>
-                </h2>
-                <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <strong>Rating: </strong> <?php echo ($file)[0]->Current_Rating ?></h5>
-                <h2>
-                    &nbsp;&nbsp; <strong>Year:</strong> <?php echo ($file)[0]->Year?> <br> <br>
-                    &nbsp;&nbsp; <strong>Subscription:</strong> <?php echo ($file)[0]->Subscription?> <br> <br></h2>
+    {{--IF MOVIE DISPLAY LENGTH, IF EPISODE DISPLAY AMOUNT OF EPISODES--}}
+    @if ($isMovie === 1)
 
-                {{--IF MOVIE DISPLAY LENGTH, IF EPISODE DISPLAY AMOUNT OF EPISODES--}}
-                @if ($isMovie === 1)
+        <h3><strong>&nbsp;&nbsp;&nbsp;&nbsp;Length: </strong><?php echo $extra->Length?> </h3>
 
-                    <h3><strong>&nbsp;&nbsp;&nbsp;&nbsp;Length: </strong><?php echo $extra->Length?> </h3>
+    @else
+        <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Seasons:</strong> <?php echo $extra->Season_Number?></h4>
+        <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Episodes:</strong> <?php echo $num_of_episodes?></h4>
+    @endif
+    <br>
 
-                @else
-                    <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Seasons:</strong> <?php echo $extra->Season_Number?></h4>
-                    <h4><strong>&nbsp;&nbsp;&nbsp;&nbsp;Number of Episodes:</strong> <?php echo $num_of_episodes?></h4>
-                @endif
-                <br>
+    {{--A BUNCH OF SPACES FOR FORMATTING (Screw using align)--}}
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                {{--A BUNCH OF SPACES FOR FORMATTING (Screw using align)--}}
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {{--IF THE USER IS SUBBED GIVE ACCESS TO WATCH NOW BUTTON--}}
+    @if($isSubbed === true)
+        @if ($isMovie == 1)
 
-                {{--IF THE USER IS SUBBED GIVE ACCESS TO WATCH NOW BUTTON--}}
-                @if($isSubbed === true)
-                    @if ($isMovie == 1)
+            <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>">
+                <button type="submit" class="btn btn-dark">Watch Now!</button>
+            </a>
+        @else
+            <a href="/public/view/<?php echo ($file)[0]->Video_ID?>">
+                <button type="submit" class="btn btn-dark">Watch Now!</button>
+            </a>
+        @endif
 
-                        <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>">
-                            <button type="submit" class="btn btn-dark">Watch Now!</button>
-                        </a>
-                    @else
-                        <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>/episode1">
-                            <button type="submit" class="btn btn-dark">Watch Now!</button>
-                        </a>
-                    @endif
-
-                    {{--OTHERWISE GIVE ACCESS TO SUBSCRIBE BUTTON--}}
-                @else
-                    <button
-                            type="button"
-                            class="btn btn-dark"
-                            data-toggle="modal"
-                            data-target="#subscribeModal">
-                        Subscribe!
-                    </button>
-                    {{--IF USER IS LOGGED IN LET THEM SUBSCRIBE--}}
-                    @if($User_ID != -1)
-                        <div class="modal fade" id="subscribeModal"
-                             tabindex="-1" role="dialog"
-                             aria-labelledby="subscribeModalLabel">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title"
-                                            id="subscribeModalLabel">Subscribe?</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>
-                                            Please confirm you would like to subscribe to
-                                            <b><span id="sub-title"><?php echo ($file)[0]->Title?></span></b>
-                                            .
-                                        </p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" form="form" class="btn btn-dark">Subscribe</button>
-                                        <form id="form" method="post">
-                                            {{ csrf_field() }}
-                                            <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
-                                            <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
-                                            <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
-                                            <input type="hidden" id="postType" name="postType" value="0">
-                                        </form>
-
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+        {{--OTHERWISE GIVE ACCESS TO SUBSCRIBE BUTTON--}}
+    @else
+        <button
+                type="button"
+                class="btn btn-dark"
+                data-toggle="modal"
+                data-target="#subscribeModal">
+            Subscribe!
+        </button>
+        {{--IF USER IS LOGGED IN LET THEM SUBSCRIBE--}}
+        @if($User_ID != -1)
+            <div class="modal fade" id="subscribeModal"
+                 tabindex="-1" role="dialog"
+                 aria-labelledby="subscribeModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"
+                                id="subscribeModalLabel">Subscribe?</h4>
                         </div>
+                        <div class="modal-body">
+                            <p>
+                                Please confirm you would like to subscribe to
+                                <b><span id="sub-title"><?php echo ($file)[0]->Title?></span></b>
+                                .
+                            </p>
+                            </div>
                         {{--IF USER IS NOT LOGGED IN ASK THEM TO LOGIN TO SUBSCRIBE--}}
                     @else
                         <div class="modal fade" id="subscribeModal"

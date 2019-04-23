@@ -42,7 +42,7 @@ class WatchVideo extends Search\SearchController
         $file = $this->getVideoByID($show_id);
         $isMovie = $file[0]->IsMovie;
         $lastEpisode = $this->getLastEpisodeByVideoID($show_id);
-        $isSpecialEpisode = 0; //0 ignore, 1 last ep of season, 2 last episode of series,  3 for 1st episode of non-first season, 4 if first episode of series
+        $isSpecialEpisode = 0; //0 ignore, 1 last ep of season, 2 last episode of series,  3 for 1st episode of non-first season, 4 if first episode of series, 5 if series has one episode
         $lastEpOfSeason = $this->getLastEpOfSeason($show_id, $season_number);
         $episodeInfo = $this->getEpisodeInfo($show_id, $episode_number, $season_number);
 
@@ -68,6 +68,10 @@ class WatchVideo extends Search\SearchController
         {
             $isSpecialEpisode = 4; //first episode of series
         }
+        elseif (($episode_number == 1) && ($numberOfSeasons == 1) && ($lastEpOfSeriesNumber == 1))
+        {
+            $isSpecialEpisode = 5; //series only has one episode
+        }
 
         $file_path = $episodeInfo->File_Path;
         $episode_title = $episodeInfo->Episode_Title;
@@ -85,7 +89,8 @@ class WatchVideo extends Search\SearchController
         ]);
     }
 
-    function getFirstView($show_id)
+    //Function is deprecated as of 4/22, All episodes page is implemented
+    /*function getFirstView($show_id)
     {
         if (Auth::guest())
             return redirect()->route('login');
@@ -110,7 +115,7 @@ class WatchVideo extends Search\SearchController
             'number_of_seasons' => $numberOfSeasons,
             'previous_episode' => $previousEp
         ]);
-    }
+    }*/
 
     function getFirstEpisodeByVideoID($video_id)
     {
