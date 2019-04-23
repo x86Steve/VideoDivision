@@ -95,6 +95,14 @@
                                     <a href="/public/subscribe" class="badge badge-info">Please consider subscribing!</a>
                                 @endif
                                 <hr>
+                                @if(isset($CurrentUser))
+                                <div class="col-md-6">
+                                    <h6>Instant Messaging</h6>
+                                    <a href="/public/chat?user={{Auth::user()->id}}">
+                                        <button type="submit" class="btn btn-dark btn-sm">Message This User</button>
+                                    </a>
+                                </div>
+                                @endif
                             </div>
                             <div class="col-md-12">
                                 <h5 class="mt-2"><span class="float-right"></span><i class="fas fa-clock"></i> Recent Activity</h5>
