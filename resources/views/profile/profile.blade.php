@@ -68,8 +68,8 @@
                                     <span class="border border-primary">
                                         <div class="card-body">
                                             <h5 class="card-title"><strong>Who am I:</strong></h5>
-                                            <h6 class="card-subtitle mb-2 text-muted">{{Auth::user()->jobtitle}}</h6>
-                                            <p class="card-text">{{Auth::user()->description}}</p>
+                                            <h6 class="card-subtitle mb-2 text-muted">{{isset($CurrentUser) ? $CurrentUser->jobtitle : Auth::user()->jobtitle}}</h6>
+                                            <p class="card-text">{{isset($CurrentUser) ? $CurrentUser->description : Auth::user()->description}}</p>
                                         </div>
                                     </span>
                                 </div>
