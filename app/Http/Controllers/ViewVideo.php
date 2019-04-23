@@ -170,7 +170,7 @@ class ViewVideo extends Search\SearchController
             $numOfCols = 3;
             $bootstrapColWidth = floor(12 / $numOfCols * 1.22);
 
-            $output .= " <div class=\"container-fluid\">
+            $output .= " <div class=\"container\">
                          <div class=\"row\">";
 
             foreach ($user_videos as $row)

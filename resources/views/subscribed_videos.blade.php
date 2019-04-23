@@ -3,9 +3,11 @@
 {{--WARNING, THIS CODE IS CANCER, FORMATTING SHOULD BE DONE HERE BUT I'M A BAD PROGRAMMER--}}
 {{--$OUTPUT IS PASSED IN BY ViewVideo.php@getMyVideosView() (CONTROLLER@FUNCTION) --}}
 @section('content')
+    <center>
     <br>
     <h1>My Videos:</h1>
     <br>
+    </center>
 
     <?php echo $output ?>
 @endsection
