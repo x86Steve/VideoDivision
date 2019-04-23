@@ -3,6 +3,7 @@
 @section('content')
 
     <h1 style="font-size:60px;"><span class="bigger"> <?php echo ($file)[0]->Title?></span></h1>
+    <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 
     @if ($isMovie == 0)
         <p>
@@ -23,9 +24,14 @@
     </video>
 
     <script>
-        videojs("player", document, window);
+        var myPlayer = videojs('player');
+        videojs("player", {}, function(){
+
+        });
     </script>
+
     {{ActivityEntry("Started watching: " . helper_GetMovieTitleByID(($file)[0]->Video_ID))}}
+
     </body>
 
     @if ($isMovie == 0)
@@ -53,9 +59,10 @@
                     <button type="submit" class="btn btn-dark">Next Episode</button>
                 </a>
             @elseif ($is_special_episode == 4)
-                    <a class = "nav-link" href = "/public/watch/{{(($file)[0]->Video_ID)}}/season/{{($season_number)}}/episode/{{($episode_number + 1)}}">
-                        <button type = "submit" class = "btn btn-dark">Next Episode</button>
-                    </a>
+                <a class="nav-link"
+                   href="/public/watch/{{(($file)[0]->Video_ID)}}/season/{{($season_number)}}/episode/{{($episode_number + 1)}}">
+                    <button type="submit" class="btn btn-dark">Next Episode</button>
+                </a>
             @endif
         </div>
         </p>
