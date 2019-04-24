@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+<div class="container">
     <br>
     <br>
     <h1>Your chat with: <img src="{{$other_img}}" class="right" width="95" height="95" border="0" hspace="20"><?php echo $other_info->username ?></h1>
@@ -24,6 +24,10 @@
 
 
 
+</div>
+</div>
+</div>
+</div>
 
 @endsection
 

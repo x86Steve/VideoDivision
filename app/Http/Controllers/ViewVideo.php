@@ -80,12 +80,12 @@ class ViewVideo extends Search\SearchController
         {
 
             $User_ID = Request::get('User_ID');
+            $isMovie = Request::get('isMovie');
 
             #CHANGE TO BE DYNAMIC NUMBER INSTEAD OF 10
-            if($this->getSubs($User_ID)->count() < 10)
+            if($isMovie == 0 or $this->getShowSubs($User_ID)->count() < 10)
             {
                 $Video_ID = Request::get('Video_ID');
-                $isMovie = Request::get('isMovie');
 
                 DB::table('active_subscriptions')->insertGetId(
                     ['User_ID' => $User_ID, 'Video_ID' => $Video_ID, 'isMovie' =>$isMovie]);

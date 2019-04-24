@@ -61,7 +61,7 @@ class ChatController extends Search\SearchController
         $fChat = '';
         $fChat .='    <div class="container">
         <div class="row">
-            <div class="col-lg-11 order-lg-1"> <div id="chat_scroll" style="height:500px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">';
+            <div class="col-lg-11 order-lg-1"> <div id="chat_scroll" style="height:450px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">';
 
         $user_info = DB::table('users')->where('id', '=', "$user_id")->first();
         $other_info = DB::table('users')->where('id', '=', "$other_id")->first();

@@ -61,7 +61,7 @@
                     class="btn btn-dark"
                     data-toggle="modal"
                     data-target="#subscribeModal">
-                Subscribe!
+                @if ($isMovie == 1) Rent! @else Subscribe! @endif
             </button>
             {{--IF USER IS LOGGED IN LET THEM SUBSCRIBE--}}
             @if($User_ID != -1)
@@ -72,18 +72,18 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title"
-                                    id="subscribeModalLabel">Subscribe?</h4>
+                                    id="subscribeModalLabel">@if ($isMovie == 1) Rent? @else Subscribe? @endif </h4>
                             </div>
                             <div class="modal-body">
                                 <p>
-                                    Please confirm you would like to subscribe to
+                                    Please confirm you would like to @if ($isMovie == 1) rent @else subscribe to @endif
                                     <b><span id="sub-title"><?php echo ($file)[0]->Title?></span></b>
                                     .
                                 </p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
-                                <button type="submit" form="form" class="btn btn-dark">Subscribe</button>
+                                <button type="submit" form="form" class="btn btn-dark">@if ($isMovie == 1) Rent @else Subscribe @endif</button>
                                 <form id="form" method="post">
                                     {{ csrf_field() }}
                                     <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
@@ -136,6 +136,9 @@
 
         {{--THE FAVORITE BUTTON--}}
 
+        @if ($isMovie == 1)
+            <br><br>
+        @endif
         @if($isFav === false)
             <form id="form" method="post">
                 {{ csrf_field() }}
@@ -143,7 +146,7 @@
                 <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
                 <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
                 <input type="hidden" id="postType" name="postType" value="1">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit" class="btn btn-dark btn-sm">Favorite!</button>
             </form>
         @else
@@ -153,7 +156,7 @@
                 <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
                 <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
                 <input type="hidden" id="postType" name="postType" value="2">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="submit" class="btn btn-dark btn-sm">Un-favorite</button>
             </form>
         @endif
