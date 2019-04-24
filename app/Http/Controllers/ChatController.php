@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Support\Facades\Input;
 use DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Request;
 
 class ChatController extends Search\SearchController
@@ -100,6 +99,16 @@ class ChatController extends Search\SearchController
 
         return view('chat',['chat'=>$fChat, "receiver_id"=>$other_id,"other_img"=>$other_img, "other_info"=>$other_info]);
 
+    }
+
+    public function remove_add_Friend($friend_id)
+    {
+        if(helper_isFriend($friend_id))
+            DB::table('friends')->where(['User_ID' => Auth::user()->id, 'Friend_ID' => $friend_id])->delete();
+        else
+            DB::table('friends')->insert(['User_ID' => Auth::user()->id, 'Friend_ID' => $friend_id]);
+
+        return redirect("/profile/".helper_GetUsernameById($friend_id));
     }
 
     //Used to add entries to the database showing the user has subscribed

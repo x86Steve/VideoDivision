@@ -37,4 +37,22 @@ if (!function_exists('helper_GetNewMessageCount_By_Sender'))
     }
 }
 
+if (!function_exists('helper_isFriend'))
+{
+    function helper_isFriend($friend_id)
+    {
+        return sizeof(DB::table('friends')->where(
+            ['User_ID' => Auth::user()->id,
+                'Friend_ID' => $friend_id])->get()) > 0 ? TRUE : FALSE;
+    }
+}
+
+if (!function_exists('helper_GetUsernameById'))
+{
+    function helper_GetUsernameById($id)
+    {
+        return DB::table('users')->where('id',$id)->first()->username;
+    }
+}
+
 

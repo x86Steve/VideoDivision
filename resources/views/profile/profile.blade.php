@@ -97,10 +97,11 @@
                                 <hr>
                                 @if(isset($CurrentUser))
                                 <div class="col-md-6">
-                                    <h6>Instant Messaging</h6>
-                                    <a href="/public/chat?user={{ $CurrentUser->id }}">
-                                        <button type="submit" class="btn btn-dark btn-sm">Message This User</button>
-                                    </a>
+                                    <h6>Instant Messaging / Friend Zone:</h6>
+                                    <div class="btn-group">
+                                        <a href="/public/chat?user={{ $CurrentUser->id }}" class="btn btn-primary btn-sm ">Message this user!</a>
+                                        <a href="/public/chat/addremove/{{$CurrentUser->id}}" class="btn {{helper_isFriend($CurrentUser->id) ? "btn-danger" : "btn-success"}} btn-sm">{{helper_isFriend($CurrentUser->id) ? "Unfriend this user!" : "Friend this user!"}}</a>
+                                    </div>
                                 </div>
                                 @endif
                             </div>

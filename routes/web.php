@@ -75,6 +75,8 @@ Route::get('/inbox',  'InboxController@getView')->name('view_inbox');
 
 Route::get('/chat',  'ChatController@getView')->name('chat_window');
 
+Route::get('/chat/addremove/{id}', "ChatController@remove_add_Friend");
+
 Route::post('/chat', 'ChatController@postHandler')->name('postMessageHandler');
 
 
