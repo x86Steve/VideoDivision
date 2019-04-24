@@ -23,7 +23,7 @@ class UserProfileController extends Controller
                 'lastname' => 'string|required|regex:/^[\w-]*$/|max:50',
                 //'email'=> 'nullable|string|email|unique:users',
                 'jobtitle' => 'nullable|string|max:50',
-                'description' => 'nullable|string|max:100',
+                'description' => 'nullable|string|max:250',
                 'street' => 'nullable|regex:/([- ,\/0-9a-zA-Z]+)/|max:100',
                 'city' => 'nullable|string|max:50',
                 'state' => 'nullable|string|regex:/^[\w-]*$/|max:2|min:2',
