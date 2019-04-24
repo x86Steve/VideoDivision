@@ -1,10 +1,13 @@
  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
 <link href="{{ asset('css/preview.css') }}" rel="stylesheet">
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<!-- Icon link: https://fontawesome.com/icons?d=gallery -->
 
 
 
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -27,15 +30,10 @@
     <body>
         <div id="app">
             @include('inc.navbar')
-            <div class="container">
                     @yield('content')
-            </div>
         </div>
         <footer id="footer" class="text-center">
             <p> Copyright 2019 &copy; VideoDivision.net</p>
         </footer>
     </body>
-
-    <!-- This tells all data-feathers to initialize and create the icon you requested -->
-    <script>feather.replace()</script>
 </html>

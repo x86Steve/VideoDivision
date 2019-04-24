@@ -208,7 +208,7 @@ img {
 
 .not-available:before {
 
-    font-family: fontawesome;
+    font-family: fontawesome !important;
 
     content: "\f00d";
 

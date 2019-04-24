@@ -12,178 +12,181 @@
 </head>
 
 <body>
+
     
 @extends('layouts.app') 
 @section('content')
 
-<br> @if ($status == 1)
-<h2 style="color:green">Upload success</h2>
-@elseif ($status == 2)
-<h2 style="color:red">Upload failed</h2>
-@endif
+    <div class="container">
 
-    <br>
-    <h1>Upload video</h1>
-    <br>
+        <br> @if ($status == 1)
+        <h2 style="color:green">Upload success</h2>
+        @elseif ($status == 2)
+        <h2 style="color:red">Upload failed</h2>
+        @endif
 
-    <form id="form" method="POST" enctype="multipart/form-data">
-        @csrf
-        <h2>General information</h2>
-        <div class="form-group">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="mediatype" id="moviechoice" onclick="changeMediaType()" checked="true"
-                    value="movie" required>
-                <label class="form-check-label" for="moviechoice">Movie</label>
+        <br>
+        <h1>Upload video</h1>
+        <br>
+
+        <form id="form" method="POST" enctype="multipart/form-data">
+            @csrf
+            <h2>General information</h2>
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="mediatype" id="moviechoice" onclick="changeMediaType()" checked="true"
+                        value="movie" required>
+                    <label class="form-check-label" for="moviechoice">Movie</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="mediatype" id="showchoice" onclick="changeMediaType()" value="show">
+                    <label class="form-check-label" for="showchoice">Show</label>
+                </div>
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="mediatype" id="showchoice" onclick="changeMediaType()" value="show">
-                <label class="form-check-label" for="showchoice">Show</label>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" name="title" id="title" placeholder="Movie Title" required>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" name="title" id="title" placeholder="Movie Title" required>
-        </div>
-        <div class="form-group">
-            <label for="year">Year</label>
-            <input type="text" class="form-control" name="year" id="year" minlength="4" maxlength="4" placeholder="XXXX" required>
-        </div>
-        <div class="form-group">
-            <label for="summary">Summary</label>
-            <input type="text" class="form-control" name="summary" id="summary" placeholder="Summary text..." required>
-        </div>
-        <div class="form-group">
-            <label for="subscription">Subscription</label>
-            <input type="text" class="form-control" name="subscription" id="subscription" placeholder="Subscription" required>
-        </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="text" class="form-control" name="year" id="year" minlength="4" maxlength="4" placeholder="XXXX" required>
+            </div>
+            <div class="form-group">
+                <label for="summary">Summary</label>
+                <input type="text" class="form-control" name="summary" id="summary" placeholder="Summary text..." required>
+            </div>
+            <div class="form-group">
+                <label for="subscription">Subscription</label>
+                <input type="text" class="form-control" name="subscription" id="subscription" placeholder="Subscription" required>
+            </div>
 
 
-        <div id="showFields" hidden>
-            <h2>Show information</h2>
-            
+            <div id="showFields" hidden>
+                <h2>Show information</h2>
+
                 <label for="showSelect">Show</label>
                 <select class="form-control" id="showSelect" name="showSelect" required>
                     @foreach ($shows as $show)
                     <option label="{{$show->Title}}" value="{{$show->Video_ID}}">
                         @endforeach
                 </select>
-            
-            <div class="form-check">
-                <input class="form-check-input" name="addNewShow" id="addNewShow" type="checkbox" onchange="toggleShowNameField()">
-                <label class="form-check-label" for="addNewShow">Add new show to database</label>
-            </div>
-            <div id="newShowFields" hidden>
-                <div class="form-group">
-                    <label for="showInput">Enter show name</label>
-                    <input class="form-control" id="showInput" name="showInput" placeholder="Show Name" required disabled>
+
+                <div class="form-check">
+                    <input class="form-check-input" name="addNewShow" id="addNewShow" type="checkbox" onchange="toggleShowNameField()">
+                    <label class="form-check-label" for="addNewShow">Add new show to database</label>
+                </div>
+                <div id="newShowFields" hidden>
+                    <div class="form-group">
+                        <label for="showInput">Enter show name</label>
+                        <input class="form-control" id="showInput" name="showInput" placeholder="Show Name" required disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="showSummary">Enter show summary</label>
+                        <input class="form-control" id="showSummary" name="showSummary" placeholder="Summary text..." required disabled>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="showSummary">Enter show summary</label>
-                    <input class="form-control" id="showSummary" name="showSummary" placeholder="Summary text..." required disabled>
+                    <label for="seasonNumber">Season Number</label>
+                    <input type="number" class="form-control" name="seasonNumber" id="seasonNumber" placeholder="#" required disabled>
+                </div>
+                <div class="form-group">
+                    <label for="episodeNumber">Episode Number</label>
+                    <input type="number" class="form-control" name="episodeNumber" id="episodeNumber" placeholder="#" required disabled>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="seasonNumber">Season Number</label>
-                <input type="number" class="form-control" name="seasonNumber" id="seasonNumber" placeholder="#" required disabled>
-            </div>
-            <div class="form-group">
-                <label for="episodeNumber">Episode Number</label>
-                <input type="number" class="form-control" name="episodeNumber" id="episodeNumber" placeholder="#" required disabled>
-            </div>
-        </div>
 
 
-        <div id="actors">
-            <h2>Actors</h2>
-            <div class="form-group">
-                <label for="actorSelect1">Select an existing actor</label>
-                <select class="form-control" id="actorSelect1" name="actorSelect1" required>
+            <div id="actors">
+                <h2>Actors</h2>
+                <div class="form-group">
+                    <label for="actorSelect1">Select an existing actor</label>
+                    <select class="form-control" id="actorSelect1" name="actorSelect1" required>
                     @foreach ($actors as $actor)
                     <option label="{{$actor->First_Name}} {{$actor->Last_Name}}" value="{{$actor->Actor_ID}}">
                         @endforeach
                 </select>
-                <div class="form-check">
-                    <input class="form-check-input" name="addNew1" id="addNew1" type="checkbox" onchange="toggleActorNameFields()">
-                    <label class="form-check-label" for="addNew1">Enter new actor</label>
-                </div>
-                <div class="form-row" hidden>
-                    <div class="col">
-                        <input class="form-control" id="actorInputFirst1" name="actorInputFirst1" placeholder="First name" required disabled>
+                    <div class="form-check">
+                        <input class="form-check-input" name="addNew1" id="addNew1" type="checkbox" onchange="toggleActorNameFields()">
+                        <label class="form-check-label" for="addNew1">Enter new actor</label>
                     </div>
-                    <div class="col">
-                        <input class="form-control" id="actorInputLast1" name="actorInputLast1" placeholder="Last name" required disabled>
+                    <div class="form-row" hidden>
+                        <div class="col">
+                            <input class="form-control" id="actorInputFirst1" name="actorInputFirst1" placeholder="First name" required disabled>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" id="actorInputLast1" name="actorInputLast1" placeholder="Last name" required disabled>
+                        </div>
                     </div>
                 </div>
+
+            </div>
+            <div class="form-group btn-group">
+                <button class="btn btn-primary" type="button" onclick="addActor()">+ Add actor</button>
+                <button class="btn btn-danger" id="removeButton" type="button" onclick="removeActor()" disabled>- Remove actor</button>
             </div>
 
-        </div>
-        <div class="form-group btn-group">
-            <button class="btn btn-primary" type="button" onclick="addActor()">+ Add actor</button>
-            <button class="btn btn-danger" id="removeButton" type="button" onclick="removeActor()" disabled>- Remove actor</button>
-        </div>
-
-        <div id="directors">
-            <h2>Directors</h2>
-            <div class="form-group">
-                <label for="directorSelect1">Select an existing director</label>
-                <select class="form-control" id="directorSelect1" name="directorSelect1" required>
+            <div id="directors">
+                <h2>Directors</h2>
+                <div class="form-group">
+                    <label for="directorSelect1">Select an existing director</label>
+                    <select class="form-control" id="directorSelect1" name="directorSelect1" required>
                                 @foreach ($directors as $director)
                                 <option label="{{$director->First_Name}} {{$director->Last_Name}}" value="{{$director->Director_ID}}">
                                     @endforeach
                             </select>
-                <div class="form-check">
-                    <input class="form-check-input" name="addNewD1" id="addNewD1" type="checkbox" onchange="toggleDirectorNameFields()">
-                    <label class="form-check-label" for="addNewD1">Enter new director</label>
-                </div>
-                <div class="form-row" hidden>
-                    <div class="col">
-                        <input class="form-control" id="directorInputFirst1" name="directorInputFirst1" placeholder="First name" required disabled>
+                    <div class="form-check">
+                        <input class="form-check-input" name="addNewD1" id="addNewD1" type="checkbox" onchange="toggleDirectorNameFields()">
+                        <label class="form-check-label" for="addNewD1">Enter new director</label>
                     </div>
-                    <div class="col">
-                        <input class="form-control" id="directorInputLast1" name="directorInputLast1" placeholder="Last name" required disabled>
+                    <div class="form-row" hidden>
+                        <div class="col">
+                            <input class="form-control" id="directorInputFirst1" name="directorInputFirst1" placeholder="First name" required disabled>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" id="directorInputLast1" name="directorInputLast1" placeholder="Last name" required disabled>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group btn-group">
-            <button class="btn btn-primary" type="button" onclick="addDirector()">+ Add director</button>
-            <button class="btn btn-danger" id="removeDButton" type="button" onclick="removeDirector()" disabled>- Remove director</button>
-        </div>
+            <div class="form-group btn-group">
+                <button class="btn btn-primary" type="button" onclick="addDirector()">+ Add director</button>
+                <button class="btn btn-danger" id="removeDButton" type="button" onclick="removeDirector()" disabled>- Remove director</button>
+            </div>
 
-        <div id="genres">
-            <h2>Genres</h2>
-            <div class="form-group">
-                <label for="genreSelect1">Select a genre</label>
-                <select class="form-control" id="genreSelect1" name="genreSelect1" required>
+            <div id="genres">
+                <h2>Genres</h2>
+                <div class="form-group">
+                    <label for="genreSelect1">Select a genre</label>
+                    <select class="form-control" id="genreSelect1" name="genreSelect1" required>
                     @foreach ($genres as $genre)
                     <option label="{{$genre->Name}}" value="{{$genre->Genre_ID}}">
                     @endforeach
                 </select>
-            </div>
-            <div>
-                <div class="form-group btn-group">
-                    <button class="btn btn-primary" type="button" onclick="addGenre()">+ Add genre</button>
-                    <button class="btn btn-danger" id="removeGButton" type="button" onclick="removeGenre()" disabled>- Remove genre</button>
+                </div>
+                <div>
+                    <div class="form-group btn-group">
+                        <button class="btn btn-primary" type="button" onclick="addGenre()">+ Add genre</button>
+                        <button class="btn btn-danger" id="removeGButton" type="button" onclick="removeGenre()" disabled>- Remove genre</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <h2>Files</h2>
-        <div id="thumbnailFields">
-            <div class="form-group">
-                <label for="thumbnail">Upload thumbnail</label>
-                <input type="file" class="form-control-file" id="thumbnail" name="thumbnail" accept=".jpg" onchange="loadImage()" required>
+            <h2>Files</h2>
+            <div id="thumbnailFields">
+                <div class="form-group">
+                    <label for="thumbnail">Upload thumbnail</label>
+                    <input type="file" class="form-control-file" id="thumbnail" name="thumbnail" accept=".jpg" onchange="loadImage()" required>
+                </div>
+                <img class="img-thumbnail" id="thumbnailPreview" width="200" hidden>
             </div>
-            <img class="img-thumbnail" id="thumbnailPreview" width="200" hidden>
-        </div>
-        <div class="form-group">
-            <label for="video">Upload video</label>
-            <input type="file" class="form-control-file" name="video" id="video" accept=".mp4" onchange="initPlayer()" required>
-        </div>
-        <div class="form-group">
-            <div id="videopreview" hidden>
-                <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" width="730" onloadedmetadata="loadDuration()"
-                    controls>    
+            <div class="form-group">
+                <label for="video">Upload video</label>
+                <input type="file" class="form-control-file" name="video" id="video" accept=".mp4" onchange="initPlayer()" required>
+            </div>
+            <div class="form-group">
+                <div id="videopreview" hidden>
+                    <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" width="730" onloadedmetadata="loadDuration()"
+                        controls>    
             </div>
             <input id="duration" name="duration" readonly hidden>
         </div>
@@ -195,8 +198,9 @@
     
     <script src='https://vjs.zencdn.net/7.4.1/video.js'></script>
 
-    
+</div>
 @endsection
+
 
     <script>
         // this is called when the user changes what type of video

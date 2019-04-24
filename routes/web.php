@@ -25,6 +25,7 @@ Route::get('/', function () {
 Route::get('/profile/{username}', "UserProfileController@viewprofile");
 Route::get('/profile', "UserProfileController@index");
 Route::post('/profile','UserProfileController@update_avatar');
+Route::post('/profile/edit', 'UserProfileController@update_profile');
 
 Route::get('/about', function () {
     return view('about');
@@ -64,6 +65,18 @@ Route::post('/video_details', 'ViewVideo@postHandler')->name('postHandler');
 
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
+Route::get('/inbox',  'InboxController@getView')->name('view_inbox');
+
+Route::get('/chat',  'ChatController@getView')->name('chat_window');
+
+Route::post('/chat', 'ChatController@postHandler')->name('postMessageHandler');
+
+Route::get('posts', 'PostController@posts')->name('posts');
+
+Route::post('posts', 'PostController@postPost')->name('posts.post');
+
+Route::get('posts/{id}', 'PostController@show')->name('posts.show');
+
 // Admin routes
 Route::get('/admin/upload', 'Admin\UploadController@index');
 
@@ -72,21 +85,11 @@ Route::post('/admin/upload', 'Admin\UploadController@submit');
 Route::get('/admin', 'Admin\AdminToolsController@index');
 
 
-/************************************************************************/
-Route::get('posts', 'PostController@posts')->name('posts');
-
-Route::post('posts', 'PostController@postPost')->name('posts.post');
-
-Route::get('posts/{id}', 'PostController@show')->name('posts.show');
-
-
-
-
 /*Sydney's Adds*/
 Route::get('/watch/{video_id}', 'WatchVideo@getView')->name('watch');
 Route::get('/watch/{video_id}/season/{season_number}/episode/{episode_number}', 'WatchVideo@getEpisodeView')->name('watch');
-Route::get('/watch/{video_id}/episode1', 'WatchVideo@getFirstView')->name('watch');
-
+//Route::get('/watch/{video_id}/episode1', 'WatchVideo@getFirstView')->name('watch'); //deprecated route->Episodes list now exists 4/22
+Route::get('/view/{video_id}', 'ListEpisodesController@getView')->name('Episodes');
 
 //Route::get('/loggedin', 'HomeController@index')->name('loggedin');
 

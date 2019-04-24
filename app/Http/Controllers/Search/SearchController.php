@@ -15,7 +15,8 @@ class SearchController extends Controller
     {
         $episodes = DB::table('Episode')
             ->where('Show_ID', '=', "$video_id")
-            ->get();
+            ->get()
+            ->unique();
 
         $count = $episodes ->count();
         return $count;
@@ -49,6 +50,19 @@ class SearchController extends Controller
         return $isFaved;
     }
 
+
+    protected function getShowSubs($user_id)
+    {
+
+        $subscriptions = DB::table('active_subscriptions')
+            ->where('User_ID', '=', "$user_id")
+            ->where('IsMovie', '=' , '0')
+            ->get()
+            ->unique('Video_ID');
+
+        return $subscriptions;
+
+    }
 
     protected function getSubs($user_id)
     {
