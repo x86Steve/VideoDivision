@@ -55,4 +55,12 @@ if (!function_exists('helper_GetUsernameById'))
     }
 }
 
+if (!function_exists('helper_UserExist'))
+{
+    function helper_UserExist($id)
+    {
+        return sizeof(DB::table('users')->where('id',$id)->get()) > 0 ? TRUE : FALSE;
+    }
+}
+
 
