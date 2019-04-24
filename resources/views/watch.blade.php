@@ -42,6 +42,10 @@
                             <button type="submit" class="btn btn-dark">Previous Episode</button>
                         </a>
                     @endif
+                        <a class="nav-link"
+                                href="/public/view/<?php echo ($file)[0]->Video_ID?>">
+                            <button type="submit" class="btn btn-dark">All Episodes</button>
+                        </a>
                     @if ($is_special_episode == 0 || $is_special_episode == 3)
                         <a class="nav-link"
                            href="/public/watch/{{(($file)[0]->Video_ID)}}/season/{{($season_number)}}/episode/{{($episode_number + 1)}}">
