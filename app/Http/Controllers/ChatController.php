@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Auth;
 use Illuminate\Support\Facades\Input;
 use DB;
 use Illuminate\Support\Facades\Storage;
@@ -39,6 +40,8 @@ class ChatController extends Search\SearchController
         {
             return redirect('/inbox');
         }
+        
+        DB::table('chat_log')->where(['Receiver_ID' => Auth::user()->id, 'Sender_ID' => $other_id, 'isRead' => '0'])->update(['isRead' => '1']);
 
         //get messages
             $sMessages = DB::table('chat_log')
@@ -56,7 +59,9 @@ class ChatController extends Search\SearchController
 
         //format cutely
         $fChat = '';
-        $fChat .='<div id="chat_scroll" style="height:500px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">';
+        $fChat .='    <div class="container">
+        <div class="row">
+            <div class="col-lg-11 order-lg-1"> <div id="chat_scroll" style="height:500px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">';
 
         $user_info = DB::table('users')->where('id', '=', "$user_id")->first();
         $other_info = DB::table('users')->where('id', '=', "$other_id")->first();

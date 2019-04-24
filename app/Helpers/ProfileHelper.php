@@ -15,3 +15,15 @@ if (!function_exists('helper_GetMovieTitleByID'))
         return DB::select('select `Title` from `Video` where `Video_ID` =:id;',array('id' => $id))[0]->Title;
     }
 }
+
+if (!function_exists('helper_GetNewMessagesCount'))
+{
+    function helper_GetNewMessagesCount()
+    {
+        return sizeof(DB::table('chat_log')->where(
+            ['Receiver_ID' => Auth::user()->id,
+             'isRead' => '0'])->pluck('isRead'));
+    }
+}
+
+

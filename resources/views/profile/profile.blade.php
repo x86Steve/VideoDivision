@@ -98,7 +98,7 @@
                                 @if(isset($CurrentUser))
                                 <div class="col-md-6">
                                     <h6>Instant Messaging</h6>
-                                    <a href="/public/chat?user={{Auth::user()->id}}">
+                                    <a href="/public/chat?user={{ $CurrentUser->id }}">
                                         <button type="submit" class="btn btn-dark btn-sm">Message This User</button>
                                     </a>
                                 </div>
