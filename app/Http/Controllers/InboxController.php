@@ -136,6 +136,7 @@ class InboxController extends Search\SearchController
             if(is_object($friend_info)) {
                 $friend_img = asset('avatars') . '//' . $friend_info->avatar;
                 $friend_name = $friend_info->username;
+                $friend_unread_messages = helper_GetNewMessageCount_By_Sender($friend_info->id);
 
                 $message_friend .= '
                 <div class="row">
@@ -148,11 +149,11 @@ class InboxController extends Search\SearchController
                     <div class="float" >
                         <a href="/public/chat?user=' . $friend_info ->id . '">
                                  <button type="submit" class="btn btn-dark btn-sm">Chat</button>
-                         </a>
-                     </div>
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$friend_name.'
-                   
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$friend_name.' <span class="badge badge-success">'. ($friend_unread_messages > 0 ? $friend_unread_messages : '') .'</span>
                 
+                   
+                </a>
+                     </div>
                 </div><br>';
             }
 

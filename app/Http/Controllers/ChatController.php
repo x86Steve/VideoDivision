@@ -40,7 +40,7 @@ class ChatController extends Search\SearchController
         {
             return redirect('/inbox');
         }
-        
+
         DB::table('chat_log')->where(['Receiver_ID' => Auth::user()->id, 'Sender_ID' => $other_id, 'isRead' => '0'])->update(['isRead' => '1']);
 
         //get messages

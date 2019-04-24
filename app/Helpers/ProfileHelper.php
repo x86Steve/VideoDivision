@@ -22,7 +22,18 @@ if (!function_exists('helper_GetNewMessagesCount'))
     {
         return sizeof(DB::table('chat_log')->where(
             ['Receiver_ID' => Auth::user()->id,
-             'isRead' => '0'])->pluck('isRead'));
+                'isRead' => '0'])->pluck('isRead'));
+    }
+}
+
+if (!function_exists('helper_GetNewMessageCount_By_Sender'))
+{
+    function helper_GetNewMessageCount_By_Sender($sender_id)
+    {
+        return sizeof(DB::table('chat_log')->where(
+            ['Receiver_ID' => Auth::user()->id,
+                'Sender_ID' => $sender_id,
+                'isRead' => '0'])->pluck('isRead'));
     }
 }
 
