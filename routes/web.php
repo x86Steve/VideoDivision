@@ -43,9 +43,7 @@ Route::get('/registered', function () {
     return view('auth.registered');
 });
 
-Route::get('/contact', "ContactController@view");
 
-Route::post('/contact', "ContactController@mail");
 
 Route::get('/search', 'Search\SearchController@basicSearch');
 
@@ -77,13 +75,22 @@ Route::get('/chat',  'ChatController@getView')->name('chat_window');
 
 Route::post('/chat', 'ChatController@postHandler')->name('postMessageHandler');
 
-
+/*Jorge's Routes Do not Touch*/
 /************************************************************************/
 Route::get('posts', 'PostController@posts')->name('posts');
 
 Route::post('posts', 'PostController@postPost')->name('posts.post');
 
 Route::get('posts/{id}', 'PostController@show')->name('posts.show');
+/************************************************************************/
+Route::get('/contact', "ContactController@view");
+
+Route::post('/contact', "ContactController@mail");
+/************************************************************************/
+Route::get('/payment', "PaymentController@view");
+
+Route::post('/payment', "PaymentController@pay");
+/************************************************************************/
 
 
 

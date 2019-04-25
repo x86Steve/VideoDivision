@@ -84,11 +84,11 @@ class PostController extends Controller
             request()->validate(['remessage' => 'required']);
 
             DB::table('ratings')
-                ->where('user_id', $userid)
+                ->where('user_id', $userid)->where("rateable_id","=","$id")
                 ->update(['review' => $request->remessage]);
 
             DB::table('ratings')
-                ->where('user_id', $userid)
+                ->where('user_id', $userid)->where("rateable_id","=","$id")
                 ->update(['rating' => $request->rerate]);
             DB::table('ratings')
                 ->where('user_id', $userid)
