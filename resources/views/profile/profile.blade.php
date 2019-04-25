@@ -83,7 +83,7 @@
                                     <a href="/public/watch/{{$Title->Video_ID}}" class="badge badge-dark badge-pill">{{$Title->Title}}</a>
                                 @endforeach
                                 @else
-                                    <div class ="badge badge-info badge-pill"> Hmm, it's a little empty here... Use the drop down menu to select some shows! :)</div>
+                                    <a href="/public/live_search/grid" class="badge badge-info badge-pill">Hmm, it's a little empty here... Click here to select some shows! :)</a>
                                 @endif
                                 <hr>
                                 <h6>Subscriber Status</h6>
