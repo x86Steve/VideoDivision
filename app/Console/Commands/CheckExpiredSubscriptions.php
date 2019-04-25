@@ -42,10 +42,21 @@ class CheckExpiredSubscriptions extends Command
         $subscriptions = DB::table('active_subscriptions')->get();
         foreach ($subscriptions as $subscription)
         {
-            if (new \DateTime($subscription->Start_Date) < now()->sub('day', 1))
+            // expire after 1 day for a movie
+            if ($subscription->IsMovie)
             {
-                // if the subscription was created more than 1 day ago,
-                // remove record from database
+                $deadline = now()->sub('day', 1);
+            }
+            // expire after 30 days for a show
+            else
+            {
+                $deadline = now()->sub('day', 30);
+            }
+
+            // if the subscription duration has passed the deadline,
+            // remove the entry from the database
+            if (new \DateTime($subscription->Start_Date) < $deadline)
+            {
                 DB::table('active_subscriptions')->delete($subscription->ID);
                 $this->info("Removed user " . $subscription->User_ID . "'s subscription to "
                 . $subscription->Video_ID . ". (Subscription ID " . $subscription->ID . ")");
