@@ -15,20 +15,13 @@ class ChatController extends Search\SearchController
         return view('view_video_details', ['details' =>$details]);
     }
      * **/
-
     //Used to see video details page
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     function getView()
     {
-
-
-        if (\Auth::check())
-        {
-            $user_id = \Auth::user()->id;
-        }
-        else
-        {
-            redirect('/login');
-        }
 
         if(Input::has('user'))
         {
@@ -44,13 +37,13 @@ class ChatController extends Search\SearchController
 
         //get messages
             $sMessages = DB::table('chat_log')
-                -> where('Sender_ID', '=', "$user_id")
+                -> where('Sender_ID', '=', Auth::user()->id)
                 -> where('Receiver_ID', '=', "$other_id")
                 ->get();
 
             $rMessages = DB::table('chat_log')
                 -> where('Sender_ID', '=', "$other_id")
-                -> where('Receiver_ID', '=', "$user_id")
+                -> where('Receiver_ID', '=', Auth::user()->id)
                 ->get();
         //merge them
         //order them

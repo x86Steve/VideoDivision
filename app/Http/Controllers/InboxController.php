@@ -18,16 +18,14 @@ class InboxController extends Search\SearchController
     }
      * **/
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     //Used to see video details page
     function getView()
     {
-        //get user id
-        if (Auth::guest())
-        {
-            return redirect()->route('login');
-        }
-
-
         if (\Auth::check()) {
             $user_id = \Auth::user()->id;
         }
@@ -236,10 +234,6 @@ class InboxController extends Search\SearchController
     //Used to see the videos you are currently subbed to
     function getMyVideosView()
     {
-
-        if (Auth::guest())
-            return redirect()->route('login');
-        
         $output = '';
 
         if (\Auth::check()) {

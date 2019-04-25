@@ -15,6 +15,12 @@ use DB;
 
 class UserProfileController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function update_profile(Request $request)
     {
         $validator = Validator::make($request->all(),
@@ -136,9 +142,6 @@ class UserProfileController extends Controller
     }
     public function index($CurrentUser = null)
     {
-        if (Auth::guest())
-            return redirect()->route('login');
-
         return View::make("profile.profile")
             ->with(array(
                 'Video_Titles' => isset($CurrentUser) ? $this->get_current_subscription_titles($CurrentUser) : $this->get_current_subscription_titles(),
