@@ -29,8 +29,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         
         // check for expired subscriptions every minute
-        // (this actually only runs every 5 minutes because that's how often
-        // the cron job on the server is run)
+        // (but it really only checks as often as the cron job is run)
         $schedule->command(CheckExpiredSubscriptions::class)
             ->everyMinute()
             ->appendOutputTo(base_path('expired_subscriptions_output.txt'));
