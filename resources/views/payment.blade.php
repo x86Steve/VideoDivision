@@ -9,9 +9,20 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 
-
-
     {{ csrf_field() }}
+
+    <?php
+    $subbed=0;
+    foreach($subscription as $subscription)
+    {
+        if ($subscription->isPaid=='1')
+        {
+            $subbed=1;
+        }
+    }
+    ?>
+
+@if($subbed==0)
     <div class="container">
         <hr>
         <div class="row">
@@ -35,14 +46,14 @@
                                     {{ csrf_field() }}
                                     <div class="form-group">
                                         {{csrf_field()}}
-                                        <label for="username">Full name</label>
-                                        <input type="text" class="form-control" name="username" placeholder="" required="">
+                                        <label for="username">Full Name</label>
+                                        <input type="text" class="form-control" name="username" placeholder="" required maxlength="50">
                                     </div> <!-- form-group.// -->
 
                                     <div class="form-group">
-                                        <label for="cardNumber">Card number</label>
+                                        <label for="cardNumber">Credit Card Number</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="cardNumber" placeholder="">
+                                            <input oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "16" class="form-control" name="cardNumber" placeholder="" required>
                                             <div class="input-group-append">
 				<span class="input-group-text text-muted">
 					<i class="fab fa-cc-visa"></i>   <i class="fab fa-cc-amex"></i>  
@@ -57,22 +68,36 @@
                                             <div class="form-group">
                                                 <label><span class="hidden-xs">Expiration</span> </label>
                                                 <div class="input-group">
-                                                    <input type="number" class="form-control" placeholder="MM" name="month">
-                                                    <input type="number" class="form-control" placeholder="YY" name="year">
+                                                    <select class="custom-select-med" id="month" required name="month">
+                                                        <option value="" selected disabled> Month</option>
+                                                        <option value="1">Jan</option>
+                                                        <option value="2">Feb</option>
+                                                        <option value="3">Mar</option>
+                                                        <option value="4">Apr</option>
+                                                        <option value="5">May</option>
+                                                        <option value="6">Jun</option>
+                                                        <option value="7">Jul</option>
+                                                        <option value="8">Aug</option>
+                                                        <option value="9">Sept</option>
+                                                        <option value="10">Oct</option>
+                                                        <option value="11">Nov</option>
+                                                        <option value="12">Dec</option>
+                                                    </select>
+                                                    <input oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "2" class="form-control" required="" placeholder="YY" name="year" >
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label  title="" data-original-title="3 digits code on back side of the card">CVV</label>
-                                                <input type="number" class="form-control" name="cvv" required="">
+                                                <label  title="" data-original-title="3 digits code on back side of the card">CVC</label>
+                                                <input oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" type = "number" maxlength = "3" class="form-control" name="cvv" required>
                                             </div> <!-- form-group.// -->
                                         </div>
                                     </div> <!-- row.// -->
 
 
 
-                                    <select class="custom-select custom-select-lg mb-1" id="selection" name="selection">
+                                    <select class="custom-select custom-select-lg mb-1" id="selection" required="" name="selection">
                                         <option selected>Select your Plan</option>
                                         <option value="1">Basic $10.00</option>
                                         <option value="1">Premium $20.00</option>
@@ -111,55 +136,53 @@
             </div> <!-- col.// -->
         </div> <!-- row.// -->
 
+@endif
 
+@if($subbed==1)
 
 
 <hr>
+<form role="form" method="POST">
+                {{csrf_field()}}
         <div class="row">
-            <div class="col-sm-8">
-                <article class="card">
-                    <div class="card-body p-5">
-                        <ul class="nav bg-light nav-pills rounded nav-fill mb-3" role="tablist">
+            {{csrf_field()}}
+            <div class="col-sm-8 align-content-center">
+                <article class="card align-content-center">
+                    <div class="card-body p-5 align-content-center">
+                        <ul class="nav bg-light nav-pills rounded nav-fill mb-2" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="pill" href="#nav-tab-basic">Basic</a></li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="pill" href="#nav-tab-premium">Premium</a></li>
-                        </ul>
-
+                                <a class="nav-link active" data-toggle="pill" href="#nav-tab-basic">Subscription Status:  Subscribed to Basic Plan</a></li>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="nav-tab-basic">
-                                <p>Basic Video Streaming Service</p>
+                                <p><Strong>Our Records Indicate that you are already subscribed to the Basic Streaming Service</Strong></p>
                                 <dl class="param">
 
-                                    <dd><strong>With this service you can only stream Shows.  Movies will be an extra charge
-                                        </strong></dd>
+                                    <dd>You may cancel the subscription by checking the box below and submitting the cancellation request
+                                        </dd>
                                 </dl>
+                                {{csrf_field()}}
+                                <div class="form-check center">
+                                    <input class="form-check-input" type="checkbox" value="0" required id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        Cancel Subscription
+                                    </label>
+                                <?php echo "<br>";?>
+                                    <?php echo "<br>";?>
+                                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                            <!-- tab-pane.// -->
 
-                            </div> <!-- tab-pane.// -->
 
-                            <div class="tab-pane fade" id="nav-tab-premium">
-                                <p>Premium Video Streaming Service</p>
-                                <dl class="param">
-                                    <dd><strong>With this service you are allowed to stream both Shows and Movies</strong></dd>
-                                </dl>
-
-                                </div>
                         </div> <!-- tab-content .// -->
                     </div> <!-- card-body.// -->
 
-                    </form>
-                </article> <!-- card.// -->
-            </div> <!-- col.// -->
-        </div> <!-- row.// -->
+                        </ul>
+                    </div>
+                </article>
+            </div>
+        </div>
+</form>
 
-    </div>
-
-
-
-
-
-
-
+@endif
 @endsection
 
 <?php
