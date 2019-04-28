@@ -55,7 +55,7 @@ class ChatController extends Search\SearchController
         <div class="row">
             <div class="col-lg-11 order-lg-1"> <div id="chat_scroll" style="height:450px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">';
 
-        $user_info = DB::table('users')->where('id', '=', "$user_id")->first();
+        $user_info = DB::table('users')->where('id', '=', Auth::user()->id)->first();
         $other_info = DB::table('users')->where('id', '=', "$other_id")->first();
 
         $user_img = asset('avatars') . '//' . $user_info->avatar;
@@ -64,7 +64,7 @@ class ChatController extends Search\SearchController
         foreach ($results as $chat)
         {
             //if user sent message have on right and darker
-            if($chat->Sender_ID === $user_id)
+            if($chat->Sender_ID === Auth::user()->id)
             {
                 $fChat .= '
                           <div class="bg-primary text-white float-right clearfix"  style="width: auto;max-width: 900px">

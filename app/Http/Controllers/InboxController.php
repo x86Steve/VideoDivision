@@ -86,6 +86,11 @@ class InboxController extends Search\SearchController
 
             if(is_object($user_info))
             {
+                $friend_unread_messages = helper_GetNewMessageCount_By_Sender($other_user);
+                
+                if ($friend_unread_messages <= 0)
+                    $friend_unread_messages = "";
+
                 $user_img = asset('avatars') . '//' . $user_info->avatar;
 
                 $format_recent = '';
@@ -106,7 +111,7 @@ class InboxController extends Search\SearchController
                               <div class=\"row\">
                                 <div class=\"col-sm-2\">
                                   <img src=$user_img alt=\"User Image\" width=\"95\" height=\"95\" border=\"0\">
-                                  <br> $user_info->username
+                                  <br> $user_info->username <span class=\"badge badge-success\"> $friend_unread_messages </span>
                                 </div>
                                 <div class=\"col-sm\">
                                      ".$format_recent."

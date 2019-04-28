@@ -25,10 +25,7 @@
         <a href="/public/inbox">
             <button type="submit" class="btn btn-dark">Back to Inbox</button>
         </a>
-
-
     </div>
-@endsection
 
 <script>
     window.onload = function () {
@@ -36,7 +33,10 @@
         objDiv.scrollTop = objDiv.scrollHeight;
     }
 </script>
+
 @endsection
+
+
 
 
 
