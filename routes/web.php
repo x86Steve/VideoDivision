@@ -43,13 +43,11 @@ Route::get('/registered', function () {
     return view('auth.registered');
 });
 
+Route::get('/contact', "ContactController@view");
 
+Route::post('/contact', "ContactController@mail");
 
 Route::get('/search', 'Search\SearchController@basicSearch');
-
-Route::get('/upload', 'Upload\UploadController@index');
-
-Route::post('/upload', 'Upload\UploadController@submit');
 
 Route::get('/live_search/grid', 'Search\LiveSearch@getGridView');
 Route::get('/live_search/table', 'Search\LiveSearch@getTableView');
@@ -67,32 +65,26 @@ Route::post('/video_details', 'ViewVideo@postHandler')->name('postHandler');
 
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
-/*****************************************************************************/
-
 Route::get('/inbox',  'InboxController@getView')->name('view_inbox');
 
 Route::get('/chat',  'ChatController@getView')->name('chat_window');
 
+Route::get('/chat/addremove/{id}', "ChatController@remove_add_Friend");
+
 Route::post('/chat', 'ChatController@postHandler')->name('postMessageHandler');
 
-/*Jorge's Routes Do not Touch*/
-/************************************************************************/
 Route::get('posts', 'PostController@posts')->name('posts');
 
 Route::post('posts', 'PostController@postPost')->name('posts.post');
 
 Route::get('posts/{id}', 'PostController@show')->name('posts.show');
-/************************************************************************/
-Route::get('/contact', "ContactController@view");
 
-Route::post('/contact', "ContactController@mail");
-/************************************************************************/
-Route::get('/payment', "PaymentController@view");
+// Admin routes
+Route::get('/admin/upload', 'Admin\UploadController@index');
 
-Route::post('/payment', "PaymentController@pay");
-/************************************************************************/
+Route::post('/admin/upload', 'Admin\UploadController@submit');
 
-
+Route::get('/admin', 'Admin\AdminToolsController@index');
 
 
 /*Sydney's Adds*/

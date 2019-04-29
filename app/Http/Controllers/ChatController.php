@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use Auth;
 use Illuminate\Support\Facades\Input;
 use DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Request;
 
 class ChatController extends Search\SearchController
@@ -15,20 +15,13 @@ class ChatController extends Search\SearchController
         return view('view_video_details', ['details' =>$details]);
     }
      * **/
-
     //Used to see video details page
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     function getView()
     {
-
-
-        if (\Auth::check())
-        {
-            $user_id = \Auth::user()->id;
-        }
-        else
-        {
-            redirect('/login');
-        }
 
         if(Input::has('user'))
         {
@@ -40,15 +33,17 @@ class ChatController extends Search\SearchController
             return redirect('/inbox');
         }
 
+        DB::table('chat_log')->where(['Receiver_ID' => Auth::user()->id, 'Sender_ID' => $other_id, 'isRead' => '0'])->update(['isRead' => '1']);
+
         //get messages
             $sMessages = DB::table('chat_log')
-                -> where('Sender_ID', '=', "$user_id")
+                -> where('Sender_ID', '=', Auth::user()->id)
                 -> where('Receiver_ID', '=', "$other_id")
                 ->get();
 
             $rMessages = DB::table('chat_log')
                 -> where('Sender_ID', '=', "$other_id")
-                -> where('Receiver_ID', '=', "$user_id")
+                -> where('Receiver_ID', '=', Auth::user()->id)
                 ->get();
         //merge them
         //order them
@@ -56,9 +51,11 @@ class ChatController extends Search\SearchController
 
         //format cutely
         $fChat = '';
-        $fChat .='<div id="chat_scroll" style="height:500px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">';
+        $fChat .='    <div class="container">
+        <div class="row">
+            <div class="col-lg-11 order-lg-1"> <div id="chat_scroll" style="height:450px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">';
 
-        $user_info = DB::table('users')->where('id', '=', "$user_id")->first();
+        $user_info = DB::table('users')->where('id', '=', Auth::user()->id)->first();
         $other_info = DB::table('users')->where('id', '=', "$other_id")->first();
 
         $user_img = asset('avatars') . '//' . $user_info->avatar;
@@ -67,7 +64,7 @@ class ChatController extends Search\SearchController
         foreach ($results as $chat)
         {
             //if user sent message have on right and darker
-            if($chat->Sender_ID === $user_id)
+            if($chat->Sender_ID === Auth::user()->id)
             {
                 $fChat .= '
                           <div class="bg-primary text-white float-right clearfix"  style="width: auto;max-width: 900px">
@@ -95,6 +92,21 @@ class ChatController extends Search\SearchController
 
         return view('chat',['chat'=>$fChat, "receiver_id"=>$other_id,"other_img"=>$other_img, "other_info"=>$other_info]);
 
+    }
+
+    public function remove_add_Friend($friend_id)
+    {
+        if (helper_UserExist($friend_id))
+        {
+            if(helper_isFriend($friend_id))
+                DB::table('friends')->where(['User_ID' => Auth::user()->id, 'Friend_ID' => $friend_id])->delete();
+            else
+                DB::table('friends')->insert(['User_ID' => Auth::user()->id, 'Friend_ID' => $friend_id]);
+
+            return redirect("/profile/".helper_GetUsernameById($friend_id));
+        }
+
+        return redirect()->back();
     }
 
     //Used to add entries to the database showing the user has subscribed

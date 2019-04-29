@@ -18,16 +18,14 @@ class InboxController extends Search\SearchController
     }
      * **/
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     //Used to see video details page
     function getView()
     {
-        //get user id
-        if (Auth::guest())
-        {
-            return redirect()->route('login');
-        }
-
-
         if (\Auth::check()) {
             $user_id = \Auth::user()->id;
         }
@@ -88,6 +86,11 @@ class InboxController extends Search\SearchController
 
             if(is_object($user_info))
             {
+                $friend_unread_messages = helper_GetNewMessageCount_By_Sender($other_user);
+                
+                if ($friend_unread_messages <= 0)
+                    $friend_unread_messages = "";
+
                 $user_img = asset('avatars') . '//' . $user_info->avatar;
 
                 $format_recent = '';
@@ -108,7 +111,7 @@ class InboxController extends Search\SearchController
                               <div class=\"row\">
                                 <div class=\"col-sm-2\">
                                   <img src=$user_img alt=\"User Image\" width=\"95\" height=\"95\" border=\"0\">
-                                  <br> $user_info->username
+                                  <br> $user_info->username <span class=\"badge badge-success\"> $friend_unread_messages </span>
                                 </div>
                                 <div class=\"col-sm\">
                                      ".$format_recent."
@@ -136,6 +139,7 @@ class InboxController extends Search\SearchController
             if(is_object($friend_info)) {
                 $friend_img = asset('avatars') . '//' . $friend_info->avatar;
                 $friend_name = $friend_info->username;
+                $friend_unread_messages = helper_GetNewMessageCount_By_Sender($friend_info->id);
 
                 $message_friend .= '
                 <div class="row">
@@ -148,11 +152,11 @@ class InboxController extends Search\SearchController
                     <div class="float" >
                         <a href="/public/chat?user=' . $friend_info ->id . '">
                                  <button type="submit" class="btn btn-dark btn-sm">Chat</button>
-                         </a>
-                     </div>
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$friend_name.'
-                   
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$friend_name.' <span class="badge badge-success">'. ($friend_unread_messages > 0 ? $friend_unread_messages : '') .'</span>
                 
+                   
+                </a>
+                     </div>
                 </div><br>';
             }
 
@@ -235,10 +239,6 @@ class InboxController extends Search\SearchController
     //Used to see the videos you are currently subbed to
     function getMyVideosView()
     {
-
-        if (Auth::guest())
-            return redirect()->route('login');
-        
         $output = '';
 
         if (\Auth::check()) {

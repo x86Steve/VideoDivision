@@ -15,3 +15,52 @@ if (!function_exists('helper_GetMovieTitleByID'))
         return DB::select('select `Title` from `Video` where `Video_ID` =:id;',array('id' => $id))[0]->Title;
     }
 }
+
+if (!function_exists('helper_GetNewMessagesCount'))
+{
+    function helper_GetNewMessagesCount()
+    {
+        return sizeof(DB::table('chat_log')->where(
+            ['Receiver_ID' => Auth::user()->id,
+                'isRead' => '0'])->pluck('isRead'));
+    }
+}
+
+if (!function_exists('helper_GetNewMessageCount_By_Sender'))
+{
+    function helper_GetNewMessageCount_By_Sender($sender_id)
+    {
+        return sizeof(DB::table('chat_log')->where(
+            ['Receiver_ID' => Auth::user()->id,
+                'Sender_ID' => $sender_id,
+                'isRead' => '0'])->pluck('isRead'));
+    }
+}
+
+if (!function_exists('helper_isFriend'))
+{
+    function helper_isFriend($friend_id)
+    {
+        return sizeof(DB::table('friends')->where(
+            ['User_ID' => Auth::user()->id,
+                'Friend_ID' => $friend_id])->get()) > 0 ? TRUE : FALSE;
+    }
+}
+
+if (!function_exists('helper_GetUsernameById'))
+{
+    function helper_GetUsernameById($id)
+    {
+        return DB::table('users')->where('id',$id)->first()->username;
+    }
+}
+
+if (!function_exists('helper_UserExist'))
+{
+    function helper_UserExist($id)
+    {
+        return sizeof(DB::table('users')->where('id',$id)->get()) > 0 ? TRUE : FALSE;
+    }
+}
+
+

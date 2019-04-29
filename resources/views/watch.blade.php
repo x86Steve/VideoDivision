@@ -5,7 +5,6 @@
         <div class="row">
             <div class="col-lg-11 order-lg-1">
             <h1 style="font-size:60px;"><span class="bigger"> <?php echo ($file)[0]->Title?></span></h1>
-            <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 
                         @if ($isMovie == 0)
                             <p>
@@ -14,7 +13,7 @@
                             </p>
                         @endif
                         <body>
-                        <video id="player" autoplay class="video-js" width='768' height='432'
+                        <video oncontextmenu="return false;" id="player" autoplay class="play" width='768' height='432'
                                controls
                                poster="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg">
 
@@ -24,12 +23,6 @@
                                 <a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
                             </p>
                         </video>
-            <script>
-                var myPlayer = videojs('player');
-                videojs("player", {}, function(){
-
-                });
-            </script>
 
             {{ActivityEntry("Started watching: " . helper_GetMovieTitleByID(($file)[0]->Video_ID))}}
 
@@ -49,6 +42,10 @@
                             <button type="submit" class="btn btn-dark">Previous Episode</button>
                         </a>
                     @endif
+                        <a class="nav-link"
+                                href="/public/view/<?php echo ($file)[0]->Video_ID?>">
+                            <button type="submit" class="btn btn-dark">All Episodes</button>
+                        </a>
                     @if ($is_special_episode == 0 || $is_special_episode == 3)
                         <a class="nav-link"
                            href="/public/watch/{{(($file)[0]->Video_ID)}}/season/{{($season_number)}}/episode/{{($episode_number + 1)}}">

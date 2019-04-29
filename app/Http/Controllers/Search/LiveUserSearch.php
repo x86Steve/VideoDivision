@@ -8,12 +8,14 @@ use DB;
 
 class LiveUserSearch extends SearchController
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     //Used to route to view live_search
     function getGridView()
     {
-        if (Auth::guest())
-            return redirect()->route('login');
-
         return view('live_user_search')->with('isGridView', 1);
     }
 
@@ -29,9 +31,6 @@ class LiveUserSearch extends SearchController
     //Formats live search in table format
     function table(Request $request)
     {
-        if (Auth::guest())
-            return redirect()->route('login');
-
         if($request -> ajax())
         {
             $output = '';

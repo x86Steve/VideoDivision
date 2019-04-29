@@ -8,6 +8,11 @@ use App\Post;
 use DB;
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function posts()
 
     {
@@ -17,15 +22,9 @@ class PostController extends Controller
 
     }
 
-
-
     public function show($id)
 
     {
-        if (Auth::guest())
-            return redirect()->route('login');
-
-
 
         DB::table('ratings')
             ->where('user_id', Auth::user()->id)
@@ -41,16 +40,9 @@ class PostController extends Controller
 
     }
 
-
-
     public function postPost(Request $request)
 
     {
-
-
-        if (Auth::guest())
-            return redirect()->route('login');
-
 
         $id = $request->movieID;
         $userid=$request->userID;

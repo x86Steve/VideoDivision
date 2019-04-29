@@ -17,13 +17,14 @@ class ViewVideo extends Search\SearchController
     }
      * **/
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     //Used to see video details page
     function getView()
     {
-        if (Auth::guest())
-            return redirect()->route('login');
-
-
         $video_id = Input::get ( 'video' );
 
         $results = $this -> getVideoByID($video_id);
@@ -80,12 +81,12 @@ class ViewVideo extends Search\SearchController
         {
 
             $User_ID = Request::get('User_ID');
+            $isMovie = Request::get('isMovie');
 
             #CHANGE TO BE DYNAMIC NUMBER INSTEAD OF 10
-            if($this->getSubs($User_ID)->count() < 10)
+            if($isMovie == 0 or $this->getShowSubs($User_ID)->count() < 10)
             {
                 $Video_ID = Request::get('Video_ID');
-                $isMovie = Request::get('isMovie');
 
                 DB::table('active_subscriptions')->insertGetId(
                     ['User_ID' => $User_ID, 'Video_ID' => $Video_ID, 'isMovie' =>$isMovie]);
@@ -137,10 +138,6 @@ class ViewVideo extends Search\SearchController
     //Used to see the videos you are currently subbed to
     function getMyVideosView()
     {
-
-        if (Auth::guest())
-            return redirect()->route('login');
-
         $output = '';
 
         if (\Auth::check()) {

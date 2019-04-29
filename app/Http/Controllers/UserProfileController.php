@@ -15,6 +15,12 @@ use DB;
 
 class UserProfileController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function update_profile(Request $request)
     {
         $validator = Validator::make($request->all(),
@@ -23,7 +29,7 @@ class UserProfileController extends Controller
                 'lastname' => 'string|required|regex:/^[\w-]*$/|max:50',
                 //'email'=> 'nullable|string|email|unique:users',
                 'jobtitle' => 'nullable|string|max:50',
-                'description' => 'nullable|string|max:100',
+                'description' => 'nullable|string|max:250',
                 'street' => 'nullable|regex:/([- ,\/0-9a-zA-Z]+)/|max:100',
                 'city' => 'nullable|string|max:50',
                 'state' => 'nullable|string|regex:/^[\w-]*$/|max:2|min:2',
@@ -40,10 +46,10 @@ class UserProfileController extends Controller
         // Everything at this point is valid, so, now, lets make sure the password they entered is correct before adjusting DB
         if (Hash::check($request->input('currentpassword'),Auth::user()->password))
         {
-            $newpassword = null;
-            if (strcmp($request->input('newpassword'), $request->input('newpassword_confirmed') == 0) &&
-                strlen($request->input('newpassword_confirmed')>= 8))
-                $newpassword = Hash::make($request->input('newpassword_confirmed'));
+            $newpassword = $request->input('newpassword_confirmed');
+
+            if (strlen($newpassword) >= 8)
+                $newpassword = Hash::make($newpassword);
             else
                 $newpassword = Auth::user()->password;
 
@@ -60,22 +66,13 @@ class UserProfileController extends Controller
                     'password' => $newpassword
                     ]
                 );
+            Session::flash('success_msg','Changes have been saved successfully!');
         }
-
         else
-        {
             // Failed password check, alert user.
             Session::flash('error_password','You have supplied an incorrect password!');
-            return redirect()->back();
-        }
 
-        //
-
-        Session::flash('success_msg','Changes have been saved successfully!');
-        return redirect()->back();
-
-
-        //return $this->index()->with("success_msg", "Changes saved successfully!");
+        return redirect()->refresh();
     }
 
     private function grab_target_user_table($username)
@@ -145,9 +142,6 @@ class UserProfileController extends Controller
     }
     public function index($CurrentUser = null)
     {
-        if (Auth::guest())
-            return redirect()->route('login');
-
         return View::make("profile.profile")
             ->with(array(
                 'Video_Titles' => isset($CurrentUser) ? $this->get_current_subscription_titles($CurrentUser) : $this->get_current_subscription_titles(),

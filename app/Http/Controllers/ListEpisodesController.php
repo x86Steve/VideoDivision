@@ -7,11 +7,13 @@ use Auth;
 
 class ListEpisodesController extends WatchVideo
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function getView($video_id)
     {
-        if (Auth::guest())
-            return redirect()->route('login');
-
         $series = $this->getSeries($video_id);
         $seriesTitle = DB::table('Video')
             ->where('Video.Video_ID', '=', "$video_id")
