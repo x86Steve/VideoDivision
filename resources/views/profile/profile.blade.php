@@ -4,6 +4,7 @@
 @extends('layouts.app')
 <!-- TODO Redirect user when they are not logged in. -->
 @section('content')
+    <?php echo "<br>";?>
     <div class="container">
         <div class="row">
             <div class="col-lg-11 order-lg-1">
@@ -23,6 +24,7 @@
                     </li>
                     @endif
                 </ul>
+                <?php echo "<br>";?>
                 <div class="container">
                     @if(isset($error_msg))
                         <div class="alert alert-danger alert-dismissable">
@@ -86,15 +88,27 @@
                                     <a href="/public/live_search/grid" class="badge badge-info badge-pill">Hmm, it's a little empty here... Click here to select some shows! :)</a>
                                 @endif
                                 <hr>
+
+
+
+
+
                                 <h6>Subscriber Status</h6>
                                 @if(Auth::user()->isPaid === 0)
-                                    <a href="/public/subscribe" class="badge  badge-danger">&cross; Please review payment information! &cross;</a>
+                                    <a href="/public/payment" class="badge  badge-danger">&cross; You are not Subscribed!? &cross;</a>
                                 @elseif(Auth::user()->isPaid === 1)
-                                    <span class="badge badge-success"></i>Everything's lookin' good! Enjoy! &checkmark;</span>
+                                    <a href="/public/payment" class="badge badge-success">Everything's lookin' good! Enjoy! &checkmark;</a>
                                 @else
-                                    <a href="/public/subscribe" class="badge badge-info">Please consider subscribing!</a>
+                                    <a href="/public/payment" class="badge badge-info">Please consider subscribing!</a>
                                 @endif
                                 <hr>
+
+
+
+
+
+
+
                                 @if(isset($CurrentUser))
                                 <div class="col-md-6">
                                     <h6>Instant Messaging / Friend Zone:</h6>

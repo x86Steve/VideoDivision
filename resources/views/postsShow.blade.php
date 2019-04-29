@@ -78,7 +78,7 @@
 
 
                                                                <?php $user_review=DB::table('ratings')
-                                                                ->where('user_id',Auth::user()->id )
+                                                                ->where('user_id',Auth::user()->id)->where('rateable_id', "="," $post->id")
                                                                 ->pluck('review');?>
 
 

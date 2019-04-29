@@ -29,11 +29,11 @@
             @if(Auth::check())
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style ="position: relative; padding-left: 50px;">
-                    <img src="{{Config::get('customfilelocations.locations.avatars')}}{{Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 32px; height: 32px; position: absolute; top:5px; left: 10px; border-radius: 50%">Hey, {{ Auth::user()->username }}!  <span class="badge badge-success">{{helper_GetNewMessagesCount() > 0 ? "new messages!" : "" }}</span></a>
+                    <img src="{{Config::get('customfilelocations.locations.avatars')}}{{Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 32px; height: 32px; position: absolute; top:5px; left: 10px; border-radius: 50%">Hey, {{ Auth::user()->username }}!</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
                     <a class="dropdown-item" href="/public/profile"><i class="fas fa-id-card"></i> View Profile</a>
-                    <a class="dropdown-item" href="/public/inbox"><i class="fas fa-envelope"></i> Inbox <span class="badge badge-success">{{helper_GetNewMessagesCount() > 0 ? helper_GetNewMessagesCount() : "" }}</span> </a>
-                    <a class="dropdown-item disabled" href="#"><i class="fas fa-edit"></i> Edit Subscription</a>
+                    <a class="dropdown-item" href="/public/inbox"><i class="fas fa-envelope"></i> Inbox</a>
+                    <a class="dropdown-item" href="/public/payment"><i class="fas fa-edit"></i> Edit Subscription</a>
                     <a class="dropdown-item" href="/public/my_videos"><i class="fas fa-eye"></i> Watch your shows!</a>
                     <a class="dropdown-item" href="/public/live_user_search/grid"><i class="fas fa-users"></i> Find a friend!</a>
                     @if(Auth::user()->isAdmin)

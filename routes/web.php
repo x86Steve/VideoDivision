@@ -58,6 +58,8 @@ Route::get('/live_search/action2', 'Search\LiveSearch@table')->name('live_search
 Route::get('/live_user_search/grid', 'Search\LiveUserSearch@getGridView');
 Route::get('/live_user_search/action', 'Search\LiveUserSearch@grid')->name('live_user_search.grid');
 
+Route::get('/payment', "PaymentController@view");
+Route::post('/payment', "PaymentController@pay");
 
 Route::get('/video_details', 'ViewVideo@getView')->name('video_details');
 
