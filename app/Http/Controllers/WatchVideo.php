@@ -8,6 +8,11 @@ use Auth;
 class WatchVideo extends Search\SearchController
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function getView($video_id)
     {
 
@@ -35,10 +40,6 @@ class WatchVideo extends Search\SearchController
     //v2
     function getEpisodeView($show_id, $season_number, $episode_number)
     {
-
-        if (Auth::guest())
-            return redirect()->route('login');
-
         $file = $this->getVideoByID($show_id);
         $isMovie = $file[0]->IsMovie;
         $lastEpisode = $this->getLastEpisodeByVideoID($show_id);

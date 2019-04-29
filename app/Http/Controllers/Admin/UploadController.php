@@ -11,6 +11,11 @@ use DB;
 class UploadController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function loadPage($status)
     {
         // get list of actors
@@ -48,11 +53,8 @@ class UploadController extends Controller
 
     function index()
     {
-        // if guest tries to access form, suggest they log in
-        if (Auth::guest())
-            return redirect()->route('login');
         // if non-admin tries to access form, redirect to home
-        else if (!Auth::user()->isAdmin)
+        if (!Auth::user()->isAdmin)
             return redirect()->route('home');
 
         return self::loadPage(0);
@@ -60,12 +62,9 @@ class UploadController extends Controller
 
     function submit()
     {
-        // user may have been logged out; redirect to home
-        if (Auth::guest())
-            return redirect()->route('home');
         // if non-admin somehow sends a post request to this page,
         // redirect to home
-        else if (!Auth::user()->isAdmin)
+        if (!Auth::user()->isAdmin)
             return redirect()->route('home');
 
         // get form fields
