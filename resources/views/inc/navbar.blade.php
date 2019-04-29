@@ -33,7 +33,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
                     <a class="dropdown-item" href="/public/profile"><i class="fas fa-id-card"></i> View Profile</a>
                     <a class="dropdown-item" href="/public/inbox"><i class="fas fa-envelope"></i> Inbox</a>
-                    <a class="dropdown-item disabled" href="#"><i class="fas fa-edit"></i> Edit Subscription</a>
+                    <a class="dropdown-item" href="/public/payment"><i class="fas fa-edit"></i> Edit Subscription</a>
                     <a class="dropdown-item" href="/public/my_videos"><i class="fas fa-eye"></i> Watch your shows!</a>
                     <a class="dropdown-item" href="/public/live_user_search/grid"><i class="fas fa-users"></i> Find a friend!</a>
                     @if(Auth::user()->isAdmin)

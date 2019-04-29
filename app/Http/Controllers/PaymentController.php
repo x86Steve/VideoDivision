@@ -22,7 +22,7 @@ $userid= Auth::user()->id;
 $test=$request->defaultCheck1;
 DB::table('users')
             ->where('id', $userid)
-            ->update(['isPaid' => $test]);
+            ->update(['isPaid' => 0]);
 
     $selection=$request->selection;
     if($selection==1)

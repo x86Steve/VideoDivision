@@ -22,7 +22,9 @@
     }
     ?>
 
-@if($subbed==0)
+
+    <form role="form" method="POST">
+        @if($subbed==0)
     <div class="container">
         <hr>
         <div class="row">
@@ -42,7 +44,6 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="nav-tab-card">
-                                <form role="form" method="POST">
                                     {{ csrf_field() }}
                                     <div class="form-group">
                                         {{csrf_field()}}
@@ -100,7 +101,6 @@
                                     <select class="custom-select custom-select-lg mb-1" id="selection" required="" name="selection">
                                         <option selected>Select your Plan</option>
                                         <option value="1">Basic $10.00</option>
-                                        <option value="1">Premium $20.00</option>
                                     </select>
                                     <?php echo "<br>";?>
                                     <?php echo "<br>";?>
@@ -142,7 +142,7 @@
 
 
 <hr>
-<form role="form" method="POST">
+
                 {{csrf_field()}}
         <div class="row">
             {{csrf_field()}}
@@ -151,7 +151,7 @@
                     <div class="card-body p-5 align-content-center">
                         <ul class="nav bg-light nav-pills rounded nav-fill mb-2" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="pill" href="#nav-tab-basic">Subscription Status:  Subscribed to Basic Plan</a></li>
+                                <a class="nav-link active" data-toggle="pill" href="#nav-tab-basic">Subscription Status:  Subscribed to Basic Plan</a></li></ul>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="nav-tab-basic">
                                 <p><Strong>Our Records Indicate that you are already subscribed to the Basic Streaming Service</Strong></p>
@@ -161,26 +161,25 @@
                                         </dd>
                                 </dl>
                                 {{csrf_field()}}
-                                <div class="form-check center">
+                                <div class="form-group center">
                                     <input class="form-check-input" type="checkbox" value="0" required id="defaultCheck1">
                                     <label class="form-check-label" for="defaultCheck1">
                                         Cancel Subscription
                                     </label>
+                                </div>
                                 <?php echo "<br>";?>
                                     <?php echo "<br>";?>
                                 <button type="submit" class="btn btn-primary btn-block">Submit</button>
                             <!-- tab-pane.// -->
 
-
-                        </div> <!-- tab-content .// -->
-                    </div> <!-- card-body.// -->
-
-                        </ul>
+                            </div>
+                        </div>
                     </div>
                 </article>
             </div>
         </div>
-</form>
+    </div>
+    </form>
 
 @endif
 @endsection
