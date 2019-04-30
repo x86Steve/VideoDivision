@@ -90,9 +90,9 @@
                                 <hr>
 
                                 <h6>Subscriber Status</h6>
-                                @if(Auth::user()->isPaid === 0)
-                                    <a href="/public/payment" class="badge  badge-danger">&cross; You are not Subscribed!? &cross;</a>
-                                @elseif(Auth::user()->isPaid === 1)
+                                @if(isset($CurrentUser) ? $CurrentUser->isPaid === 0 : Auth::user()->isPaid === 0)
+                                    <a href="/public/payment" class="badge  badge-danger">&cross; You are currently an unsubscribed user! &cross;</a>
+                                @elseif(isset($CurrentUser) ? $CurrentUser->isPaid === 1 : Auth::user()->isPaid === 1)
                                     <a href="/public/payment" class="badge badge-success">Everything's lookin' good! Enjoy! &checkmark;</a>
                                 @else
                                     <a href="/public/payment" class="badge badge-info">Please consider subscribing!</a>
