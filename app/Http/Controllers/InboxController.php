@@ -87,7 +87,7 @@ class InboxController extends Search\SearchController
             if(is_object($user_info))
             {
                 $friend_unread_messages = helper_GetNewMessageCount_By_Sender($other_user);
-                
+
                 if ($friend_unread_messages <= 0)
                     $friend_unread_messages = "";
 

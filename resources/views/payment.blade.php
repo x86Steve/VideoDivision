@@ -28,7 +28,7 @@
     <div class="container">
         <hr>
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-lg-12">
                 <article class="card">
                     <div class="card-body p-5">
                         <ul class="nav bg-light nav-pills rounded nav-fill mb-3" role="tablist">
@@ -146,14 +146,14 @@
                 {{csrf_field()}}
         <div class="row">
             {{csrf_field()}}
-            <div class="col-sm-8 align-content-center">
+            <div class="col-lg-12 align-content-center">
                 <article class="card align-content-center">
                     <div class="card-body p-5 align-content-center">
                         <ul class="nav bg-light nav-pills rounded nav-fill mb-2" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-toggle="pill" href="#nav-tab-basic">Subscription Status:  Subscribed to Basic Plan</a></li></ul>
                         <div class="tab-content">
-                            <div class="tab-pane fade show active" id="nav-tab-basic">
+                            <div class="tab-pane fade show active center" id="nav-tab-basic">
                                 <p><Strong>Our Records Indicate that you are already subscribed to the Basic Streaming Service</Strong></p>
                                 <dl class="param">
 
