@@ -21,6 +21,25 @@ class UserProfileController extends Controller
         $this->middleware('auth');
     }
 
+    public function set_comment(Request $request, $PossibleUser)
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'comment' => 'required|min:3|max:125'
+            ]);
+
+        if ($validator->fails())
+        {
+            Session::flash('error_comment', $validator->messages()->first());
+            return redirect()->back()->withInput($request->input())->withErrors($validator);
+        }
+
+        //Insert the comment into the database
+        DB::insert('insert into user_comments (userwall_username,commenter_username,comment,time) values (?,?,?,?)', array(isset($PossibleUser) ? $PossibleUser : Auth::user()->username, isset($PossibleUser) ? Auth::user()->username : $PossibleUser  ,$request->input('comment'), now()));
+
+        return redirect()->back();
+    }
+
     public function update_profile(Request $request)
     {
         $validator = Validator::make($request->all(),
@@ -39,7 +58,7 @@ class UserProfileController extends Controller
             ]);
 
         if ($validator->fails()) {
-            Session::flash('error', $validator->messages()->first());
+            Session::flash('error_profile_settings', $validator->messages()->first());
             return redirect()->back()->withInput($request->input())->withErrors($validator);
         }
 
@@ -89,6 +108,13 @@ class UserProfileController extends Controller
         }
 
         return $user;
+    }
+
+    private function get_recent_wall_comments($CurrentUser = null)
+    {
+        $User_Recent_Wall_Comments = DB::table('user_comments')->where('userwall_username',(isset($CurrentUser) ? helper_GetUsernameById($CurrentUser->id) : Auth::user()->username))->limit(5)->orderBy('time','desc')->get();
+
+        return $User_Recent_Wall_Comments;
     }
 
     private function get_recent_activity($CurrentUser = null)
@@ -146,7 +172,8 @@ class UserProfileController extends Controller
             ->with(array(
                 'Video_Titles' => isset($CurrentUser) ? $this->get_current_subscription_titles($CurrentUser) : $this->get_current_subscription_titles(),
                 'recent_activities' => isset($CurrentUser) ? $this->get_recent_activity($CurrentUser) : $this->get_recent_activity(),
-                'CurrentUser' => $CurrentUser));
+                'CurrentUser' => $CurrentUser,
+                'Comments' => $this->get_recent_wall_comments($CurrentUser)));
     }
 
     public function viewprofile($username)

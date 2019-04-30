@@ -1,5 +1,13 @@
 <?php
 
+if (!function_exists('helper_isAdmin'))
+{
+    function helper_isAdmin($username)
+    {
+        return (DB::table('users')->where('username',$username)->first()->isAdmin ? TRUE : FALSE);
+    }
+}
+
 if (!function_exists('ActivityEntry'))
 {
     function ActivityEntry(string $entry)

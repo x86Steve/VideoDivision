@@ -26,6 +26,7 @@ Route::get('/profile/{username}', "UserProfileController@viewprofile");
 Route::get('/profile', "UserProfileController@index");
 Route::post('/profile','UserProfileController@update_avatar');
 Route::post('/profile/edit', 'UserProfileController@update_profile');
+Route::post('/profile/{username}/comment', "UserProfileController@set_comment");
 
 Route::get('/about', function () {
     return view('about');

@@ -10,14 +10,14 @@
             <div class="col-lg-11 order-lg-1">
                 <ul class="nav nav-pills">
                     <li class="nav-item">
-                        <a href="" data-target="#profile" data-toggle="tab" class="nav-link {{$errors->isEmpty() ? "active" : ""}}">Profile</a>
+                        <a href="" data-target="#profile" data-toggle="tab" class="nav-link {{Session::has('error_profile_settings') ? "" : "active"}}">Profile</a>
                     </li>
                     @if(!isset($CurrentUser))
                     <li class="nav-item">
                         <a href="" data-target="#messages" data-toggle="tab" class="nav-link">What's Going on?</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" data-target="#edit" data-toggle="tab" class="nav-link {{!$errors->isEmpty() ? "active" : ""}}">User Settings</a>
+                        <a href="" data-target="#edit" data-toggle="tab" class="nav-link {{Session::has('error_profile_settings') ? "active" : ""}}">User Settings</a>
                     </li>
                     <li class="nav-item">
                         <a href="" data-target="#subscriptions" data-toggle="tab" class="nav-link">Subscriptions</a>
@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="tab-content py-4">
-                    <div class="tab-pane {{$errors->isEmpty() ? "active" : ""}}" id="profile">
+                    <div class="tab-pane {{Session::has('error_profile_settings') ? "" : "active"}}" id="profile">
                         <h5 class="mb-3">User Profile</h5>
                         <div class="row">
                             <div class="col-md-6">
@@ -89,10 +89,6 @@
                                 @endif
                                 <hr>
 
-
-
-
-
                                 <h6>Subscriber Status</h6>
                                 @if(Auth::user()->isPaid === 0)
                                     <a href="/public/payment" class="badge  badge-danger">&cross; You are not Subscribed!? &cross;</a>
@@ -102,12 +98,6 @@
                                     <a href="/public/payment" class="badge badge-info">Please consider subscribing!</a>
                                 @endif
                                 <hr>
-
-
-
-
-
-
 
                                 @if(isset($CurrentUser))
                                 <div class="col-md-6">
@@ -145,12 +135,35 @@
                                 <h5 class="mt-2"><span class="float-right"></span><i class="fas fa-comments"></i> User Wall</h5>
                                 <table class="table table-sm table-hover table-striped">
                                     <tbody>
-                                        
+                                    @if(sizeof($Comments) <= 0)
+                                        <td>
+                                            No comments yet!
+                                        </td>
+                                    @else
+                                        @foreach($Comments as $comment)
+                                            <tr>
+                                                <td>
+                                                    <strong><i class="{{helper_isAdmin($comment->commenter_username) ? "fas fa-crown" : "" }}"> </i><a  style="color: {{helper_isAdmin($comment->commenter_username) ? "red" : "blue"}}" href="/public/profile/{{ $comment->userwall_username == $comment->commenter_username ? $comment->userwall_username : $comment->commenter_username}}/"> {{$comment->userwall_username == $comment->commenter_username ? $comment->userwall_username : $comment->commenter_username}}</a></strong>
+                                                    : {{$comment->comment}} - <strong>{{ Carbon\Carbon::parse($comment->time)->diffForHumans()}}</strong>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                     </tbody>
                                 </table>
+                                <form role="form" action="/public/profile/{{isset($CurrentUser) ? $CurrentUser->username : Auth::user()->username}}/comment" method="POST">
+                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                    <label for="comment">Comment:</label>
+                                    <textarea class="form-control {{ $errors->has('comment') ? ' is-invalid' : '' }}" rows="3" name="comment" >{{Request::old('comment') != null ? Request::old('comment') : "" }}</textarea>
+                                    @if ($errors->has('comment'))
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('comment') }}</strong>
+                                    </span>
+                                    @endif
+                                    <input type="submit" class="btn btn-primary" value="Submit comment!">
+                                </form>
                             </div>
                         </div>
-
                     </div>
                     <div class="tab-pane" id="messages">
                         <div class="alert alert-info alert-dismissable">
@@ -189,7 +202,7 @@
                     <div class="tab-pane" id = "subscriptions">
                         NOTHIN HERE YET! Probably a friend zone.
                     </div>
-                    <div class="tab-pane {{!$errors->isEmpty() ? "active" : ""}}" id="edit" >
+                    <div class="tab-pane {{Session::has('error_profile_settings') ? "active" : ""}}" id="edit" >
                         <form role="form" action="/public/profile/edit" method="POST">
                             <div class="form-group row">
                                 <label class="col-lg-3 col-form-label form-control-label">Username</label>
