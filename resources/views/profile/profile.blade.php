@@ -26,6 +26,18 @@
                 </ul>
                 <?php echo "<br>";?>
                 <div class="container">
+                    @if(Session::has('payment_message_success'))
+                        <div class="alert alert-success alert-dismissable">
+                            <a class="panel-close close" data-dismiss="alert">×</a> {{Session::get('payment_message_success')}}
+                        </div>
+                    @endif
+
+                        @if(Session::has('payment_message_cancel'))
+                            <div class="alert alert-danger alert-dismissable">
+                                <a class="panel-close close" data-dismiss="alert">×</a> {{Session::get('payment_message_cancel')}}
+                            </div>
+                        @endif
+
                     @if(isset($error_msg))
                         <div class="alert alert-danger alert-dismissable">
                             <a class="panel-close close" data-dismiss="alert">×</a> {{$error_msg}}

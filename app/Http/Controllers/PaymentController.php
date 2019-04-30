@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use Redirect;
 class PaymentController extends Controller
 {
     public function view()
@@ -36,9 +37,9 @@ DB::table('users')
         DB::table('users')
             ->where('id', $userid)
             ->update(['isPaid' => $value]);
+        return Redirect::to('/profile')->with('payment_message_success','You have been successfully subscribed! Welcome, thank you, and we hope you enjoy your stay!');
+
     }
-
-        return redirect()->route('home');
-
+        return Redirect::to('/profile')->with('payment_message_cancel','We are sad to see you go... Please come again soon! Your subscription status has been canceled.');
     }
 }
