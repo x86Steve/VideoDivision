@@ -151,9 +151,7 @@ class InboxController extends Search\SearchController
         }
         //$output .= "<h4><strong>From: </strong>".$chat->Sender_ID."</h4><br>".$chat->Message."<br>";
 
-
         //add a button to access that chat
-
 
         return view('inbox', ['Messages' => $output, 'Sidebar' => $message_friend]);
 
@@ -173,5 +171,6 @@ class InboxController extends Search\SearchController
         ####CLEAR ALL NOTIFICATIONS HERE ##################################################################
 
         return $this->getView();
+
     }
 }
