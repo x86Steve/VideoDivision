@@ -59,6 +59,10 @@ class WatchVideo extends Search\SearchController
         elseif (($episode_number == $lastEpOfSeriesNumber) && ($season_number == $numberOfSeasons))
         {
             $isSpecialEpisode = 2; //last episode of series
+            if (($episode_number == 1) && ($numberOfSeasons == 1) && ($lastEpOfSeriesNumber == 1))
+            {
+                $isSpecialEpisode = 5; //series only has one episode
+            }
         }
         elseif (($episode_number == 1) && ($season_number != 1))
         {
@@ -68,10 +72,6 @@ class WatchVideo extends Search\SearchController
         elseif (($episode_number == 1) && ($season_number == 1))
         {
             $isSpecialEpisode = 4; //first episode of series
-        }
-        elseif (($episode_number == 1) && ($numberOfSeasons == 1) && ($lastEpOfSeriesNumber == 1))
-        {
-            $isSpecialEpisode = 5; //series only has one episode
         }
 
         $file_path = $episodeInfo->File_Path;
