@@ -30,7 +30,7 @@
                         <form id="form" method="post">
                             {{ csrf_field() }}
                             <div class="text-right" style="padding-right: 100px">
-                                <button class = "btn btn-dark"> Clear Notifications</button>
+                                <a href="/public/inbox/clear" class = "btn btn-dark"> Clear Notifications</a>
                             </div>
                         </form>
 
