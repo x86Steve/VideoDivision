@@ -41,91 +41,135 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-        {{--IF THE USER IS SUBBED GIVE ACCESS TO WATCH NOW BUTTON--}}
-        @if($isSubbed === true)
-            @if ($isMovie == 1)
 
-                <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>">
-                    <button type="submit" class="btn btn-dark">Watch Now!</button>
-                </a>
-            @else
-                <a href="/public/view/<?php echo ($file)[0]->Video_ID?>">
-                    <button type="submit" class="btn btn-dark">Watch Now!</button>
-                </a>
-            @endif
+        {{--IF USER HAS NOT PAID, ASK THEM TO PAY--}}
+        @if ($isPaid == false)
 
-            {{--OTHERWISE GIVE ACCESS TO SUBSCRIBE BUTTON--}}
-        @else
             <button
-                    type="button"
-                    class="btn btn-dark"
-                    data-toggle="modal"
-                    data-target="#subscribeModal">
-                @if ($isMovie == 1) Rent! @else Subscribe! @endif
+                type="button"
+                class="btn btn-dark"
+                data-toggle="modal"
+                data-target="#subscribeModal">
+                Pay
             </button>
-            {{--IF USER IS LOGGED IN LET THEM SUBSCRIBE--}}
-            @if($User_ID != -1)
-                <div class="modal fade" id="subscribeModal"
-                     tabindex="-1" role="dialog"
-                     aria-labelledby="subscribeModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title"
-                                    id="subscribeModalLabel">@if ($isMovie == 1) Rent? @else Subscribe? @endif </h4>
-                            </div>
-                            <div class="modal-body">
-                                <p>
-                                    Please confirm you would like to @if ($isMovie == 1) rent @else subscribe to @endif
-                                    <b><span id="sub-title"><?php echo ($file)[0]->Title?></span></b>
-                                    .
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
-                                <button type="submit" form="form" class="btn btn-dark">@if ($isMovie == 1) Rent @else Subscribe @endif</button>
-                                <form id="form" method="post">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
-                                    <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
-                                    <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
-                                    <input type="hidden" id="postType" name="postType" value="0">
-                                </form>
 
-                                </span>
-                            </div>
+            <div class="modal fade" id="subscribeModal"
+                 tabindex="-1" role="dialog"
+                 aria-labelledby="subscribeModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"
+                                id="subscribeModalLabel">Please Pay</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                Please pay to watch videos.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button"
+                                    class="btn btn-dark"
+                                    data-dismiss="modal">Cancel
+                            </button>
+                            <span class="pull-right">
+
+                    <a class="btn btn-dark" href="/public/payment">Pay</a>
+            </span>
                         </div>
                     </div>
                 </div>
-                {{--IF USER IS NOT LOGGED IN ASK THEM TO LOGIN TO SUBSCRIBE--}}
+            </div>
+
+        @else
+
+            {{--IF THE USER IS SUBBED GIVE ACCESS TO WATCH NOW BUTTON--}}
+            @if($isSubbed === true)
+                @if ($isMovie == 1)
+
+                    <a href="/public/watch/<?php echo ($file)[0]->Video_ID?>">
+                        <button type="submit" class="btn btn-dark">Watch Now!</button>
+                    </a>
+                @else
+                    <a href="/public/view/<?php echo ($file)[0]->Video_ID?>">
+                        <button type="submit" class="btn btn-dark">Watch Now!</button>
+                    </a>
+                @endif
+
+                {{--OTHERWISE GIVE ACCESS TO SUBSCRIBE BUTTON--}}
             @else
-                <div class="modal fade" id="subscribeModal"
-                     tabindex="-1" role="dialog"
-                     aria-labelledby="subscribeModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title"
-                                    id="subscribeModalLabel">Please Login</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p>
-                                    Please Login to subscribe to this video.
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button"
-                                        class="btn btn-dark"
-                                        data-dismiss="modal">Cancel
-                                </button>
-                                <span class="pull-right">
+                <button
+                        type="button"
+                        class="btn btn-dark"
+                        data-toggle="modal"
+                        data-target="#subscribeModal">
+                    @if ($isMovie == 1) Rent! @else Subscribe! @endif
+                </button>
+                {{--IF USER IS LOGGED IN LET THEM SUBSCRIBE--}}
+                @if($User_ID != -1)
+                    <div class="modal fade" id="subscribeModal"
+                         tabindex="-1" role="dialog"
+                         aria-labelledby="subscribeModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"
+                                        id="subscribeModalLabel">@if ($isMovie == 1) Rent? @else Subscribe? @endif </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        Please confirm you would like to @if ($isMovie == 1) rent @else subscribe to @endif
+                                        <b><span id="sub-title"><?php echo ($file)[0]->Title?></span></b>
+                                        .
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" form="form" class="btn btn-dark">@if ($isMovie == 1) Rent @else Subscribe @endif</button>
+                                    <form id="form" method="post">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" id="User_ID" name="User_ID" value="<?php echo $User_ID?>">
+                                        <input type="hidden" id="Video_ID" name="Video_ID" value="<?php echo ($file)[0]->Video_ID?>">
+                                        <input type="hidden" id="isMovie" name="isMovie" value="<?php echo $isMovie?>">
+                                        <input type="hidden" id="postType" name="postType" value="0">
+                                    </form>
 
-                        <a class="btn btn-dark" href="/public/login">Login</a>
-                </span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    {{--IF USER IS NOT LOGGED IN ASK THEM TO LOGIN TO SUBSCRIBE--}}
+                @else
+                    <div class="modal fade" id="subscribeModal"
+                         tabindex="-1" role="dialog"
+                         aria-labelledby="subscribeModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"
+                                        id="subscribeModalLabel">Please Login</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        Please Login to subscribe to this video.
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button"
+                                            class="btn btn-dark"
+                                            data-dismiss="modal">Cancel
+                                    </button>
+                                    <span class="pull-right">
+
+                            <a class="btn btn-dark" href="/public/login">Login</a>
+                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             @endif
 
         @endif

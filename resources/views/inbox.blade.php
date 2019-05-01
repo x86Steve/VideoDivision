@@ -20,6 +20,14 @@
         <div class="col">
             <div style="text-align: center">
                 <h2>Recent Chats</h2>
+
+                    <form id="form" method="post">
+                        {{ csrf_field() }}
+                        <div class="text-right" style="padding-right: 100px">
+                            <button class = "btn btn-dark"> Clear Notifications</button>
+                        </div>
+                    </form>
+
             </div>
             <div id="chat_scroll" style="height:500px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
                 <?php echo $Messages?>

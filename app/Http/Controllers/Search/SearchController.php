@@ -22,6 +22,21 @@ class SearchController extends Controller
         return $count;
     }
 
+    protected function isPaid($user_id)
+    {
+        $isPaid = false;
+
+        $user = DB::table('users')
+            ->where('id', '=', "$user_id")
+            ->first();
+
+        if (is_object($user))
+        {
+            $isPaid = $user -> isPaid;
+        }
+
+        return $isPaid;
+    }
     protected function isSubbed($video_id, $user_id)
     {
         $isSubbed = false;

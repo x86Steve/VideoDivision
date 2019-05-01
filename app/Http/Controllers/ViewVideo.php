@@ -41,6 +41,7 @@ class ViewVideo extends Search\SearchController
             $userID = -1;
         }
 
+        $isPaid = $this -> isPaid($userID);
         $isSubbed = $this -> isSubbed($video_id, $userID);
         $isFav = $this -> isFaved($video_id, $userID);
 
@@ -59,6 +60,7 @@ class ViewVideo extends Search\SearchController
 
         return view('view_video_details',  [
             'User_ID' => $userID,
+            'isPaid' => $isPaid,
             'isSubbed' => $isSubbed,
             'isMovie' => $isMovie,
             'isFav' => $isFav,
