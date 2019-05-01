@@ -4,8 +4,10 @@
     <div class="container">
         <br>
         <br>
-        <h1>Your chat with: <img src="{{$other_img}}" class="right" width="95" height="95" border="0"
-                                 hspace="20"><?php echo $other_info->username ?></h1>
+
+        <h1>Your chat with:
+            <a href="/public/profile/<?php echo $other_info->username ?>"> <img src="{{$other_img}}" class="right" width="95" height="95" border="0"
+                                                                                                hspace="20"><?php echo $other_info->username ?> </a></h1>
 
         <br>
         <?php echo $chat ?>
