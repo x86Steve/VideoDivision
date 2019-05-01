@@ -5,6 +5,11 @@
     <br>
 
     <div style="text-align: center">
+        @if(Session::has('clear_message'))
+        <div class="alert alert-success alert-dismissable">
+            <a class="panel-close close" data-dismiss="alert">×</a>  {{Session::get('clear_message')}}
+        </div>
+        @endif
         <h1>Your Inbox</h1>
     </div>
 
@@ -21,10 +26,10 @@
             <div style="text-align: center">
                 <h2>Recent Chats</h2>
 
-                    <form id="form" method="post">
+                    <form id="form" method="post" >
                         {{ csrf_field() }}
                         <div class="text-right" style="padding-right: 100px">
-                            <button class = "btn btn-dark"> Clear Notifications</button>
+                            <a href="/public/inbox/clear" class = "btn btn-dark" > Clear Notifications</a>
                         </div>
                     </form>
 

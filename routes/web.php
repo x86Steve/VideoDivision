@@ -69,7 +69,7 @@ Route::post('/video_details', 'ViewVideo@postHandler')->name('postHandler');
 Route::get('/my_videos', 'ViewVideo@getMyVideosView')->name('my_videos');
 
 Route::get('/inbox',  'InboxController@getView')->name('view_inbox');
-Route::post('/inbox',  'InboxController@getView')->name('clear_inbox');
+Route::get('/inbox/clear',  'InboxController@clear_inbox_notifications');
 
 Route::get('/chat',  'ChatController@getView')->name('chat_window');
 

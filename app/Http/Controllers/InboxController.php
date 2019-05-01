@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 use Auth;
-use Illuminate\Support\Facades\Input;
+use Session;
 use DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Request;
 
 
 class InboxController extends Search\SearchController
@@ -160,18 +158,13 @@ class InboxController extends Search\SearchController
     }
 
     //Used to add entries to the database showing the user has subscribed
-    function postHandler()
+    function clear_inbox_notifications()
     {
-        //Clear messages
+        DB::table('chat_log')->where('Receiver_ID',Auth::user()->id)->update(array('isRead' => 1));
 
-        if (\Auth::check()) {
-            $user_id = \Auth::user()->id;
-        } else {
-            $user_id = -1;
-        }
+        Session::flash('clear_message', 'All message notifications have been cleared!');
 
         ####CLEAR ALL NOTIFICATIONS HERE ##################################################################
-
-        return $this->getView();
+        return redirect()->back();
     }
 }
