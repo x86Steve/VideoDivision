@@ -89,7 +89,7 @@
                                 <hr>
                                 @if(sizeof($Video_Titles) > 0)
                                 @foreach ($Video_Titles as $Title)
-                                    <a href="/public/watch/{{$Title->Video_ID}}" class="badge badge-dark badge-pill">{{$Title->Title}}</a>
+                                    <a href="/public/{{helper_isMovie($Title->Video_ID) ? "watch" : "view"}}/{{$Title->Video_ID}}" class="badge badge-dark badge-pill">{{$Title->Title}}</a>
                                 @endforeach
                                 @else
                                     <a href="/public/live_search/grid" class="badge badge-info badge-pill">Hmm, it's a little empty here... Click here to select some shows! :)</a>

@@ -8,6 +8,14 @@ if (!function_exists('helper_isAdmin'))
     }
 }
 
+if (!function_exists('helper_isMovie'))
+{
+    function helper_isMovie($video_ID)
+    {
+        return (DB::table('video')->where('Video_ID',$video_ID)->first()->IsMovie ? TRUE : FALSE);
+    }
+}
+
 if (!function_exists('ActivityEntry'))
 {
     function ActivityEntry(string $entry)
