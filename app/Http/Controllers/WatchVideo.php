@@ -16,11 +16,21 @@ class WatchVideo extends Search\SearchController
     function getView($video_id)
     {
 
+
         $results = $this->getVideoByID($video_id);
         $isMovie = $results[0]->IsMovie;
 
-        if (Auth::guest())
+        if (Auth::guest()) {
             return redirect()->route('login');
+        }
+
+        $userID = Auth::user()->id;
+        $isSubbed = $this -> isSubbed($video_id, $userID);
+
+        if (!$isSubbed)
+        {
+            return redirect()->route("/public/video_details?video=".$video_id);
+        }
 
         if ($isMovie) {
             $extra = $this->getMovieByID($video_id);
@@ -40,6 +50,17 @@ class WatchVideo extends Search\SearchController
     //v2
     function getEpisodeView($show_id, $season_number, $episode_number)
     {
+        if (Auth::guest()) {
+            return redirect()->route('login');
+        }
+
+        $userID = Auth::user()->id;
+        $isSubbed = $this -> isSubbed($show_id, $userID);
+
+        if (!$isSubbed)
+        {
+            return redirect()->route("/public/video_details?video=".$show_id);
+        }
         $file = $this->getVideoByID($show_id);
         $isMovie = $file[0]->IsMovie;
         $lastEpisode = $this->getLastEpisodeByVideoID($show_id);

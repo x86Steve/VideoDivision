@@ -14,6 +14,17 @@ class ListEpisodesController extends WatchVideo
 
     function getView($video_id)
     {
+        if (Auth::guest()) {
+            return redirect()->route('login');
+        }
+
+        $userID = Auth::user()->id;
+        $isSubbed = $this -> isSubbed($video_id, $userID);
+
+        if (!$isSubbed)
+        {
+            return redirect()->route("/public/video_details?video=".$video_id);
+        }
         $series = $this->getSeries($video_id);
         $seriesTitle = DB::table('Video')
             ->where('Video.Video_ID', '=', "$video_id")
