@@ -55,32 +55,27 @@
                             <a class="panel-close close" data-dismiss="alert">×</a> {{Session::get('error_password')}}
                         </div>
                     @endif
-
-                    <div class="row">
-                        <div class = "col-mid-10 col-md-offset-1">
-                            <img src="{{Config::get('customfilelocations.locations.avatars')}}{{ isset($CurrentUser) ? $CurrentUser->avatar : Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 150px; height: 150px; float:left; border-radius: 50%;margin-right: 25%;">
-                            <!-- First line is required to upload images !-->
-                            <h2>{{isset($CurrentUser) ? $CurrentUser->username : Auth::user()->username}}'s Profile</h2>
-                            @if(!isset($CurrentUser))
-                            <form enctype="multipart/form-data" action="/public/profile" method="POST">
-                                <label><b>Update profile image</b></label>
-                                <input type="file" name="avatar">
-                                <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                <input type="submit" class="pull-right btn btn-sm btn-primary">
-                            </form>
-                             @endif
-                        </div>
-                    </div>
                 </div>
                 <div class="tab-content py-4">
                     <div class="tab-pane {{Session::has('error_profile_settings') ? "" : "active"}}" id="profile">
                         <h5 class="mb-3">User Profile</h5>
+                        <br>
                         <div class="row">
                             <div class="col-md-6">
-                                <h6><b>Welcome, {{isset($CurrentUser) ? $CurrentUser->username : Auth::user()->username}}</b></h6>
-                                <div class="card" style="width: 25rem; ">
+                                <h2><b>Welcome, {{isset($CurrentUser) ? $CurrentUser->username : Auth::user()->username}}</b></h2>
+                                <img src="{{Config::get('customfilelocations.locations.avatars')}}{{ isset($CurrentUser) ? $CurrentUser->avatar : Auth::user()->avatar}}" onerror="this.src= '{{Config::get('customfilelocations.locations.avatars')}}default.png'" style="width: 200px; height: 200px; float: contour; border-radius: 50%;margin-right: 25%; margin-bottom: 5%;">
+                                @if(!isset($CurrentUser))
+                                    <p><strong>Update profile picture</strong></p>
+                                    <!-- First line is required to upload images !-->
+                                        <form enctype="multipart/form-data" action="/public/profile" method="POST">
+                                            <input type="file" name="avatar">
+                                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                            <input type="submit" class=" btn btn-sm btn-primary">
+                                        </form>
+                                @endif
+                                <div class="card border border-primary" style="width: 50rem; ">
                                     <span class="border border-primary">
-                                        <div class="card-body">
+                                        <div class="card-body center">
                                             <h5 class="card-title"><strong>Who am I:</strong></h5>
                                             <h6 class="card-subtitle mb-2 text-muted">{{isset($CurrentUser) ? $CurrentUser->jobtitle : Auth::user()->jobtitle}}</h6>
                                             <p class="card-text">{{isset($CurrentUser) ? $CurrentUser->description : Auth::user()->description}}</p>
@@ -90,18 +85,18 @@
                             </div>
 
                             <div class="col-md-6">
-                                <h6>Current Subscriptions</h6>
+                                <h5>Current Subscriptions</h5>
                                 <hr>
                                 @if(sizeof($Video_Titles) > 0)
                                 @foreach ($Video_Titles as $Title)
-                                    <a href="/public/watch/{{$Title->Video_ID}}" class="badge badge-dark badge-pill">{{$Title->Title}}</a>
+                                    <a href="/public/{{helper_isMovie($Title->Video_ID) ? "watch" : "view"}}/{{$Title->Video_ID}}" class="badge badge-dark badge-pill">{{$Title->Title}}</a>
                                 @endforeach
                                 @else
                                     <a href="/public/live_search/grid" class="badge badge-info badge-pill">Hmm, it's a little empty here... Click here to select some shows! :)</a>
                                 @endif
                                 <hr>
 
-                                <h6>Subscriber Status</h6>
+                                <h5>Subscriber Status</h5>
                                 @if(isset($CurrentUser) ? $CurrentUser->isPaid === 0 : Auth::user()->isPaid === 0)
                                     <a href="/public/payment" class="badge  badge-danger">&cross; You are currently an unsubscribed user! &cross;</a>
                                 @elseif(isset($CurrentUser) ? $CurrentUser->isPaid === 1 : Auth::user()->isPaid === 1)

@@ -153,9 +153,10 @@ class UserProfileController extends Controller
                 $user = Auth::user();
                 $user->avatar = $filename;
                 $user->save();
-
-                return $this->index();
             }
+
+            else
+                return $this->index()->with("error_msg", "You must provide a picture to update your profile!");
         }
 
         catch (Exception $ex)

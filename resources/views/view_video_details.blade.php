@@ -50,7 +50,7 @@
                 class="btn btn-dark"
                 data-toggle="modal"
                 data-target="#subscribeModal">
-                Pay
+                Watch Now!
             </button>
 
             <div class="modal fade" id="subscribeModal"
@@ -60,11 +60,11 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title"
-                                id="subscribeModalLabel">Please Pay</h4>
+                                id="subscribeModalLabel">Whoops!</h4>
                         </div>
                         <div class="modal-body">
                             <p>
-                                Please pay to watch videos.
+                                We know you'd like to enjoy the content on our website, but, currently, we're powered by hamsters running on wheels. We would like a little assistance so that we all can enjoy these videos :)
                             </p>
                         </div>
                         <div class="modal-footer">
@@ -74,7 +74,7 @@
                             </button>
                             <span class="pull-right">
 
-                    <a class="btn btn-dark" href="/public/payment">Pay</a>
+                    <a class="btn btn-dark" href="/public/payment">Donate hamster pellets now!</a>
             </span>
                         </div>
                     </div>
