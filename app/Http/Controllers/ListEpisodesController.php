@@ -23,7 +23,7 @@ class ListEpisodesController extends WatchVideo
 
         if (!$isSubbed)
         {
-            return redirect()->route("/public/video_details?video=".$video_id);
+            return redirect("/public/video_details?video=".$video_id);
         }
         $series = $this->getSeries($video_id);
         $seriesTitle = DB::table('Video')
