@@ -14,7 +14,7 @@
                         @endif
                         <body>
                         <video oncontextmenu="return false;" id="player" autoplay class="play" width='768' height='432'
-                               controls
+                               controls controlsList="nodownload"
                                poster="http://videodivision.net/assets/images/thumbnails/<?php echo ($file)[0]->Video_ID?>.jpg">
 
                             <source src="http://videodivision.net{{($file_path)}}" type="video/mp4"/>
