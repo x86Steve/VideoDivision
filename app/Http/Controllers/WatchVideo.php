@@ -29,7 +29,7 @@ class WatchVideo extends Search\SearchController
 
         if (!$isSubbed)
         {
-            return redirect("/public/video_details?video=".$video_id);
+            return redirect("/video_details?video=".$video_id);
         }
 
         if ($isMovie) {
@@ -59,7 +59,7 @@ class WatchVideo extends Search\SearchController
 
         if (!$isSubbed)
         {
-            return redirect("/public/video_details?video=".$show_id);
+            return redirect("/video_details?video=".$show_id);
         }
         $file = $this->getVideoByID($show_id);
         $isMovie = $file[0]->IsMovie;
