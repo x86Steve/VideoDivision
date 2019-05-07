@@ -16,9 +16,9 @@ if (!function_exists('helper_isMovie'))
     }
 }
 
-if (!function_exists('ActivityEntry'))
+if (!function_exists('helper_activityEntry'))
 {
-    function ActivityEntry(string $entry)
+    function helper_activityEntry(string $entry)
     {
         DB::insert('insert into recent_activity (user_id,entry,created_at) values (?,?,?)', array(Auth::user()->id, $entry, now()));
     }

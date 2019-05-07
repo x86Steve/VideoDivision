@@ -24,7 +24,7 @@
                             </p>
                         </video>
 
-            {{ActivityEntry("Started watching: " . helper_GetMovieTitleByID(($file)[0]->Video_ID))}}
+            {{helper_activityEntry("Started watching: " . helper_GetMovieTitleByID(($file)[0]->Video_ID))}}
 
             </body>
 
