@@ -54,7 +54,18 @@
                 </div>
                 <div class="tab-content py-4">
                     <div class="tab-pane {{Session::has('error_profile_settings') ? "" : "active"}}" id="profile">
-                        <h5 class="mb-3">User Profile</h5>
+                        <h5 class="mb-3">
+                            User Profile
+                            <div class="center">
+                                @if(isset($CurrentUser))
+                                    @if($CurrentUser->isAdmin)
+                                        <img src="http://why.soserio.us/Media/IHPKMemberBar.png" style="width: 350px; height: 20px; float: contour">
+                                    @endif
+                                @elseif (Auth::user()->isAdmin)
+                                    <img src="http://why.soserio.us/Media/IHPKMemberBar.png" style="width: 350px; height: 20px; float: contour">
+                                @endif
+                            </div>
+                        </h5>
                         <br>
                         <div class="row">
                             <div class="col-md-6">
