@@ -60,11 +60,11 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title"
-                                id="subscribeModalLabel">Whoops!</h4>
+                                id="subscribeModalLabel">Almost there!</h4>
                         </div>
                         <div class="modal-body">
                             <p>
-                                We know you'd like to enjoy the content on our website, but, currently, we're powered by hamsters running on wheels. We would like a little assistance so that we all can enjoy these videos :)
+                                Subscribe to Video Division to instantly get access!
                             </p>
                         </div>
                         <div class="modal-footer">
@@ -74,7 +74,7 @@
                             </button>
                             <span class="pull-right">
 
-                    <a class="btn btn-dark" href="/public/payment">Donate hamster pellets now!</a>
+                    <a class="btn btn-dark" href="/public/payment">Pay now!</a>
             </span>
                         </div>
                     </div>
