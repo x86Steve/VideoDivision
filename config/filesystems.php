@@ -60,6 +60,11 @@ return [
             'root' => base_path('assets/videos'),
         ],
 
+        'avatars' => [
+            'driver' => 'local',
+            'root' => base_path('public/avatars'),
+        ],
+
         'thumbnails' => [
             'driver' => 'local',
             'root' => base_path('assets/images/thumbnails'),
