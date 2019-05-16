@@ -9,7 +9,7 @@
 
 ## Final project for Cal Poly Pomona Software Engineering - Spring 2019
 
-### Utilizing Laravel Framework
+### Utilizing Laravel Framework / MYSQL Database
 
 - Create a modular website that encompasses video streaming
 - User instant messaging
