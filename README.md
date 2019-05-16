@@ -20,10 +20,10 @@
 - And much much more.
 
 #### Credits
-- Alessandro Cois
-- Sydney Ho
-- Jorge Avalos
-- Owen Dugmore
-- Steven Oseguera
+- [Alessandro Cois](https://github.com/gerbilord)
+- [Sydney Ho](https://github.com/PureDefender)
+- [Jorge Avalos](https://github.com/jorgeavalosjr)
+- [Owen Dugmore](https://github.com/oadugmore)
+- [Steven Oseguera](https://github.com/MuscleNrd)
 
 ###### This was our first attempt at any true web development. I am proud of what the members have created. Great work guys.
