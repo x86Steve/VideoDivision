@@ -23,7 +23,7 @@
 - Alessandro Cois
 - Sydney Ho
 - Jorge Avalos
-- Owen Wilson
+- Owen Dugmore
 - Steven Oseguera
 
 ###### This was our first attempt at any true web development. I am proud of what the members have created. Great work guys.
