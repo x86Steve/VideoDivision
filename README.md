@@ -7,7 +7,7 @@
 
 # VideoDivision.net
 
-## Final project for Cal Poly Pomona Software Engineering
+## Final project for Cal Poly Pomona Software Engineering - Spring 2019
 
 ### Utilizing Laravel Framework
 
