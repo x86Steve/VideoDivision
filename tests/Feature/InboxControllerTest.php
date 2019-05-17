@@ -16,17 +16,27 @@ class InboxControllerTest extends TestCase
     {
         $testUser = $this->CreateTestUser();
 
+        $testFriend = $this->CreateTestUser();
+
         // become the user
         $this->actingAs($testUser);
 
         // add a test message to the user's profile
         DB::table('chat_log')->insert(
             [
-                'Sender_ID' => $testUser->id + 1,
+                'Sender_ID' => $testFriend->id,
                 'Receiver_ID' => $testUser->id,
                 'Message' => 'Test Message',
                 'Time_Sent' => now(),
                 'isRead' => 0
+            ]
+        );
+
+        // add friend
+        DB::table('friends')->insert(
+            [
+                'User_ID' => $testUser->id,
+                'Friend_ID' => $testFriend->id
             ]
         );
 
