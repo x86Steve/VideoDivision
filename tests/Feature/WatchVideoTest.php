@@ -16,7 +16,7 @@ class WatchVideoTest extends TestCase
      *
      * @return void
      */
-    public function accessUnsubscribedMovie()
+    public function testAccessUnsubscribedMovie()
     {
         // create a test user
         $testUser = $this->CreateTestUser();
@@ -26,10 +26,10 @@ class WatchVideoTest extends TestCase
 
         $testResponse = $this->get('watch/6');
 
-        $testResponse->assertViewIs('view_video_details');
+        $testResponse->assertRedirect('video_details?video=6');
     }
 
-    public function accessUnsubscribedShow()
+    public function testAccessUnsubscribedShow()
     {
         // create a test user
         $testUser = $this->CreateTestUser();
@@ -39,11 +39,37 @@ class WatchVideoTest extends TestCase
 
         $testResponse = $this->get('watch/37/season/1/episode/1');
 
-        $testResponse->assertViewIs('view_video_details');
+        $testResponse->assertRedirect('video_details?video=37');
     }
 
-    public function watchMovie()
+    public function testWatchMovie()
     {
+        $testUser = $this->CreateTestUser();
 
+        // become the user
+        $this->actingAs($testUser);
+
+        $testResponse = $this->post(
+            'payment',
+            [
+                'selection' => 1
+            ]
+        );
+        // redirect to profile
+        $testResponse->assertRedirect('profile');
+        // refresh model
+        Auth::user()->refresh();
+
+        //subscribe user
+        $testResponse2 = $this->post('video_details?video=6', [
+            'postType' => 0,
+            'isMovie' => 1,
+            'User_ID' => $testUser->id,
+            'Video_ID' => 6
+        ]);
+        $testResponse2->assertViewIs('view_video_details');
+
+        // refresh model
+        Auth::user()->refresh();
     }
 }
