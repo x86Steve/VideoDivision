@@ -51,7 +51,7 @@ class ViewVideoTest extends TestCase
 
         //favorite video id 1
         $testResponse = $this->post(
-            'video_details',
+            'video_details?video=1',
             [
                 'postType' => 1,
                 'isMovie' => 1,
@@ -61,8 +61,8 @@ class ViewVideoTest extends TestCase
         );
 
         // test that the correct view was returned
-        $testResponse->assertRedirect('video_details');
-        //$testResponse->assertViewIs('view_video_details');
+        //$testResponse->assertRedirect('video_details');
+        $testResponse->assertViewIs('view_video_details');
     }
 
     public function testUnfavoriteMovie()
@@ -73,9 +73,9 @@ class ViewVideoTest extends TestCase
         // become the user
         $this->actingAs($testUser);
 
-        //favorite video id 2
+        //favorite video id 1
         $testResponse = $this->post(
-            'video_details',
+            'video_details?video=1',
             [
                 'postType' => 2,
                 'isMovie' => 1,
@@ -85,8 +85,8 @@ class ViewVideoTest extends TestCase
         );
 
         // test that the correct view was returned
-        $testResponse->assertRedirect('video_details');
-        //$testResponse->assertViewIs('view_video_details');
+        //$testResponse->assertRedirect('video_details');
+        $testResponse->assertViewIs('view_video_details');
     }
 
     public function testGetMyVideosView()
@@ -98,14 +98,23 @@ class ViewVideoTest extends TestCase
         $this->actingAs($testUser);
 
         // subscribe to a movie
-        $this->testSubscribeToMovie();
+        $testResponse = $this->post(
+            'video_details',
+            [
+                'postType' => 0,
+                'isMovie' => 1,
+                'User_ID' => Auth::user()->id,
+                'Video_ID' => 1
+            ]
+        );
 
-        // get
+        // get the my_videos view
         $testResponse = $this->get('my_videos');
 
         // test that the correct view was returned
         $testResponse->assertViewIs('subscribed_videos');
 
+        // check that the view has output
         $testResponse->assertViewHas('output');
     }
 
@@ -117,9 +126,9 @@ class ViewVideoTest extends TestCase
         // become the user
         $this->actingAs($testUser);
 
-        //subscribe user to video id 2
+        //subscribe user to video id 1
         $testResponse = $this->post(
-            'video_details',
+            'video_details?video=1',
             [
                 'postType' => 0,
                 'isMovie' => 1,
@@ -129,8 +138,8 @@ class ViewVideoTest extends TestCase
         );
 
         // test that the correct view was returned
-        //$testResponse->assertViewIs('view_video_details');
-        $testResponse->assertRedirect('video_details');
+        $testResponse->assertViewIs('view_video_details');
+        //$testResponse->assertRedirect('video_details');
     }
 
 }
