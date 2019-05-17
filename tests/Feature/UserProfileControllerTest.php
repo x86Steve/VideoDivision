@@ -85,12 +85,6 @@ class UserProfileControllerTest extends TestCase
 
     public function testFailToUpdateAvatarAsGuest()
     {
-        // // create a test user
-        // $testUser = $this->CreateTestUser();
-
-        // // become the user
-        // $this->actingAs($testUser);
-
         // generate a fake image to upload
         $image = UploadedFile::fake()->image('avatar.jpg');
 
@@ -210,20 +204,7 @@ class UserProfileControllerTest extends TestCase
 
         $testResponse = $this->get('profile/' . $otherUsername);
 
-        // 
         $testResponse->assertStatus(200);
-
-        // // view should have this data
-        // $testResponse->assertViewMissing(
-        //     [
-        //         'Video_Titles',
-        //         'recent_activities',
-        //         'Comments'
-        //     ]
-        // );
-
-        // // view should contain the target username
-        // $testResponse->assertSee($otherUsername);
     }
 
     public function testPostCommentOnOwnProfile()
