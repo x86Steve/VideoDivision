@@ -7,7 +7,7 @@ use App\User;
 use Auth;
 use DB;
 
-class UserProfileControllerTest extends TestCase
+class ContactControllerTest extends TestCase
 {
 
     public function testViewPage()

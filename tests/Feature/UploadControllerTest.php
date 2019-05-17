@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Auth;
 use DB;
 
-class UserProfileControllerTest extends TestCase
+class UploadControllerTest extends TestCase
 {
 
     public function testUploadMovie()
