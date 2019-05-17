@@ -29,6 +29,10 @@ class ListEpisodesControllerTest extends TestCase
         // refresh model
         Auth::user()->refresh();
 
+        // test redirect when not subbed yet
+        $testResponse5 = $this->get('view/36');
+        $testResponse5->assertRedirect('video_details?video=36');
+
         // subscribe user
         $testResponse2 = $this->post('video_details?video=36', [
             'postType' => 0,

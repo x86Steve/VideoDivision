@@ -160,7 +160,7 @@ class WatchVideo extends Search\SearchController
             ->first();
     }
 
-    function getSeriesInfoDesc($show_id)
+    /*function getSeriesInfoDesc($show_id)
     {
         return $seriesInfo = DB::table('Episode')
             ->where('Episode.Show_ID', '=', "$show_id")
@@ -168,16 +168,16 @@ class WatchVideo extends Search\SearchController
             ->orderBy('Season_Number', 'desc')
             ->orderBy('Episode_Number', 'desc')
             ->first();
-    }
+    }*/
 
-    function getSeasonInfo($show_id, $season_number)
+    /*function getSeasonInfo($show_id, $season_number)
     {
         return DB::table('Episode')
             ->where('Episode.Show_ID', '=', "$show_id")
             ->where('Episode.Season_Number', '=', "$season_number")
             ->orderBy('Episode_Number', 'desc')
             ->get();
-    }
+    }*/
 
     function getEpisodeInfo($show_id, $episode_number, $season_number)
     {
