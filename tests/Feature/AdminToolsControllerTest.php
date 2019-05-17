@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Auth;
 use DB;
 
-class UserProfileControllerTest extends TestCase
+class AdminToolsControllerTest extends TestCase
 {
     public function testViewPageAsAdmin()
     {

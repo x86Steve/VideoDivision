@@ -7,7 +7,7 @@ use App\User;
 use Auth;
 use DB;
 
-class UserProfileControllerTest extends TestCase
+class PaymentControllerTest extends TestCase
 {
     public function testGetRedirectedAsGuest()
     {
