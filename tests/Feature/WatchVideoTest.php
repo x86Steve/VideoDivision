@@ -71,5 +71,48 @@ class WatchVideoTest extends TestCase
 
         // refresh model
         Auth::user()->refresh();
+
+        $testResponse3 = $this->get('watch/6');
+        $testResponse3->assertViewIs('watch');
+    }
+
+    public function testWatchShow()
+    {
+        $testUser = $this->CreateTestUser();
+
+        // become the user
+        $this->actingAs($testUser);
+
+        $testResponse = $this->post(
+            'payment',
+            [
+                'selection' => 1
+            ]
+        );
+        // redirect to profile
+        $testResponse->assertRedirect('profile');
+        // refresh model
+        Auth::user()->refresh();
+
+        //subscribe user
+        $testResponse2 = $this->post('video_details?video=37', [
+            'postType' => 0,
+            'isMovie' => 0,
+            'User_ID' => $testUser->id,
+            'Video_ID' => 37
+        ]);
+        $testResponse2->assertViewIs('view_video_details');
+
+        // refresh model
+        Auth::user()->refresh();
+
+        //going to all episodes page
+        $testResponse3 = $this->get('view/37');
+        $testResponse3->assertViewIs('all_episodes');
+
+        //going to episode 1
+        $testResponse4 = $this->get('watch/37/season/1/episode/1');
+
+        $testResponse4->assertViewIs('watch');
     }
 }
