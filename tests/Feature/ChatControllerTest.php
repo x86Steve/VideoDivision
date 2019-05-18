@@ -22,7 +22,7 @@ class ChatControllerTest extends TestCase
         // add a test message to the user's profile
         DB::table('chat_log')->insert(
             [
-                'Sender_ID' => $testUser->id + 1,
+                'Sender_ID' => 7,
                 'Receiver_ID' => $testUser->id,
                 'Message' => 'Test Message',
                 'Time_Sent' => now(),
@@ -31,7 +31,7 @@ class ChatControllerTest extends TestCase
         );
 
         // going to chat
-        $testResponse = $this->get('chat?user=1');
+        $testResponse = $this->get('chat?user=7');
         $testResponse->assertViewIs('chat');
 
         // refresh model
@@ -46,9 +46,9 @@ class ChatControllerTest extends TestCase
         $this->actingAs($testUser);
 
         // adding a friend on their profile page
-        $testResponse = $this->get('/chat/addremove/1');
+        $testResponse = $this->get('/chat/addremove/7');
         // check for redirect
-        $testResponse->assertRedirect('profile/JorgeAvalos');
+        $testResponse->assertRedirect('profile/SydneyHo');
         // refresh model
         Auth::user()->refresh();
 
@@ -56,7 +56,7 @@ class ChatControllerTest extends TestCase
 
         $friendFlag = DB::table('friends')
             ->where('User_ID', '=', "$testUser->id")
-            ->where('Friend_ID', '=', "1")
+            ->where('Friend_ID', '=', "7")
             ->select('friends.*')
             ->first();
 
@@ -67,17 +67,33 @@ class ChatControllerTest extends TestCase
 
         // delete a friend on their profile page
 
-        $testResponse2 = $this->get('chat/addremove/1');
+        $testResponse2 = $this->get('chat/addremove/7');
         $friendFlag = DB::table('friends')
             ->where('User_ID', '=', "$testUser->id")
-            ->where('Friend_ID', '=', "1")
+            ->where('Friend_ID', '=', "7")
             ->select('friends.*')
             ->first();
 
         assert(!$friendFlag);
         // check for redirect
-        $testResponse2->assertRedirect('profile/JorgeAvalos');
+        $testResponse2->assertRedirect('profile/SydneyHo');
         // refresh model
         Auth::user()->refresh();
+    }
+
+    public function testSendMessage()
+    {
+        $testUser = $this->CreateTestUser();
+
+        // become the user
+        $this->actingAs($testUser);
+
+        $testResponse = $this->post('chat', [
+            'message_text' => 'Testing message sent',
+            'postType' => 0,
+            'User_ID' => $testUser->id,
+            'Receiver_ID' => 7
+            ]);
+        $testResponse->assertRedirect('chat?user=7');
     }
 }
