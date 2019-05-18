@@ -37,4 +37,47 @@ class ChatControllerTest extends TestCase
         // refresh model
         Auth::user()->refresh();
     }
+
+    public function testAddRemoveAFriend()
+    {
+        $testUser = $this->CreateTestUser();
+
+        // become the user
+        $this->actingAs($testUser);
+
+        // adding a friend on their profile page
+        $testResponse = $this->get('/chat/addremove/1');
+        // check for redirect
+        $testResponse->assertRedirect('profile/JorgeAvalos');
+        // refresh model
+        Auth::user()->refresh();
+
+        // check database
+
+        $friendFlag = DB::table('friends')
+            ->where('User_ID', '=', "$testUser->id")
+            ->where('Friend_ID', '=', "1")
+            ->select('friends.*')
+            ->first();
+
+        assert($friendFlag);
+
+        // refresh model
+        Auth::user()->refresh();
+
+        // delete a friend on their profile page
+
+        $testResponse2 = $this->get('chat/addremove/1');
+        $friendFlag = DB::table('friends')
+            ->where('User_ID', '=', "$testUser->id")
+            ->where('Friend_ID', '=', "1")
+            ->select('friends.*')
+            ->first();
+
+        assert(!$friendFlag);
+        // check for redirect
+        $testResponse2->assertRedirect('profile/JorgeAvalos');
+        // refresh model
+        Auth::user()->refresh();
+    }
 }
