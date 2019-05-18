@@ -11,11 +11,7 @@ use DB;
 
 class PostControllerTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
     public function testPostShow()
     {
         // create a test user
@@ -30,13 +26,15 @@ class PostControllerTest extends TestCase
 
         // testing postPosts
         $testResponse2 = $this->post('posts', [
+            'rate' => 5,
+            'movieID' => 1,
             'id' => 1,
             'userID' => $testUser->id
         ]);
         $testResponse2->assertRedirect('posts');
 
         // refresh model
-        Auth::user()->refresh();
+        //Auth::user()->refresh();
 
         // testing post view page of a specific video
         $testResponse3 = $this->get('posts/1');
